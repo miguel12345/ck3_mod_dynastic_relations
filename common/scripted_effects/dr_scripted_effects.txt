@@ -9,7 +9,12 @@ dr_establish_dynastic_relation_with_dynasty_of = {
             value = $TARGET$
         }
 
-        create_story = dr_dynastic_relation
+        create_story = {
+            type = dr_dynastic_relation
+            # The other dynasty´s story will just be a proxy to this one
+            save_scope_as = is_proxy_of
+        } 
+
     }
 
     $TARGET$ = {
@@ -19,6 +24,12 @@ dr_establish_dynastic_relation_with_dynasty_of = {
             value = prev.this
         }
 
+        set_variable = {
+            name = dr_dynastic_relation_target_is_proxy_of
+            value = scope:is_proxy_of
+        }
+
+        # This story will be just a proxy pointing to the one created above
         create_story = dr_dynastic_relation
     }
 }
@@ -31,9 +42,22 @@ dr_save_dynastic_relation_between_characters_in_scope = {
 
             limit = {
                 story_type = dr_dynastic_relation
-                var:target = $B$.dynasty
+                var:target = $B$.dynasty 
             }
-            save_scope_as = dynastic_relation
+
+            if = {
+                limit = {
+                    exists = this.var:is_proxy_of
+                }
+                
+                var:is_proxy_of = {
+                    save_scope_as = dynastic_relation
+                }
+            }
+            else = {
+                save_scope_as = dynastic_relation
+            }
+            
         }
     }
 }
@@ -53,6 +77,26 @@ dr_add_dynastic_relation_value = {
 
 }
 
-dr_decay_dynastic_opinion_with_dynasty_of = {
+# Decay dynastic relation towards the baseline
+dr_decay_dynastic_relation_value = {
+
+    if = {
+        limit = {
+            var:value < 0
+        }
+
+        change_variable = {
+            name = value
+            add = 1.0
+            max = 0.0
+        }
+    }
+    else = {
+        change_variable = {
+            name = value
+            subtract = 1.0
+            min = 0.0
+        }
+    }
 
 }

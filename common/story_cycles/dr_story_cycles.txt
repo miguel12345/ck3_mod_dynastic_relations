@@ -3,16 +3,46 @@ dr_dynastic_relation = {
     on_setup = {
 
         set_variable = {
+            name = source
+            value = story_owner.dynasty
+        }
+
+        set_variable = {
             name = target
             value = story_owner.var:dr_dynastic_relation_target.dynasty
         }
 
-        set_variable = {
-            name = value
-            value = 0.0
+        if = {
+            limit = {
+                exists = story_owner.var:dr_dynastic_relation_target_is_proxy_of
+            }
+
+            set_variable = {
+                name = is_proxy_of
+                value = story_owner.var:dr_dynastic_relation_target_is_proxy_of
+            }
+
+            # Remove temporary variable
+            story_owner = {
+                remove_variable = dr_dynastic_relation_target_is_proxy_of
+            }
+        }
+        else = {
+            # This is the real story object, not just a proxy. Here we set all the relevant fields
+            set_variable = {
+                name = value
+                value = 0.0
+            }
+
+            # We add all relations to a global list for easy access
+            add_to_global_variable_list = {
+                name = dr_dynastic_relations
+                target = prev
+            }
         }
 
 
+        #The first time a dynasty establishes a relation with any other dynasty we need to save the character holding the stories containing the relation info in the dynasty scope
         if = {
             limit = {
                 NOT = {

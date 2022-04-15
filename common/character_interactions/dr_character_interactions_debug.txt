@@ -47,7 +47,7 @@ dr_debug_interaction_print_dynastic_relation = {
 	
 	on_accept = {
 
-        dr_save_dynastic_relation_in_scope = {
+        dr_save_dynastic_relation_between_characters_in_scope = {
             A = scope:actor
             B = scope:recipient
         }
@@ -87,7 +87,7 @@ dr_debug_interaction_increase_dynastic_relation = {
         scope:dynastic_relation = {
 
             dr_add_dynastic_relation_value = {
-                VAL = 10
+                VAL = 10.0
             }
         }
         
