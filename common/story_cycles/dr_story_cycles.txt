@@ -1,0 +1,77 @@
+dr_dynastic_relation = {
+    
+    on_setup = {
+
+        set_variable = {
+            name = target
+            value = story_owner.var:dr_dynastic_relation_target.dynasty
+        }
+
+        set_variable = {
+            name = value
+            value = 0.0
+        }
+
+
+        if = {
+            limit = {
+                NOT = {
+                    exists = story_owner.dynasty.var:dr_dynasty_relation_stories_holder
+                }
+                
+            }
+            story_owner.dynasty = {
+
+                set_variable = {
+                    name = dr_dynasty_relation_stories_holder
+                    value = prev.story_owner
+                }
+            }
+        }
+        
+        # Remove temporary variable
+        story_owner = {
+			remove_variable = dr_dynastic_relation_target
+		}
+
+    }
+
+    on_end = {
+
+    }  
+
+    on_owner_death = {
+
+        # Set a random dynasty member as the new story owner.
+        # NOTE: If no available dynasty member exists, we need to handle that scenario as well. This is done in the if conditional below
+        story_owner = {
+            save_scope_as = so
+        }
+        story_owner.dynasty = { 
+            random_dynasty_member = {
+                limit = { NOT = { this = scope:so} }
+                save_scope_as = dr_random_dynasty_member_selected_for_holding_stories
+            }
+        }
+
+        if = {
+            # Safety check to prevent errors when there isn´t anyone else alive in this dinasty
+            limit = {
+                exists = scope:dr_random_dynasty_member_selected_for_holding_stories
+            }
+
+            story_owner.dynasty = {
+
+                set_variable = {
+                    name = dr_dynasty_relation_stories_holder
+                    value = scope:dr_random_dynasty_member_selected_for_holding_stories
+                }
+            }
+    
+            make_story_owner = scope:dr_random_dynasty_member_selected_for_holding_stories
+        }
+
+        
+        
+	}
+}

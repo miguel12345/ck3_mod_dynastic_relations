@@ -1,0 +1,96 @@
+dr_debug_interaction_establish_dynastic_relation = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	auto_accept = yes
+	
+	is_shown = {
+        NOT = { scope:recipient = scope:actor }
+    }
+	
+	is_valid = {
+        scope:actor = {
+            dr_can_dynastic_relation_be_established_with_dynasty_of = {
+                TARGET = scope:recipient
+            }
+
+            NOT = { dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient} }
+        }
+		
+	}
+	
+	on_accept = {
+        scope:actor = {
+            dr_establish_dynastic_relation_with_dynasty_of = {
+                TARGET = scope:recipient
+            }
+        }
+	}
+}
+
+dr_debug_interaction_print_dynastic_relation = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	auto_accept = yes
+	
+	is_shown = {
+        NOT = { scope:recipient = scope:actor }
+    }
+	
+	is_valid = {
+        scope:actor = {
+            dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient }
+        }
+	}
+
+	
+	on_accept = {
+
+        dr_save_dynastic_relation_in_scope = {
+            A = scope:actor
+            B = scope:recipient
+        }
+
+        scope:dynastic_relation = {
+            debug_log = "Dynastic relation with this dynasty = [THIS.Var('value').GetValue]"
+        }
+        
+        
+	}
+}
+
+dr_debug_interaction_increase_dynastic_relation = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	auto_accept = yes
+	
+	is_shown = {
+        NOT = { scope:recipient = scope:actor }
+    }
+	
+	is_valid = {
+        scope:actor = {
+            dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient }
+        }
+	}
+
+	
+	on_accept = {
+
+        dr_save_dynastic_relation_between_characters_in_scope = {
+            A = scope:actor
+            B = scope:recipient
+        }
+
+        scope:dynastic_relation = {
+
+            dr_add_dynastic_relation_value = {
+                VAL = 10
+            }
+        }
+        
+        
+	}
+}

@@ -1,0 +1,7 @@
+﻿l_english:
+ dr_debug_interaction_establish_dynastic_relation:0 "DEBUG Establish dynastic relation"
+ dr_debug_interaction_establish_dynastic_relation_desc:0 "DEBUG Establish dynastic relation description"
+ dr_debug_interaction_print_dynastic_relation:0 "DEBUG Print dynastic relation"
+ dr_debug_interaction_print_dynastic_relation_desc:0 "DEBUG Print dynastic relation description"
+ dr_debug_interaction_increase_dynastic_relation:0 "DEBUG Increase dynastic relation"
+ dr_debug_interaction_increase_dynastic_relation_desc:0 "DEBUG Increase dynastic relation description"

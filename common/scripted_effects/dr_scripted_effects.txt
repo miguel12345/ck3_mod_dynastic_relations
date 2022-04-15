@@ -1,0 +1,58 @@
+
+# Should be called when scoped to a character. Assumes that dynastic relation can be established
+dr_establish_dynastic_relation_with_dynasty_of = {
+
+    this = {
+
+        set_variable = {
+            name = dr_dynastic_relation_target
+            value = $TARGET$
+        }
+
+        create_story = dr_dynastic_relation
+    }
+
+    $TARGET$ = {
+
+        set_variable = {
+            name = dr_dynastic_relation_target
+            value = prev.this
+        }
+
+        create_story = dr_dynastic_relation
+    }
+}
+
+# Will save the dynastic relation "object" in the current scope (as scope:dynastic_relation) between characters $A$ and $B$ 
+dr_save_dynastic_relation_between_characters_in_scope = {
+
+    $A$.dynasty.var:dr_dynasty_relation_stories_holder = {
+        random_owned_story = {
+
+            limit = {
+                story_type = dr_dynastic_relation
+                var:target = $B$.dynasty
+            }
+            save_scope_as = dynastic_relation
+        }
+    }
+}
+
+dr_save_dynastic_relation_between_dynasties_in_scope = {
+
+}
+
+# Add/subtracts dynastic relation value. It expects the dynastic relation to be currently scoped.
+# Use dr_save_dynastic_relation_between_characters_in_scope and dr_save_dynastic_relation_between_dynasties_in_scope to save dynastic relations in scope
+dr_add_dynastic_relation_value = {
+
+    change_variable = {
+        name = value
+        add = $VAL$
+    }
+
+}
+
+dr_decay_dynastic_opinion_with_dynasty_of = {
+
+}
