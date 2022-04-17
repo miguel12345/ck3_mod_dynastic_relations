@@ -1,37 +1,38 @@
 
 
-dr_is_dynastic_relation_established_with_dynasty_of = {
-
-    OR = {
-        trigger_if = {
-            limit = {exists = this.dynasty.var:dr_dynasty_relation_stories_holder}
-            this.dynasty.var:dr_dynasty_relation_stories_holder = {
-                any_owned_story = {
-                    story_type = dr_dynastic_relation
-                    var:target = $TARGET$.dynasty
+dr_is_dynastic_relation_established_between_dynasties = {
+    
+    $A$ = {
+        any_in_list = {
+            variable = dr_dynasty_relations
+            OR = {
+                AND = {
+                    var:target = $A$
+                    var:source = $B$
                 }
+                AND = {
+                    var:source = $A$
+                    var:target = $B$
+                }
+                
             }
         }
-        
-        always = no
     }
-    
-    
     
 }
 
 
-dr_can_dynastic_relation_be_established_with_dynasty_of = {
+dr_can_dynastic_relation_be_established_betwen_characters = {
     AND = {
-        this = {
+        $CHARACTER_A$ = {
             is_lowborn = no
         }
-        $TARGET$ = {
+        $CHARACTER_B$ = {
             is_lowborn = no
         }
 
         NOT = {
-            this.dynasty = $TARGET$.dynasty
+            $CHARACTER_A$.dynasty = $CHARACTER_B$.dynasty
         }
 
     }

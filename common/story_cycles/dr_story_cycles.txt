@@ -1,61 +1,51 @@
-dr_dynastic_relation = {
+dr_dynastic_relation_story = {
     
     on_setup = {
 
+        save_scope_as = current_story
+
+        # var:friends will be set if both dynasties have very good relations between each other
+
+        # var:rivals will be set if both dynasties have very bad relations between each other
+
+        # var:source is the source dynasty
         set_variable = {
             name = source
             value = story_owner.dynasty
         }
 
+        # var:target is the target dynasty
         set_variable = {
             name = target
             value = story_owner.var:dr_dynastic_relation_target.dynasty
         }
 
-        if = {
-            limit = {
-                exists = story_owner.var:dr_dynastic_relation_target_is_proxy_of
-            }
-
-            set_variable = {
-                name = is_proxy_of
-                value = story_owner.var:dr_dynastic_relation_target_is_proxy_of
-            }
-
-            # Remove temporary variable
-            story_owner = {
-                remove_variable = dr_dynastic_relation_target_is_proxy_of
-            }
+        # This is the real story object, not just a proxy. Here we set all the relevant fields
+        set_variable = {
+            name = value
+            value = 0.0
         }
-        else = {
-            # This is the real story object, not just a proxy. Here we set all the relevant fields
-            set_variable = {
-                name = value
-                value = 0.0
-            }
 
-            # We add all relations to a global list for easy access
-            add_to_global_variable_list = {
-                name = dr_dynastic_relations
-                target = prev
+        # We add all relations to a global list for easy access
+        add_to_global_variable_list = {
+            name = dr_dynastic_relations
+            target = prev   
+        }
+
+        # Add relation story to both dynasties
+        this.var:source = {
+
+            add_to_variable_list = {
+                name = dr_dynasty_relations
+                target = scope:current_story
             }
         }
 
+        this.var:target = {
 
-        #The first time a dynasty establishes a relation with any other dynasty we need to save the character holding the stories containing the relation info in the dynasty scope
-        if = {
-            limit = {
-                NOT = {
-                    exists = story_owner.dynasty.var:dr_dynasty_relation_stories_holder
-                }
-                
-            }
-            story_owner.dynasty = {
-
-                set_variable = {
-                    name = dr_dynasty_relation_stories_holder
-                    value = prev.story_owner
-                }
+            add_to_variable_list = {
+                name = dr_dynasty_relations
+                target = scope:current_story
             }
         }
         
@@ -88,14 +78,6 @@ dr_dynastic_relation = {
             # Safety check to prevent errors when there isn´t anyone else alive in this dinasty
             limit = {
                 exists = scope:dr_random_dynasty_member_selected_for_holding_stories
-            }
-
-            story_owner.dynasty = {
-
-                set_variable = {
-                    name = dr_dynasty_relation_stories_holder
-                    value = scope:dr_random_dynasty_member_selected_for_holding_stories
-                }
             }
     
             make_story_owner = scope:dr_random_dynasty_member_selected_for_holding_stories

@@ -1,32 +1,3 @@
-dr_debug_interaction_establish_dynastic_relation = {
-	category = interaction_category_friendly
-	common_interaction = yes
-
-	auto_accept = yes
-	
-	is_shown = {
-        NOT = { scope:recipient = scope:actor }
-    }
-	
-	is_valid = {
-        scope:actor = {
-            dr_can_dynastic_relation_be_established_with_dynasty_of = {
-                TARGET = scope:recipient
-            }
-
-            NOT = { dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient} }
-        }
-		
-	}
-	
-	on_accept = {
-        scope:actor = {
-            dr_establish_dynastic_relation_with_dynasty_of = {
-                TARGET = scope:recipient
-            }
-        }
-	}
-}
 
 dr_debug_interaction_print_dynastic_relation = {
 	category = interaction_category_friendly
@@ -39,23 +10,27 @@ dr_debug_interaction_print_dynastic_relation = {
     }
 	
 	is_valid = {
-        scope:actor = {
-            dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient }
+        dr_can_dynastic_relation_be_established_betwen_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
         }
 	}
 
 	
 	on_accept = {
 
-        dr_save_dynastic_relation_between_characters_in_scope = {
-            A = scope:actor
-            B = scope:recipient
+        dr_save_dynastic_relation_between_dynasties_in_scope = {
+            A = scope:actor.dynasty
+            B = scope:recipient.dynasty
+            SCOPE_NAME = dynastic_relation_val
+        } 
+
+        save_scope_value_as = {
+            name = hello
+            value = 10.0
         }
 
-        scope:dynastic_relation = {
-            debug_log = "Dynastic relation with this dynasty = [THIS.Var('value').GetValue]"
-        }
-        
+        debug_log = "Dynastic relation with this dynasty = [SCOPE.GetValue('hello')]"
         
 	}
 }
@@ -71,26 +46,47 @@ dr_debug_interaction_increase_dynastic_relation = {
     }
 	
 	is_valid = {
-        scope:actor = {
-            dr_is_dynastic_relation_established_with_dynasty_of = {TARGET = scope:recipient }
+        dr_can_dynastic_relation_be_established_betwen_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
         }
 	}
 
-	
 	on_accept = {
 
-        dr_save_dynastic_relation_between_characters_in_scope = {
-            A = scope:actor
-            B = scope:recipient
-        }
-
-        scope:dynastic_relation = {
-
-            dr_add_dynastic_relation_value = {
-                VAL = 10.0
-            }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            VAL = 5.0
         }
         
+	}
+}
+
+dr_debug_interaction_decrease_dynastic_relation = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	auto_accept = yes
+	
+	is_shown = {
+        NOT = { scope:recipient = scope:actor }
+    }
+	
+	is_valid = {
+        dr_can_dynastic_relation_be_established_betwen_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+        }
+	}
+
+	on_accept = {
+
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            VAL = -5.0
+        }
         
 	}
 }

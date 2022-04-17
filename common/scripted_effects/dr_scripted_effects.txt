@@ -10,74 +10,137 @@ dr_establish_dynastic_relation_with_dynasty_of = {
         }
 
         create_story = {
-            type = dr_dynastic_relation
-            # The other dynasty´s story will just be a proxy to this one
-            save_scope_as = is_proxy_of
+            type = dr_dynastic_relation_story
         } 
 
-    }
-
-    $TARGET$ = {
-
-        set_variable = {
-            name = dr_dynastic_relation_target
-            value = prev.this
-        }
-
-        set_variable = {
-            name = dr_dynastic_relation_target_is_proxy_of
-            value = scope:is_proxy_of
-        }
-
-        # This story will be just a proxy pointing to the one created above
-        create_story = dr_dynastic_relation
     }
 }
 
 # Will save the dynastic relation "object" in the current scope (as scope:dynastic_relation) between characters $A$ and $B$ 
-dr_save_dynastic_relation_between_characters_in_scope = {
+dr_find_dynastic_relation_between_characters_and_save_in_scope = {
 
-    $A$.dynasty.var:dr_dynasty_relation_stories_holder = {
-        random_owned_story = {
+    $A$.dynasty = {
 
+        random_in_list = {
+            variable = dr_dynasty_relations
             limit = {
-                story_type = dr_dynastic_relation
-                var:target = $B$.dynasty 
-            }
-
-            if = {
-                limit = {
-                    exists = this.var:is_proxy_of
+                OR = {
+                    AND = {
+                        var:target = $A$.dynasty
+                        var:source = $B$.dynasty
+                    }
+                    AND = {
+                        var:source = $A$.dynasty
+                        var:target = $B$.dynasty
+                    }
+                    
                 }
-                
-                var:is_proxy_of = {
-                    save_scope_as = dynastic_relation
-                }
-            }
-            else = {
-                save_scope_as = dynastic_relation
             }
             
+            save_scope_as = $SCOPE_NAME$
         }
     }
 }
 
 dr_save_dynastic_relation_between_dynasties_in_scope = {
 
-}
+    dr_find_dynastic_relation_between_characters_and_save_in_scope = {
+        A = $DYNASTY_A$.dynast
+        B = $DYNASTY_B$.dynast
+        SCOPE_NAME = dynastic_relation
+    }
 
-# Add/subtracts dynastic relation value. It expects the dynastic relation to be currently scoped.
-# Use dr_save_dynastic_relation_between_characters_in_scope and dr_save_dynastic_relation_between_dynasties_in_scope to save dynastic relations in scope
-dr_add_dynastic_relation_value = {
-
-    change_variable = {
-        name = value
-        add = $VAL$
+    if = {
+        limit = { NOT = { exists = scope:dynastic_relation } }
+        save_scope_value_as = {
+            name = $SCOPE_NAME$
+            value = 0.0
+        }
+    }
+    else {
+        save_scope_value_as = {
+            name = $SCOPE_NAME$
+            value = scope:dynastic_relation.var:value
+        }
     }
 
 }
 
-# Decay dynastic relation towards the baseline
+# Changes (improves/degrades) dynastic relation based on the action being performed between two characters
+# Expects CHARACTER_A, CHARACTER_B, REASON
+dr_change_dynastic_relation_between_characters = {
+
+    
+    $CHARACTER_A$.dynasty = {
+        save_scope_as = source
+    }
+    
+    $CHARACTER_B$.dynasty = {
+        save_scope_as = target
+    }
+
+    save_scope_value_as = {
+        name = change_val
+        value = $VAL$
+    }
+ 
+    if = {
+        limit = { scope:change_val > 0.0 }
+        custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
+    }
+    else = {
+        custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
+    }
+
+    dr_find_dynastic_relation_between_characters_and_save_in_scope = {
+        A = $CHARACTER_A$
+        B = $CHARACTER_B$
+        SCOPE_NAME = dynastic_relation
+    }
+
+    # Establish dynastic relation if it doesnt exist yet
+    if = {
+
+        limit = { NOT = { exists = scope:dynastic_relation } }
+
+        $CHARACTER_A$ = {
+            dr_establish_dynastic_relation_with_dynasty_of = {
+                TARGET = $CHARACTER_B$
+            }
+        }
+
+        dr_find_dynastic_relation_between_characters_and_save_in_scope = {
+            A = $CHARACTER_A$
+            B = $CHARACTER_B$
+            SCOPE_NAME = dynastic_relation
+        }
+    }
+
+    if = {
+
+        limit = {  exists = scope:dynastic_relation }
+
+        scope:dynastic_relation = {
+
+            change_variable = {
+                name = value
+                add = $VAL$ 
+            }
+        
+            # Updates the opinion modifiers between all members of both dynasties
+            dr_update_character_opinions_effect = yes
+        
+            # Updates friends/rival relation status
+            dr_update_dynastic_relation_friends_rivals_status_effect = yes
+            
+
+        }
+    }
+
+    
+}
+
+# Decay dynastic relation towards the baseline, expects dynastic relation to be the current scope
 dr_decay_dynastic_relation_value = {
 
     if = {
@@ -97,6 +160,82 @@ dr_decay_dynastic_relation_value = {
             subtract = 1.0
             min = 0.0
         }
+    }
+
+}
+
+
+# Updates the character opinions between all members of both dynasties, expects dynastic relation to be the current scope
+dr_update_character_opinions_effect = {
+
+    hidden_effect = {
+
+        save_scope_as = current_dynasty_relation
+
+        scope:current_dynasty_relation.var:source = {  
+            
+            every_dynasty_member = {
+
+                save_scope_as = opinion_a
+
+                scope:current_dynasty_relation.var:target = {
+                    every_dynasty_member = {
+
+                        save_scope_as = opinion_b
+
+                        scope:opinion_a = {
+
+                            remove_opinion = {
+                                modifier = dr_dynasty_relation_opinion_modifier
+                                target = scope:opinion_b
+                            }
+                            add_opinion = {
+                                target = scope:opinion_b
+                                modifier = dr_dynasty_relation_opinion_modifier
+                                opinion = dr_dynasty_relation_opinion_value
+                            }
+                        } 
+
+                        scope:opinion_b = {
+                            remove_opinion = {
+                                modifier = dr_dynasty_relation_opinion_modifier
+                                target = scope:opinion_a
+                            }
+                            add_opinion = {
+                                target = scope:opinion_a
+                                modifier = dr_dynasty_relation_opinion_modifier
+                                opinion = dr_dynasty_relation_opinion_value
+                            }
+                        }
+                    
+                    }
+                }
+
+            }
+        }
+    }
+
+}
+
+
+# Update the status of friendship/rivalry between both dynasties based on the current relation value
+dr_update_dynastic_relation_friends_rivals_status_effect = {
+
+    if = { # Set dynasties as friends if threshold is passed and they are not friends yet
+        limit = { AND = { NOT = {exists = var:friends} var:value >= 50 } }
+        set_variable = {name = friends value = 1}
+    }
+    else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
+        limit = { AND = { exists = var:friends var:value <= 40 } }
+        remove_variable = friends
+    }
+    else_if = { # Set dynasties as rivals if threshold is passed and they are not rivals yet
+        limit = { AND = { NOT = {exists = var:rivals} var:value <= -50 } }
+        set_variable = {name = rivals value = 1}
+    }
+    else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
+        limit = { AND = { exists = var:rivals var:value >= -40 } }
+        remove_variable = rivals
     }
 
 }

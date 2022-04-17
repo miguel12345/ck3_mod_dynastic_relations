@@ -1,0 +1,3 @@
+dr_dynasty_relation_opinion_modifier = {
+    stacking = no
+}
