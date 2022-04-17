@@ -1,0 +1,45 @@
+dr_dynastic_relation_scriped_gui = {
+	scope = character
+
+	is_shown = {
+
+        dr_can_dynastic_relation_be_established_betwen_characters = {
+            CHARACTER_A = this
+            CHARACTER_B = scope:target
+        }
+
+	}
+
+	effect = {
+
+        this = {
+            save_scope_as = source
+        }
+
+        scope:source = {
+            debug_log = "Source"
+            debug_log_scopes = yes
+        }
+
+        
+        scope:target = {
+            debug_log = "Target"
+            debug_log_scopes = yes
+        }
+
+        dr_save_dynastic_relation_between_dynasties_in_scope = {
+            DYNASTY_A = scope:source.dynasty
+            DYNASTY_B = scope:target.dynasty
+            SCOPE_NAME = dynastic_relation_val
+        }
+
+        set_variable = {
+            name = dynastic_relation_val
+            value = scope:dynastic_relation_val
+        }
+
+        debug_log_scopes = yes
+
+        debug_log = "Calculating value"
+	}
+}

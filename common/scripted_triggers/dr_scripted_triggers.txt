@@ -1,27 +1,5 @@
 
 
-dr_is_dynastic_relation_established_between_dynasties = {
-    
-    $A$ = {
-        any_in_list = {
-            variable = dr_dynasty_relations
-            OR = {
-                AND = {
-                    var:target = $A$
-                    var:source = $B$
-                }
-                AND = {
-                    var:source = $A$
-                    var:target = $B$
-                }
-                
-            }
-        }
-    }
-    
-}
-
-
 dr_can_dynastic_relation_be_established_betwen_characters = {
     AND = {
         $CHARACTER_A$ = {

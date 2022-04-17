@@ -19,19 +19,19 @@ dr_establish_dynastic_relation_with_dynasty_of = {
 # Will save the dynastic relation "object" in the current scope (as scope:dynastic_relation) between characters $A$ and $B$ 
 dr_find_dynastic_relation_between_characters_and_save_in_scope = {
 
-    $A$.dynasty = {
+    $CHARACTER_A$.dynasty = {
 
         random_in_list = {
             variable = dr_dynasty_relations
             limit = {
                 OR = {
                     AND = {
-                        var:target = $A$.dynasty
-                        var:source = $B$.dynasty
+                        var:target = $CHARACTER_A$.dynasty
+                        var:source = $CHARACTER_B$.dynasty
                     }
                     AND = {
-                        var:source = $A$.dynasty
-                        var:target = $B$.dynasty
+                        var:source = $CHARACTER_A$.dynasty
+                        var:target = $CHARACTER_B$.dynasty
                     }
                     
                 }
@@ -40,13 +40,13 @@ dr_find_dynastic_relation_between_characters_and_save_in_scope = {
             save_scope_as = $SCOPE_NAME$
         }
     }
-}
+} 
 
-dr_save_dynastic_relation_between_dynasties_in_scope = {
+dr_save_dynastic_relation_between_dynasties_in_scope = { 
 
     dr_find_dynastic_relation_between_characters_and_save_in_scope = {
-        A = $DYNASTY_A$.dynast
-        B = $DYNASTY_B$.dynast
+        CHARACTER_A = $DYNASTY_A$.dynast
+        CHARACTER_B = $DYNASTY_B$.dynast
         SCOPE_NAME = dynastic_relation
     }
 
@@ -57,7 +57,7 @@ dr_save_dynastic_relation_between_dynasties_in_scope = {
             value = 0.0
         }
     }
-    else {
+    else = {
         save_scope_value_as = {
             name = $SCOPE_NAME$
             value = scope:dynastic_relation.var:value
@@ -82,7 +82,7 @@ dr_change_dynastic_relation_between_characters = {
     save_scope_value_as = {
         name = change_val
         value = $VAL$
-    }
+    } 
  
     if = {
         limit = { scope:change_val > 0.0 }
@@ -93,8 +93,8 @@ dr_change_dynastic_relation_between_characters = {
     }
 
     dr_find_dynastic_relation_between_characters_and_save_in_scope = {
-        A = $CHARACTER_A$
-        B = $CHARACTER_B$
+        CHARACTER_A = $CHARACTER_A$
+        CHARACTER_B = $CHARACTER_B$
         SCOPE_NAME = dynastic_relation
     }
 
@@ -106,12 +106,12 @@ dr_change_dynastic_relation_between_characters = {
         $CHARACTER_A$ = {
             dr_establish_dynastic_relation_with_dynasty_of = {
                 TARGET = $CHARACTER_B$
-            }
+            } 
         }
 
         dr_find_dynastic_relation_between_characters_and_save_in_scope = {
-            A = $CHARACTER_A$
-            B = $CHARACTER_B$
+            CHARACTER_A = $CHARACTER_A$
+            CHARACTER_B = $CHARACTER_B$
             SCOPE_NAME = dynastic_relation
         }
     }
