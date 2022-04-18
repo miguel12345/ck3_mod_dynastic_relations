@@ -1,4 +1,4 @@
-dr_dynastic_relation_scriped_gui = {
+dr_dynastic_relation_character_scriped_gui = {
 	scope = character
 
 	is_shown = {

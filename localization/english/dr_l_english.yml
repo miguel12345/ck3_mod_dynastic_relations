@@ -13,4 +13,5 @@
  dr_dynasties_became_friends_interface_message_title:0 "Friendly Dynasty" 
  dr_dynasties_became_friends_interface_message_desc:0 "Your dynasty [source_dynasty.GetName] and [target_dynasty.GetName] became friends" 
  dr_dynasties_became_rivals_interface_message_title:0 "Rival Dynasty" 
- dr_dynasties_became_rivals_interface_message_desc:0 "Your dynasty [source_dynasty.GetName] and [target_dynasty.GetName] became rivals" 
+ dr_dynasties_became_rivals_interface_message_desc:0 "Your dynasty [source_dynasty.GetName] and [target_dynasty.GetName] became rivals"
+ DYNASTY_LIST_HEAD:0 "[dynast|E]: [Dynasty.GetDynast.GetName]" 

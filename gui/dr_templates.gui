@@ -1,6 +1,6 @@
 
 template dr_character_window_show {
-    datacontext = "[GetScriptedGui('dr_dynastic_relation_scriped_gui')]"
+    datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
     datacontext = "[CharacterWindow.GetCharacter]"
 
     state = {
@@ -9,14 +9,28 @@ template dr_character_window_show {
     }
 }
 
+template dr_dynastic_relation_poup_ui_template {
+    tooltipwidget = {
+        object_tooltip_pop_out = {
+    
+            blockoverride "title_text" {
+                text = "Dynastic Relation"
+            }
+            blockoverride "description_text" {
+                text = "This "
+            }
+        }
+    }
+}
+
 template dr_character_window_dynastic_relation {
     container = {
         
-        datacontext = "[GetScriptedGui('dr_dynastic_relation_scriped_gui')]"
+        datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
         datacontext = "[CharacterWindow.GetCharacter]"
 
         visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
-
+ 
         state = {
             name = character_window_refresh
             on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
@@ -49,7 +63,6 @@ template dr_character_window_dynastic_relation {
 
             autoresize = yes
             text = "#P +[GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue] #!"
-            #visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
             visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
             default_format = "#low"
             align = top|hcenter 
@@ -64,17 +77,128 @@ template dr_character_window_dynastic_relation {
             align = top|hcenter 
         }
 
-        tooltipwidget = {
-            object_tooltip_pop_out = {
-                datacontext = "[CharacterWindow.GetCharacter]"
-        
-                blockoverride "title_text" {
-                    text = "Dynastic Relation"
+        using = dr_dynastic_relation_poup_ui_template
+    }
+}
+
+template dr_dynasty_relations_entry_internal_ui_template {
+
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                spacing = 10
+                margin = { 5 10 }
+
+                coa_dynasty_medium = {}
+
+                vbox = {
+                    layoutpolicy_horizontal = expanding
+
+                    text_single = {
+                            layoutpolicy_horizontal = expanding
+                            text = "[Dynasty.GetBaseNameNoTooltip]"
+                            default_format = "#high"
+                            align = nobaseline
+                            fontsize_min = 14
+                            autoresize = no
+                            using = Font_Size_Medium
+                        }
+
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        text = DYNASTY_LIST_HEAD
+                        fontsize_min = 14
+                        align = left
+                    }
                 }
-                blockoverride "description_text" {
-                    text = "This "
+
+                vbox = {
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[GreaterThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0')]"
+                        text = "#P +[Scope.Var('value').GetValue] #!"
+                        using = Font_Size_Medium
+                        align = right
+                        margin_right = 10
+    
+                        using = dr_dynastic_relation_poup_ui_template
+
+                        container = {
+                        
+                            parentanchor = bottom|left
+                            widgetanchor =  top|left
+                            visible = "[EqualTo_CFixedPoint(Scope.Var('friends').GetValue, '(CFixedPoint)1')]"
+
+                            background = {
+								using = Status_Good
+							}
+    
+                            text_single = {
+                                text = "Friend"
+                                using = Font_Size_Small
+                            }
+                        }
+                    }
+    
+                    text_single = {
+                        layoutpolicy_horizontal = expanding
+                        visible = "[LessThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0')]"
+                        text = "#N [Scope.Var('value').GetValue] #!"
+                        using = Font_Size_Medium
+                        align = right
+                        margin_right = 10
+    
+                        using = dr_dynastic_relation_poup_ui_template
+
+                        container = {
+                        
+                            parentanchor = bottom|left
+                            widgetanchor =  top|left
+                            visible = "[EqualTo_CFixedPoint(Scope.Var('rivals').GetValue, '(CFixedPoint)1')]"
+
+                            background = {
+								using = Status_Bad
+							}
+    
+                            text_single = {
+                                text = "Rival"
+                                using = Font_Size_Small
+                            }
+                        }
+                        
+                    }
+
+                    
+
+                    
                 }
+                
             }
+
+            divider_light = {
+                layoutpolicy_horizontal = expanding
+                minimumsize = { 0 3 }
+            }
+        }
+    # }
+}
+
+template dr_dynasty_relations_entry_ui_template {
+
+    vbox = {
+        layoutpolicy_horizontal = expanding
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            datacontext = "[Scope.Var('target').Dynasty]"
+            visible = "[ObjectsEqual( Scope.Var('source').Dynasty.Self , DynastyHouseView.GetDynastyHouse.GetDynasty.Self)]"
+            using = dr_dynasty_relations_entry_internal_ui_template
+        }
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            datacontext = "[Scope.Var('source').Dynasty]"
+            visible = "[Not(ObjectsEqual( Scope.Var('source').Dynasty.Self , DynastyHouseView.GetDynastyHouse.GetDynasty.Self))]"
+            using = dr_dynasty_relations_entry_internal_ui_template
         }
     }
 }
