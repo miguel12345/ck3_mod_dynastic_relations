@@ -267,19 +267,43 @@ dr_update_dynastic_relation_friends_rivals_status_effect = {
 
     if = { # Set dynasties as friends if threshold is passed and they are not friends yet
         limit = { AND = { NOT = {exists = var:friends} var:value >= 50 } }
+        trigger_event = {  on_action = dr_on_action_dynasties_became_friends } 
         set_variable = {name = friends value = 1}
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
         limit = { AND = { exists = var:friends var:value <= 40 } }
+        trigger_event = {  on_action = dr_on_action_dynasties_stopped_being_friends } 
         remove_variable = friends
     }
     else_if = { # Set dynasties as rivals if threshold is passed and they are not rivals yet
         limit = { AND = { NOT = {exists = var:rivals} var:value <= -50 } }
+        trigger_event = {  on_action = dr_on_action_dynasties_became_rivals } 
         set_variable = {name = rivals value = 1}
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
         limit = { AND = { exists = var:rivals var:value >= -40 } }
+        trigger_event = {  on_action = dr_on_action_dynasties_stopped_being_rivals } 
         remove_variable = rivals
+    }
+
+}
+
+
+#Set dynasty heads as friends. Expect the current dynastic relation to be the current scope
+dr_set_dynasty_heads_as_friends_effect = {
+    
+    this.var:source.dynast = {
+        set_relation_friend = prev.var:target.dynast
+    }
+
+}
+
+
+#Set dynasty heads as friends. Expect the current dynastic relation to be the current scope
+dr_set_dynasty_heads_as_rivals_effect = {
+    
+    this.var:source.dynast = {
+        set_relation_rival = prev.var:target.dynast
     }
 
 }

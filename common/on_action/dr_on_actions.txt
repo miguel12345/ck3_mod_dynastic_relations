@@ -13,3 +13,27 @@ dr_on_action_yearly_dynastic_relation_pulse = {
         dr_decal_all_dynastic_relations_effect = yes
     }
 }
+
+dr_on_action_dynasties_became_friends = {
+
+    effect = {
+        debug_log = "Dynasties became friends"
+        debug_log_scopes = yes
+        dr_set_dynasty_heads_as_friends_effect = yes
+    }
+    
+} 
+
+dr_on_action_dynasties_became_rivals = {
+
+    effect = {
+        debug_log = "Dynasties became rivals"
+        debug_log_scopes = yes
+        dr_set_dynasty_heads_as_rivals_effect = yes
+    }
+    
+} 
+
+dr_on_action_dynasties_stopped_being_friends = {}
+
+dr_on_action_dynasties_stopped_being_rivals = {}
