@@ -10,9 +10,6 @@ dr_on_action_yearly_dynastic_relation_pulse = {
     effect = {
         debug_log = "YEARLY PULSE"
 
-        every_in_global_list = {
-            variable = dr_dynastic_relations
-            dr_decay_dynastic_relation_value = yes
-        }
+        dr_decal_all_dynastic_relations_effect = yes
     }
 }

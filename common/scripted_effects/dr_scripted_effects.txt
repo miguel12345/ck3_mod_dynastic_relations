@@ -72,16 +72,30 @@ dr_change_dynastic_relation_between_characters = {
 
     
     $CHARACTER_A$.dynasty = {
-        save_scope_as = source
+        save_scope_as = source_dynasty
     }
     
     $CHARACTER_B$.dynasty = {
-        save_scope_as = target
+        save_scope_as = target_dynasty
     }
+
+    $CHARACTER_A$ = {
+        save_scope_as = source_character
+    }
+    
+    $CHARACTER_B$ = {
+        save_scope_as = target_character
+    }
+    
+    $REASON$ = {
+        save_scope_as = reason
+    }
+
+    # Calculate dynastic relation impact and save it as change_val
 
     save_scope_value_as = {
         name = change_val
-        value = $VAL$
+        value = dr_dynasty_relation_action_impact_value
     } 
  
     if = {
@@ -116,6 +130,7 @@ dr_change_dynastic_relation_between_characters = {
         }
     }
 
+    # This is only executed when the action is performed
     if = {
 
         limit = {  exists = scope:dynastic_relation }
@@ -124,7 +139,7 @@ dr_change_dynastic_relation_between_characters = {
 
             change_variable = {
                 name = value
-                add = $VAL$ 
+                add = scope:change_val
             }
         
             # Updates the opinion modifiers between all members of both dynasties
@@ -140,6 +155,13 @@ dr_change_dynastic_relation_between_characters = {
     
 }
 
+dr_decal_all_dynastic_relations_effect = {
+    every_in_global_list = {
+        variable = dr_dynastic_relations
+        dr_decay_dynastic_relation_value = yes
+    }
+}
+
 # Decay dynastic relation towards the baseline, expects dynastic relation to be the current scope
 dr_decay_dynastic_relation_value = {
 
@@ -150,15 +172,37 @@ dr_decay_dynastic_relation_value = {
 
         change_variable = {
             name = value
-            add = 1.0
-            max = 0.0
+            add = dr_dynasty_relation_yearly_decay_value
+        }
+
+        if = {
+            limit = {
+                var:value > 0
+            }
+
+            set_variable = {
+                name = value
+                value = 0.0
+            }
+
         }
     }
     else = {
         change_variable = {
             name = value
-            subtract = 1.0
-            min = 0.0
+            subtract = dr_dynasty_relation_yearly_decay_value
+        }
+
+        if = {
+            limit = {
+                var:value < 0
+            }
+
+            set_variable = {
+                name = value
+                value = 0.0
+            }
+
         }
     }
 

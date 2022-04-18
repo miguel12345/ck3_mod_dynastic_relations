@@ -16,16 +16,34 @@ dr_dynasty_relation_opinion_value = {
     
 }
 
-dr_dynasty_imprison_unlanded_relation_impact_value = = {
-    value = 9
+dr_dynasty_relation_yearly_decay_value = 1.0
+
+
+dr_dynasty_relation_action_impact_value = {
+    value = 0.0
+    if = {
+        limit = {scope:reason = flag:debug_increase}
+        add = dr_dynasty_relation_debug_increase_value
+    }
+    else_if = {
+        limit = {scope:reason = flag:debug_decrease}
+        add = dr_dynasty_relation_debug_decrease_value
+    }
+    else_if = {
+        limit = {scope:reason = flag:executed_prisoner}
+        add = dr_dynasty_relation_execute_prisoner_impact_value
+    }
 }
-dr_dynasty_imprison_count_relation_impact_value = -5
-dr_dynasty_imprison_duke_relation_impact_value = -10
-dr_dynasty_imprison_king_relation_impact_value = -30
-dr_dynasty_imprison_emperor_relation_impact_value = -50
 
+# Debug actions
+dr_dynasty_relation_debug_increase_value = 10.0
+dr_dynasty_relation_debug_decrease_value = -10.0
 
-dr_dynasty_execute_count_relation_impact_value = -5
-dr_dynasty_execute_duke_relation_impact_value = -10
-dr_dynasty_execute_king_relation_impact_value = -30
-dr_dynasty_execute_emperor_relation_impact_value = -50
+# Execution
+dr_dynasty_relation_execute_prisoner_impact_value = {
+    value = -1.0 
+    if = { # Executing the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -50.0
+    }
+}

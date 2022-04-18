@@ -64,7 +64,7 @@ dr_debug_interaction_increase_dynastic_relation = {
         dr_change_dynastic_relation_between_characters = {
             CHARACTER_A = scope:actor
             CHARACTER_B = scope:recipient
-            VAL = 5.0
+            REASON = flag:debug_increase
         }
         
 	}
@@ -92,7 +92,7 @@ dr_debug_interaction_decrease_dynastic_relation = {
         dr_change_dynastic_relation_between_characters = {
             CHARACTER_A = scope:actor
             CHARACTER_B = scope:recipient
-            VAL = -5.0
+            REASON = flag:debug_decrease
         }
         
 	}
