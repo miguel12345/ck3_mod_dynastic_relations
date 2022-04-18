@@ -293,7 +293,31 @@ dr_update_dynastic_relation_friends_rivals_status_effect = {
 dr_set_dynasty_heads_as_friends_effect = {
     
     this.var:source.dynast = {
-        set_relation_friend = prev.var:target.dynast
+        if = {
+            limit = { NOT = {
+                has_relation_friend = prev.var:target.dynast
+            }}
+            set_relation_friend = prev.var:target.dynast
+        }
+    }
+
+    # Notify dynasty heads
+    this.var:source.dynast = {
+
+        send_interface_message = {
+            type = event_generic_good_text
+            title = dr_dynasties_became_friends_interface_message_title
+            desc = dr_dynasties_became_friends_interface_message_desc 
+        }
+    }
+
+    this.var:target.dynast = {
+
+        send_interface_message = {
+            type = event_generic_good_text
+            title = dr_dynasties_became_friends_interface_message_title
+            desc = dr_dynasties_became_friends_interface_message_desc
+        }
     }
 
 }
@@ -303,7 +327,31 @@ dr_set_dynasty_heads_as_friends_effect = {
 dr_set_dynasty_heads_as_rivals_effect = {
     
     this.var:source.dynast = {
-        set_relation_rival = prev.var:target.dynast
+        if = {
+            limit = { NOT = {
+                has_relation_rival = prev.var:target.dynast
+            }}
+            set_relation_rival = prev.var:target.dynast
+        }
+    }
+
+    # Notify dynasty heads
+    this.var:source.dynast = {
+
+        send_interface_message = {
+            type = event_generic_bad_text
+            title = dr_dynasties_became_rivals_interface_message_title
+            desc = dr_dynasties_became_rivals_interface_message_desc 
+        }
+    }
+
+    this.var:target.dynast = {
+
+        send_interface_message = {
+            type = event_generic_bad_text
+            title = dr_dynasties_became_rivals_interface_message_title
+            desc = dr_dynasties_became_rivals_interface_message_desc
+        }
     }
 
 }
