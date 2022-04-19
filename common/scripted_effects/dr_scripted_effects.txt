@@ -166,45 +166,52 @@ dr_decal_all_dynastic_relations_effect = {
 dr_decay_dynastic_relation_value = {
 
     if = {
-        limit = {
-            var:value < 0
-        }
-
-        change_variable = {
-            name = value
-            add = dr_dynasty_relation_yearly_decay_value
-        }
-
-        if = {
-            limit = {
-                var:value > 0
-            }
-
-            set_variable = {
-                name = value
-                value = 0.0
-            }
-
-        }
-    }
-    else = {
-        change_variable = {
-            name = value
-            subtract = dr_dynasty_relation_yearly_decay_value
-        }
-
+        #Dont do anything if already at 0
+        limit = { NOT = {var:value = 0.0} }
         if = {
             limit = {
                 var:value < 0
             }
-
-            set_variable = {
+    
+            change_variable = {
                 name = value
-                value = 0.0
+                add = dr_dynasty_relation_yearly_decay_value
             }
-
+    
+            if = {
+                limit = {
+                    var:value > 0
+                }
+    
+                set_variable = {
+                    name = value
+                    value = 0.0
+                }
+    
+            }
         }
+        else = {
+            change_variable = {
+                name = value
+                subtract = dr_dynasty_relation_yearly_decay_value
+            }
+    
+            if = {
+                limit = {
+                    var:value < 0
+                }
+    
+                set_variable = {
+                    name = value
+                    value = 0.0
+                }
+    
+            }
+        }
+        dr_update_character_opinions_effect = yes
     }
+
+    
 
 }
 

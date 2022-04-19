@@ -15,3 +15,5 @@
  dr_dynasties_became_rivals_interface_message_title:0 "Rival Dynasty" 
  dr_dynasties_became_rivals_interface_message_desc:0 "Your dynasty [source_dynasty.GetName] and [target_dynasty.GetName] became rivals"
  DYNASTY_LIST_HEAD:0 "[dynast|E]: [Dynasty.GetDynast.GetName]" 
+ dr_dynasty_relation_list_empty:0 "This dynasty doesn't have any positive or negative relation with any other dynasty"
+ dr_dynasty_relation_list_sort_order:0 "#T Sort Order: [SelectLocalization( GetGlobalVariable( 'dr_dynasty_list_sort_by_ascending' ).IsSet, 'Ascending', 'Descending' )]\n#!#I Click to toggle#!" 

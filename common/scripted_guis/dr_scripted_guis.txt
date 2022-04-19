@@ -43,3 +43,63 @@ dr_dynastic_relation_character_scriped_gui = {
         debug_log = "Calculating value"
 	}
 }
+
+
+dr_dynastic_relation_list_scriped_gui = {
+    scope = dynasty
+
+    is_shown = {
+        always = yes
+    }
+
+    effect = {
+
+        debug_log = "[GetDataModelSize(THIS.GetList('dr_dynasty_relations'))]"
+        debug_log_scopes = yes
+
+        clear_global_variable_list = dr_dynasty_relations_sorted
+
+        this = {
+            save_scope_as = current_dynasty
+        }
+
+        scope:player = {
+            set_variable = {
+                name = current_dynasty
+                value = scope:current_dynasty
+            }
+        }
+
+        ordered_in_list = { 
+            variable = dr_dynasty_relations
+            max = 99
+            check_range_bounds = no
+            order_by = {
+                value = var:value
+                if = {
+                    limit = { has_global_variable = dr_dynasty_list_sort_by_ascending }
+                    multiply = -1
+                }
+            }
+
+            add_to_global_variable_list = { name = dr_dynasty_relations_sorted target = this}
+        }
+    }
+
+}
+
+dr_dynastic_relation_list_scriped_change_sort_order_gui = {
+    scope = character
+
+    effect = {
+        if = {
+            limit = { has_global_variable = dr_dynasty_list_sort_by_ascending }
+            remove_global_variable = dr_dynasty_list_sort_by_ascending
+        }
+        else = {
+            set_global_variable = dr_dynasty_list_sort_by_ascending
+        }
+
+    }
+}
+

@@ -843,6 +843,12 @@ window = {
 
 				#DR - BEGIN
 
+				state = {
+					name = dr_state_name 
+					trigger_when="[Not(ObjectsEqual(GetPlayer.MakeScope.Var('current_dynasty').Dynasty,DynastyHouse.GetDynasty.Self))]"  
+					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( Dynasty.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End )]"
+				}
+
 				### TABS
 				hbox = {
 					name = "tabs"
@@ -871,7 +877,6 @@ window = {
 
 					button_tab = {
 						name = "relations_button"
-						#datacontext = "[CharacterWindow.GetCharacter]"
 						layoutpolicy_horizontal = expanding
 
 						onclick = "[GetVariableSystem.Set( 'dr_dynasty_gui_tab', 'relation' )]"
@@ -890,8 +895,71 @@ window = {
 					}
 				}
 
-				scrollbox = {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.HasValue( 'dr_dynasty_gui_tab', 'relation' )]"
+
+				hbox = {
+					visible = "[Not(IsDataModelEmpty(Dynasty.MakeScope.GetList('dr_dynasty_relations')))]"
+
+
+					margin_right = 5
+					margin_left = 10
+					margin_bottom = 4
+
+					layoutpolicy_horizontal = expanding
+
+					
+
+					expand = {}
+
+					hbox = {
+						spacing = 10
+						text_single = {
+							default_format = "#low;italic"
+							text ="Relations with other dynasties, sorted by opinion"
+						}
+						
+	
+						button_standard = {
+							name = "sort_order"
+							size = { 25 25 }
+							align = right
+							onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_change_sort_order_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( Dynasty.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End )]"
+				
+							tooltip = dr_dynasty_relation_list_sort_order
+							using = tooltip_above
+				
+							button_icon = {
+								alwaystransparent = yes
+								parentanchor = center
+								size = { 25 25 }
+								texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
+								framesize = { 66 66 }
+				
+								frame = "[BoolTo1And2( GetGlobalVariable( 'dr_dynasty_list_sort_by_ascending' ).IsSet )]"
+				
+								blockoverride "button_frames"
+								{
+									effectname = "NoHighlight"
+								}
+							}
+						}
+
+					}
+
+					
+					expand = {}
+
+					
+
+				}
+				
+
+				scrollbox = {
+					
 					layoutpolicy_vertical = expanding
 					layoutpolicy_horizontal = expanding
 					size = {0 365}
@@ -900,14 +968,20 @@ window = {
 					{
 						vbox = {
 							layoutpolicy_horizontal = expanding
-							datamodel = "[Dynasty.MakeScope.GetList('dr_dynasty_relations')]"
+							datamodel = "[GetGlobalList('dr_dynasty_relations_sorted')]"
 	
 							item = {
 								using = dr_dynasty_relations_entry_ui_template
 							}
 						}
 					}
+					blockoverride "scrollbox_empty"
+					{
+						visible = "[IsDataModelEmpty(Dynasty.MakeScope.GetList('dr_dynasty_relations'))]"
+						text = dr_dynasty_relation_list_empty
+					}
 				}
+			}
 				
 
 				#DR - END
