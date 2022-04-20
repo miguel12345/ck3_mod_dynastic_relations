@@ -4,11 +4,9 @@ dr_dynasty_relation_opinion_value = {
     add = scope:current_dynasty_relation.var:value
     if = {
         limit = { exists = scope:current_dynasty_relation.var:friends}
-        add = 10
     }
     else_if = {
         limit = { exists = scope:current_dynasty_relation.var:rivals}
-        add = -10
     }
     else = {
         divide = 2

@@ -1,7 +1,36 @@
 
+#Add on_action to yearly_global_pulse
 yearly_global_pulse = {
     on_actions = { # "On_actions" inside on_action are appended, thus can safely use the existing on_action from the table below.
         dr_on_action_yearly_dynastic_relation_pulse
+    }
+}
+
+#Add on_action to character death
+on_death = {
+    on_actions = {
+        dr_on_character_death_schedule_action
+    }
+}
+
+dr_on_character_death_schedule_action = {
+    effect = {
+        if = {
+            limit = { is_lowborn = no}
+            debug_log = "Character died, before tick" 
+            debug_log_scopes = yes
+
+            save_scope_as = dead_person
+            dynasty = {
+                random_dynasty_member = {
+                    limit = { NOT = { this = scope:dead_person } }
+                    trigger_event = {
+                        id = dr_events.001
+                        delayed = yes
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -20,6 +49,7 @@ dr_on_action_dynasties_became_friends = {
         debug_log = "Dynasties became friends"
         debug_log_scopes = yes
         dr_set_dynasty_heads_as_friends_effect = yes
+        dr_notify_dynasty_heads_of_new_dynastic_friendship_effect = yes
     }
     
 } 
@@ -30,6 +60,7 @@ dr_on_action_dynasties_became_rivals = {
         debug_log = "Dynasties became rivals"
         debug_log_scopes = yes
         dr_set_dynasty_heads_as_rivals_effect = yes
+        dr_notify_dynasty_heads_of_new_dynastic_rivalry_effect = yes
     }
     
 } 

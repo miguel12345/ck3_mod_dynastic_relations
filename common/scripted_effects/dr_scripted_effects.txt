@@ -142,11 +142,12 @@ dr_change_dynastic_relation_between_characters = {
                 add = scope:change_val
             }
         
-            # Updates the opinion modifiers between all members of both dynasties
-            dr_update_character_opinions_effect = yes
-        
             # Updates friends/rival relation status
             dr_update_dynastic_relation_friends_rivals_status_effect = yes
+
+            
+            # Updates the opinion modifiers between all members of both dynasties
+            dr_update_character_opinions_effect = yes
             
 
         }
@@ -274,8 +275,8 @@ dr_update_dynastic_relation_friends_rivals_status_effect = {
 
     if = { # Set dynasties as friends if threshold is passed and they are not friends yet
         limit = { AND = { NOT = {exists = var:friends} var:value >= 50 } }
-        trigger_event = {  on_action = dr_on_action_dynasties_became_friends } 
         set_variable = {name = friends value = 1}
+        trigger_event = {  on_action = dr_on_action_dynasties_became_friends } 
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
         limit = { AND = { exists = var:friends var:value <= 40 } }
@@ -284,8 +285,8 @@ dr_update_dynastic_relation_friends_rivals_status_effect = {
     }
     else_if = { # Set dynasties as rivals if threshold is passed and they are not rivals yet
         limit = { AND = { NOT = {exists = var:rivals} var:value <= -50 } }
-        trigger_event = {  on_action = dr_on_action_dynasties_became_rivals } 
         set_variable = {name = rivals value = 1}
+        trigger_event = {  on_action = dr_on_action_dynasties_became_rivals } 
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
         limit = { AND = { exists = var:rivals var:value >= -40 } }
@@ -307,7 +308,9 @@ dr_set_dynasty_heads_as_friends_effect = {
             set_relation_friend = prev.var:target.dynast
         }
     }
+}
 
+dr_notify_dynasty_heads_of_new_dynastic_friendship_effect = {
     # Notify dynasty heads
     this.var:source.dynast = {
 
@@ -326,7 +329,6 @@ dr_set_dynasty_heads_as_friends_effect = {
             desc = dr_dynasties_became_friends_interface_message_desc
         }
     }
-
 }
 
 
@@ -341,7 +343,9 @@ dr_set_dynasty_heads_as_rivals_effect = {
             set_relation_rival = prev.var:target.dynast
         }
     }
+}
 
+dr_notify_dynasty_heads_of_new_dynastic_rivalry_effect = {
     # Notify dynasty heads
     this.var:source.dynast = {
 
@@ -360,5 +364,16 @@ dr_set_dynasty_heads_as_rivals_effect = {
             desc = dr_dynasties_became_rivals_interface_message_desc
         }
     }
+}
 
+
+dr_update_dynastic_relation_heads_friends_rivals_status_effects = {
+    if = {
+        limit = {exists = var:friends}
+        dr_set_dynasty_heads_as_friends_effect = yes
+    }
+    else_if = {
+        limit = {exists = var:rivals}
+        dr_set_dynasty_heads_as_rivals_effect = yes
+    }
 }
