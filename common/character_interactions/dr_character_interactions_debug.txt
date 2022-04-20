@@ -31,13 +31,7 @@ dr_debug_interaction_print_dynastic_relation = {
                 name = hello
                 value = 10.0
             }
-
-            debug_log_scopes = yes
-            debug_log = "Hello = [Character.MakeScope.GetValue('hello')]"
         }
-        
-        
-        #debug_log = "Dynastic relation with this dynasty = [SCOPE.GetValue('hello')]"
         
 	}
 }

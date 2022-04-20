@@ -16,17 +16,6 @@ dr_dynastic_relation_character_scriped_gui = {
             save_scope_as = source
         }
 
-        scope:source = {
-            debug_log = "Source"
-            debug_log_scopes = yes
-        }
-
-        
-        scope:target = {
-            debug_log = "Target"
-            debug_log_scopes = yes
-        }
-
         dr_save_dynastic_relation_between_dynasties_in_scope = {
             DYNASTY_A = scope:source.dynasty
             DYNASTY_B = scope:target.dynasty
@@ -38,9 +27,6 @@ dr_dynastic_relation_character_scriped_gui = {
             value = scope:dynastic_relation_val
         }
 
-        debug_log_scopes = yes
-
-        debug_log = "Calculating value"
 	}
 }
 
@@ -53,9 +39,6 @@ dr_dynastic_relation_list_scriped_gui = {
     }
 
     effect = {
-
-        debug_log = "[GetDataModelSize(THIS.GetList('dr_dynasty_relations'))]"
-        debug_log_scopes = yes
 
         clear_global_variable_list = dr_dynasty_relations_sorted
 

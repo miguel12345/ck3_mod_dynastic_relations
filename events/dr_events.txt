@@ -8,12 +8,9 @@ dr_events.001 = {
 
     immediate = { 
 
-        debug_log = "Update dynastic relations"
         dynasty = {
-            debug_log_scopes = yes
             every_in_list = {
                 variable = dr_dynasty_relations
-                debug_log_scopes = yes
                 dr_update_dynastic_relation_heads_friends_rivals_status_effects = yes
             }
         }
