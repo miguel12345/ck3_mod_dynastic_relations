@@ -1,0 +1,40 @@
+successful_befriend_critical_change_effect = {
+    
+    #DR - dynastic relations - begin
+    dr_change_dynastic_relation_between_characters = {
+        CHARACTER_A = $CHARACTER$
+        CHARACTER_B = root
+        REASON = flag:befriend
+        SHOW_AS = flag:tooltip
+    }
+    #DR - dynastic relations - end
+
+	$CHARACTER$ = {
+		hidden_effect = {
+			if = { #Remove potential rival relation if you have it
+				limit = {
+					has_relation_potential_rival = root
+				}
+				remove_relation_potential_rival = root
+			}
+		}
+		if = { #Set friend relation
+			limit = {
+				NOT = { has_relation_friend = root  }
+			}
+			set_relation_friend = root
+		}
+		else_if = { #Fallback
+			limit = {
+				has_relation_friend = root
+			}
+			$CHARACTER$ = {
+				add_opinion = {
+					modifier = friendliness_opinion
+					target = root
+					opinion = 40
+				}
+			}
+		}
+	}
+}

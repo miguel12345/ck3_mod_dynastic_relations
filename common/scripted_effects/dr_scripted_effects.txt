@@ -73,8 +73,8 @@ dr_change_dynastic_relation_between_characters = {
     if = {
         limit = {
             dr_can_dynastic_relation_be_established_betwen_characters = {
-                CHARACTER_A = scope:actor
-                CHARACTER_B = scope:recipient
+                CHARACTER_A = $CHARACTER_A$
+                CHARACTER_B = $CHARACTER_B$
             }
         }
     

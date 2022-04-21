@@ -75,6 +75,10 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:break_betrothal}
         add = dr_dynasty_relation_break_betrothal_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:befriend}
+        add = dr_dynasty_relation_befriend_impact_value
+    }
 }
 
 # Debug actions
@@ -176,6 +180,15 @@ dr_dynasty_relation_revoke_vassal_impact_value = {
 # Break Betrothal (TODO REVIEW VALUES)
 dr_dynasty_relation_break_betrothal_impact_value = {
     value = -5.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Break Betrothal (TODO REVIEW VALUES)
+dr_dynasty_relation_befriend_impact_value = {
+    value = 1.0 
     # if = { # Executing the dynasty head
     #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
     #     add = -50.0
