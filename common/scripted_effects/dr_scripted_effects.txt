@@ -444,3 +444,40 @@ dr_internal_prevent_flag_warnings_effect = {
     }
 
 }
+
+#Can be executed directy in the debug console. Useful to test the join ally war interaction/effect
+dr_debug_create_ally_and_war_situation_effect = {
+
+    random_player = {
+        save_scope_as = player
+        debug_log_scopes = yes
+
+        random_independent_ruler = {
+            limit = {
+                in_diplomatic_range = scope:player
+                is_lowborn = no
+            }
+
+            save_scope_as = ally
+            create_alliance = {
+                target = scope:player
+                allied_through_owner = this
+	            allied_through_target = scope:player
+            }
+
+            random_independent_ruler = {
+                limit = {
+                    in_diplomatic_range = scope:player
+                }
+                start_war = {
+                    casus_belli = "religious_war"
+                    # target = scope:player
+                    # target_title = scope:player.primary_title^
+                    target = scope:ally
+                    target_title = scope:ally.primary_title
+                }
+            }
+
+        }
+    }
+}
