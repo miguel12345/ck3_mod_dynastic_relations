@@ -1,0 +1,107 @@
+revocation_tyranny_effect = {
+	if = {
+		limit = {
+			title_revocation_is_tyrannical_trigger = yes
+		}
+
+        #DR - dynastic relations - begin
+        if = {
+            limit = {
+                dr_can_dynastic_relation_be_established_betwen_characters = {
+                    CHARACTER_A = scope:actor
+                    CHARACTER_B = scope:recipient
+                }
+            }
+            dr_change_dynastic_relation_between_characters = {
+                CHARACTER_A = scope:actor
+                CHARACTER_B = scope:recipient
+                REASON = flag:revoke_title_tyrannical
+                SHOW_AS = flag:tooltip
+            }
+        }
+        #DR - dynastic relations - end
+
+		add_tyranny = revoke_title_tyranny_gain
+
+		#If my culture is different from the recipients
+		if = {
+			limit = {
+				NOT = { culture = scope:recipient.culture }
+			} 
+			scope:recipient.culture = {
+				change_cultural_acceptance = {
+					target = scope:actor.culture
+					value = revoke_title_culture_acceptance_impact
+					desc = cultural_acceptance_loss_revokation
+				}
+			}
+		}
+	}
+	else = {
+
+        #DR - dynastic relations - begin
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:revoke_title
+            SHOW_AS = flag:tooltip
+        }
+        #DR - dynastic relations - end
+
+		if = {
+			limit = {
+				has_claim_on = scope:landed_title
+			}
+			custom_tooltip = IS_ALLOWED_TO_REVOKE_TITLE_FOR_CLAIM_DESC
+		}
+		else_if = {
+			limit = {
+				has_revoke_title_reason = scope:recipient
+			}
+			custom_tooltip = IS_ALLOWED_TO_REVOKE_TITLE_DESC
+		}
+		else_if = {
+			limit = {
+				faith = {
+					OR = {
+						has_doctrine_parameter = pluralism_righteous_revocation_tyranny_reduced
+						has_doctrine_parameter = pluralism_fundamentalist_revocation_tyranny_minimal
+					}
+					faith_hostility_level = {
+						target = scope:recipient.faith
+						value >= faith_hostile_level
+					}
+				}
+			}
+			if = {
+				limit = {
+					faith = {
+						has_doctrine_parameter = pluralism_fundamentalist_revocation_tyranny_minimal 								
+						faith_hostility_level = {
+							target = scope:recipient.faith
+							value = faith_hostile_level
+						}
+					}
+				}
+				custom_tooltip = IS_ALLOWED_TO_REVOKE_HOSTILE_INFIDEL_TITLE
+			}
+			else = {
+				custom_tooltip = IS_ALLOWED_TO_REVOKE_EVIL_INFIDEL_TITLE
+			}						
+			every_vassal = {
+				limit = {
+					faith = scope:recipient.faith
+				}
+				custom = INFIDEL_REVOCATION_OPINION
+				add_opinion = {
+					modifier = angry_opinion
+					target = scope:actor
+					opinion = {
+						value = revoke_title_tyranny_gain
+						multiply = -1
+					}
+				}
+			}
+		}
+	}	
+}

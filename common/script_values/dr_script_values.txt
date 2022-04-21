@@ -43,6 +43,14 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:join_ally_war}
         add = dr_dynasty_relation_join_ally_war_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:revoke_title_tyrannical}
+        add = dr_dynasty_relation_revoke_title_tyranny_impact_value
+    }
+    else_if = {
+        limit = {scope:reason = flag:revoke_title}
+        add = dr_dynasty_relation_revoke_title_impact_value
+    }
 }
 
 # Debug actions
@@ -79,6 +87,24 @@ dr_dynasty_relation_grant_titles_impact_value = {
 # Join Ally war (TODO REVIEW VALUES)
 dr_dynasty_relation_join_ally_war_impact_value = {
     value = 10.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Revoke title ryranically (without reason) (TODO REVIEW VALUES)
+dr_dynasty_relation_revoke_title_tyranny_impact_value = {
+    value = -10.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Revoke title with reason (TODO REVIEW VALUES)
+dr_dynasty_relation_revoke_title_impact_value = {
+    value = -10.0 
     # if = { # Executing the dynasty head
     #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
     #     add = -50.0

@@ -70,115 +70,124 @@ dr_save_dynastic_relation_between_dynasties_in_scope = {
 # Expects CHARACTER_A, CHARACTER_B, REASON
 dr_change_dynastic_relation_between_characters = {
 
-    
-    $CHARACTER_A$.dynasty = {
-        save_scope_as = source_dynasty
-    }
-    
-    $CHARACTER_B$.dynasty = {
-        save_scope_as = target_dynasty
-    }
-
-    $CHARACTER_A$ = {
-        save_scope_as = source_character
-    }
-    
-    $CHARACTER_B$ = {
-        save_scope_as = target_character
-    }
-    
-    $REASON$ = {
-        save_scope_as = reason
-    }
-
-    $SHOW_AS$ = {
-        save_scope_as = show_as
-    }
-
-    # Calculate dynastic relation impact and save it as change_val
-    save_scope_value_as = {
-        name = change_val
-        value = dr_dynasty_relation_action_impact_value
-    } 
-
-    #Render proper description/tooltip.
     if = {
-        limit = { scope:show_as = flag:tooltip }
-        if = {
-            limit = { scope:change_val > 0.0 }
-            custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
-        }
-        else = {
-            custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
-        }
-    }
-    else_if = {
-        limit = { scope:show_as = flag:description }
-        if = {
-            limit = { scope:change_val > 0.0 }
-            custom_description_no_bullet = {
-                subject = scope:target_character
-                object = scope:source_character
-                value = scope:change_val
-                text=dr_relation_impact_positive_effect_text
+        limit = {
+            dr_can_dynastic_relation_be_established_betwen_characters = {
+                CHARACTER_A = scope:actor
+                CHARACTER_B = scope:recipient
             }
         }
-        else = {
-            custom_description_no_bullet = {
-                subject = scope:target_character
-                object = scope:source_character
-                value = scope:change_val
-                text=dr_relation_impact_negative_effect_text
-        }
-        }
-    }
-
-
     
-    # Establish dynastic relation if it doesnt exist yet
-    dr_find_dynastic_relation_between_characters_and_save_in_scope = {
-        CHARACTER_A = $CHARACTER_A$
-        CHARACTER_B = $CHARACTER_B$
-        SCOPE_NAME = dynastic_relation
-    }
-    if = {
-
-        limit = { NOT = { exists = scope:dynastic_relation } }
+        $CHARACTER_A$.dynasty = {
+            save_scope_as = source_dynasty
+        }
+        
+        $CHARACTER_B$.dynasty = {
+            save_scope_as = target_dynasty
+        }
 
         $CHARACTER_A$ = {
-            dr_establish_dynastic_relation_with_dynasty_of = {
-                TARGET = $CHARACTER_B$
-            } 
+            save_scope_as = source_character
+        }
+        
+        $CHARACTER_B$ = {
+            save_scope_as = target_character
+        }
+        
+        $REASON$ = {
+            save_scope_as = reason
         }
 
+        $SHOW_AS$ = {
+            save_scope_as = show_as
+        }
+
+        # Calculate dynastic relation impact and save it as change_val
+        save_scope_value_as = {
+            name = change_val
+            value = dr_dynasty_relation_action_impact_value
+        } 
+
+        #Render proper description/tooltip.
+        if = {
+            limit = { scope:show_as = flag:tooltip }
+            if = {
+                limit = { scope:change_val > 0.0 }
+                custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
+            }
+            else = {
+                custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
+            }
+        }
+        else_if = {
+            limit = { scope:show_as = flag:description }
+            if = {
+                limit = { scope:change_val > 0.0 }
+                custom_description_no_bullet = {
+                    subject = scope:target_character
+                    object = scope:source_character
+                    value = scope:change_val
+                    text=dr_relation_impact_positive_effect_text
+                }
+            }
+            else = {
+                custom_description_no_bullet = {
+                    subject = scope:target_character
+                    object = scope:source_character
+                    value = scope:change_val
+                    text=dr_relation_impact_negative_effect_text
+            }
+            }
+        }
+
+
+        
+        # Establish dynastic relation if it doesnt exist yet
         dr_find_dynastic_relation_between_characters_and_save_in_scope = {
             CHARACTER_A = $CHARACTER_A$
             CHARACTER_B = $CHARACTER_B$
             SCOPE_NAME = dynastic_relation
         }
-    }
+        if = {
 
-    # This is only executed when the action is performed
-    if = {
+            limit = { NOT = { exists = scope:dynastic_relation } }
 
-        limit = {  exists = scope:dynastic_relation }
-
-        scope:dynastic_relation = {
-
-            change_variable = {
-                name = value
-                add = scope:change_val
+            $CHARACTER_A$ = {
+                dr_establish_dynastic_relation_with_dynasty_of = {
+                    TARGET = $CHARACTER_B$
+                } 
             }
-        
-            # Updates friends/rival relation status
-            dr_update_dynastic_relation_friends_rivals_status_effect = yes
 
-            
-            # Updates the opinion modifiers between all members of both dynasties
-            dr_update_character_opinions_effect = yes
-            
-
+            dr_find_dynastic_relation_between_characters_and_save_in_scope = {
+                CHARACTER_A = $CHARACTER_A$
+                CHARACTER_B = $CHARACTER_B$
+                SCOPE_NAME = dynastic_relation
+            }
         }
+
+        # This is only executed when the action is performed
+        if = {
+
+            limit = {  exists = scope:dynastic_relation }
+
+            scope:dynastic_relation = {
+
+                change_variable = {
+                    name = value
+                    add = scope:change_val
+                }
+            
+                # Updates friends/rival relation status
+                dr_update_dynastic_relation_friends_rivals_status_effect = yes
+
+                
+                # Updates the opinion modifiers between all members of both dynasties
+                dr_update_character_opinions_effect = yes
+                
+
+            }
+        }
+
     }
 
     

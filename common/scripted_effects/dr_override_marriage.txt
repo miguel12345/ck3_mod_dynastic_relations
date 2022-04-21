@@ -1,20 +1,12 @@
 marriage_interaction_on_accept_effect = { 
 
     #DR - dynastic relations - begin
-    if = {
-        limit = {
-            dr_can_dynastic_relation_be_established_betwen_characters = {
-                CHARACTER_A = scope:secondary_actor
-                CHARACTER_B = scope:secondary_recipient
-            }
-        }
-        dr_change_dynastic_relation_between_characters = {
-            CHARACTER_A = scope:secondary_actor
-            CHARACTER_B = scope:secondary_recipient
-            REASON = flag:marriage
-			SHOW_AS = flag:description
-        }
-    }
+    dr_change_dynastic_relation_between_characters = {
+		CHARACTER_A = scope:secondary_actor
+		CHARACTER_B = scope:secondary_recipient
+		REASON = flag:marriage
+		SHOW_AS = flag:description
+	}
     #DR - dynastic relations - end
 
 	#Use hook
