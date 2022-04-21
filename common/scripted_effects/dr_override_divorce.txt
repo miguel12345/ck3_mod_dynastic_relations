@@ -1,0 +1,55 @@
+divorce_effect = {
+
+    #DR - dynastic relations - begin
+    dr_change_dynastic_relation_between_characters = {
+        CHARACTER_A = $DIVORCER$
+        CHARACTER_B = $DIVORCEE$
+        REASON = flag:divorce
+        SHOW_AS = flag:tooltip
+    }
+    #DR - dynastic relations - end
+
+	$DIVORCER$ = {
+		if = {
+			limit = {
+				any_spouse = {
+					this = $DIVORCEE$
+				}
+			}
+			divorce = $DIVORCEE$
+		}
+		
+		reverse_add_opinion = {
+			modifier = divorced_me_opinion
+			target = $DIVORCEE$
+		}
+	}
+	# Opinion hit
+	$DIVORCEE$ = {
+		every_close_or_extended_family_member = {
+			limit = { NOT = { this = $DIVORCER$ } } # don't hate yourself just because of some incest
+			custom = all_family_members
+			add_opinion = {
+				modifier = divorced_close_kin
+				target = $DIVORCER$
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			$DIVORCER$ = {
+				has_character_modifier = rejected_from_marriage_bed_modifier
+			}
+		}
+		$DIVORCER$ = { remove_character_modifier = rejected_from_marriage_bed_modifier }
+	}
+	if = {
+		limit = {
+			$DIVORCEE$ = {
+				has_character_modifier = rejected_from_marriage_bed_modifier
+			}
+		}
+		$DIVORCEE$ = { remove_character_modifier = rejected_from_marriage_bed_modifier }
+	}
+}

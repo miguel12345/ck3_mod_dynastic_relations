@@ -59,6 +59,10 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:imprison_tyrannical}
         add = dr_dynasty_relation_imprison_tyranny_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:divorce}
+        add = dr_dynasty_relation_divorce_impact_value
+    }
 }
 
 # Debug actions
@@ -132,6 +136,15 @@ dr_dynasty_relation_imprison_impact_value = {
 # Imprison tyranically (TODO REVIEW VALUES)
 dr_dynasty_relation_imprison_tyranny_impact_value = {
     value = -15.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Imprison tyranically (TODO REVIEW VALUES)
+dr_dynasty_relation_divorce_impact_value = {
+    value = -5.0 
     # if = { # Executing the dynasty head
     #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
     #     add = -50.0
