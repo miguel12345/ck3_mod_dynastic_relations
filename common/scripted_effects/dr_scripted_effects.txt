@@ -63,7 +63,7 @@ dr_save_dynastic_relation_between_dynasties_in_scope = {
             value = scope:dynastic_relation.var:value
         }
     }
-
+ 
 }
 
 # Changes (improves/degrades) dynastic relation based on the action being performed between two characters
@@ -103,7 +103,7 @@ dr_change_dynastic_relation_between_characters = {
 
     #Render proper description/tooltip.
     if = {
-        limit = { scope:show_as = flag:tooltip}
+        limit = { scope:show_as = flag:tooltip }
         if = {
             limit = { scope:change_val > 0.0 }
             custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
@@ -113,7 +113,7 @@ dr_change_dynastic_relation_between_characters = {
         }
     }
     else_if = {
-        limit = { scope:show_as = flag:description}
+        limit = { scope:show_as = flag:description }
         if = {
             limit = { scope:change_val > 0.0 }
             custom_description_no_bullet = {
@@ -129,6 +129,7 @@ dr_change_dynastic_relation_between_characters = {
                 object = scope:source_character
                 value = scope:change_val
                 text=dr_relation_impact_negative_effect_text
+        }
         }
     }
 
@@ -243,7 +244,7 @@ dr_decay_dynastic_relation_value = {
 
 }
 
-
+ 
 # Updates the character opinions between all members of both dynasties, expects dynastic relation to be the current scope
 dr_update_character_opinions_effect = {
 
@@ -403,4 +404,43 @@ dr_update_dynastic_relation_heads_friends_rivals_status_effects = {
         limit = {exists = var:rivals}
         dr_set_dynasty_heads_as_rivals_effect = yes
     }
+}
+
+#Dummy effect just to prevent compiler errors about unset flags (which happens since I'm using them as enums)
+dr_internal_prevent_flag_warnings_effect = {
+
+    set_variable = {
+        name = test
+        value = flag:debug_increase
+    }
+
+    set_variable = {
+        name = test
+        value = flag:debug_decrease
+    }
+
+    set_variable = {
+        name = test
+        value = flag:marriage
+    }
+
+    set_variable = {
+        name = test
+        value = flag:executed_prisoner
+    }
+
+    set_variable = {
+        name = test
+        value = flag:tooltip
+    }
+
+    set_variable = {
+        name = test
+        value = flag:description
+    }
+
+    this.var:test = {
+        debug_log = "yes"
+    }
+
 }

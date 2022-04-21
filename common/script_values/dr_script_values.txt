@@ -35,13 +35,17 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:marriage}
         add = dr_dynasty_relation_marriage_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:grant_titles}
+        add = dr_dynasty_relation_grant_titles_impact_value
+    }
 }
 
 # Debug actions
 dr_dynasty_relation_debug_increase_value = 10.0
 dr_dynasty_relation_debug_decrease_value = -10.0
 
-# Execution
+# Execution (TODO REVIEW VALUES)
 dr_dynasty_relation_execute_prisoner_impact_value = {
     value = -1.0 
     if = { # Executing the dynasty head
@@ -50,8 +54,17 @@ dr_dynasty_relation_execute_prisoner_impact_value = {
     }
 }
 
-# Marriage
+# Marriage (TODO REVIEW VALUES)
 dr_dynasty_relation_marriage_impact_value = {
+    value = 10.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Grant titles (TODO REVIEW VALUES)
+dr_dynasty_relation_grant_titles_impact_value = {
     value = 10.0 
     # if = { # Executing the dynasty head
     #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
