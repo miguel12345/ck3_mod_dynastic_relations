@@ -1,0 +1,742 @@
+﻿
+
+break_betrothal_interaction = {
+	category = interaction_category_diplomacy
+	special_interaction = break_betrothal_interaction
+	use_diplomatic_range = no
+	
+	is_shown = {
+		OR = {
+			#Betrothed to betrothed
+			scope:actor.betrothed = scope:recipient
+
+			#Actor breaking recipient's betrothal with their courtier/vassal child
+			scope:actor = {
+				any_courtier = {
+					is_ai = yes
+					is_betrothed = yes
+					betrothed = { this = scope:recipient }
+					OR = {
+						is_landed = no
+						any_parent = { this = scope:actor }
+					}
+				}
+			}
+
+			#Actor breaking the betrothal of their courtier/vassal child
+			scope:recipient = {
+				is_ai = yes
+				is_betrothed = yes
+			 	OR = {
+			 		AND = {
+			 			is_landed = no
+			 			liege = scope:actor
+			 		}
+			 		AND = {
+			 			is_child_of = scope:actor
+			 			NOT = {
+			 				matchmaker = {
+			 					is_parent_of = prev
+			 					NOT = { this = scope:actor }
+			 				}
+			 			}
+			 			OR = {
+			 				is_landed = no
+			 				target_is_liege_or_above = scope:actor
+			 			}
+			 		}
+			 	}
+			 	betrothed = { always = yes }
+			}
+
+			#Break recipient's betrothal with actor's vassal child/courtier
+			scope:recipient = {
+				is_betrothed = yes
+				betrothed = {
+					is_ai = yes
+					OR = {
+						AND = {
+							is_child_of = scope:actor
+							target_is_liege_or_above = scope:actor
+				 			NOT = {
+				 				matchmaker = {
+				 					is_parent_of = prev
+				 					NOT = { this = scope:actor }
+				 				}
+				 			}
+						}
+						AND = {
+							is_landed = no
+							liege = scope:actor
+						}
+					}
+				}
+			}
+
+			#Actor breaking their betrothal to recipient's courtier/vassal child
+			AND = {
+				scope:actor = { is_betrothed = yes }
+				scope:recipient = {
+					OR = {
+						#Check for courtiers
+						any_courtier = {
+							is_betrothed = yes
+							betrothed = scope:actor
+							liege = scope:recipient
+						}
+						#Check for vassal children
+						any_child = {
+							is_betrothed = yes
+							betrothed = scope:actor
+							OR = {
+								is_landed = no
+								target_is_liege_or_above = scope:recipient
+							}
+				 			NOT = {
+				 				matchmaker = {
+				 					is_parent_of = prev
+				 					NOT = { this = scope:actor }
+				 				}
+				 			}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = { is_diplomatically_available = yes }
+		scope:recipient = { NOT = { has_strong_hook = scope:actor } }
+		# Recipient is the betrothed
+		custom_description = {
+			text = break_betrothal_hook_used
+			object = scope:recipient
+			trigger_if = {
+				limit = {
+					exists = scope:recipient.betrothed
+					OR = {
+						scope:recipient.betrothed = scope:actor
+						scope:recipient.betrothed = {
+							is_ai = yes
+							OR = {
+								AND = {
+									is_child_of = scope:actor
+									target_is_liege_or_above = scope:actor
+						 			NOT = {
+						 				matchmaker = {
+						 					is_parent_of = prev
+						 					NOT = { this = scope:actor }
+						 				}
+						 			}
+								}
+								AND = {
+									is_landed = no
+									liege = scope:actor
+								}
+							}
+						}
+					}
+					exists = scope:recipient.var:hook_used_for_betrothal
+				}
+				scope:recipient.var:hook_used_for_betrothal = {
+					NOT = { this = scope:recipient.betrothed }
+				}
+			}
+		}
+
+		custom_description = {
+			text = break_betrothal_hook_used
+			object = scope:recipient
+			trigger_if = {
+				limit = {
+					exists = scope:recipient.betrothed
+					OR = {
+						scope:recipient = scope:actor
+						scope:recipient = {
+							is_ai = yes
+							OR = {
+								AND = {
+									is_child_of = scope:actor
+									target_is_liege_or_above = scope:actor
+						 			NOT = {
+						 				matchmaker = {
+						 					is_parent_of = prev
+						 					NOT = { this = scope:actor }
+						 				}
+						 			}
+								}
+								AND = {
+									is_landed = no
+									liege = scope:actor
+								}
+							}
+						}
+					}
+					exists = scope:recipient.betrothed.var:hook_used_for_betrothal
+				}
+				scope:recipient.betrothed.var:hook_used_for_betrothal = {
+					NOT = { this = scope:recipient }
+				}
+			}
+		}
+
+		# Secondary Recipient is the betrothed
+		custom_description = {
+			text = break_betrothal_hook_used
+			object = scope:recipient
+			trigger_if = {
+				limit = {
+					scope:recipient = {
+						OR = {
+							#Check for courtiers
+							any_courtier = {
+								is_betrothed = yes
+								betrothed = scope:actor
+								liege = scope:recipient
+								exists = var:hook_used_for_betrothal
+								var:hook_used_for_betrothal = {
+									this = scope:actor
+								}
+							}
+							#Check for vassal children
+							any_child = {
+								is_betrothed = yes
+								betrothed = scope:actor
+								OR = {
+									is_landed = no
+									target_is_liege_or_above = scope:recipient
+								}
+					 			NOT = {
+					 				matchmaker = {
+					 					is_parent_of = prev
+					 					NOT = { this = scope:actor }
+					 				}
+					 			}
+								exists = var:hook_used_for_betrothal
+								var:hook_used_for_betrothal = {
+									this = scope:actor
+								}
+							}
+						}
+					}
+				}
+				always = no
+			}
+		}
+	}
+
+	on_accept = {
+
+		#DR - dynastic relations - begin
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:break_betrothal
+            SHOW_AS = flag:tooltip
+        }
+        #DR - dynastic relations - end
+
+		#Identifies the "injured party"
+		scope:recipient = {
+			if = {
+				limit = { matchmaker = scope:actor }
+				betrothed = { save_scope_as = rejected_betrothed }
+				save_scope_as = rejecting_betrothed
+			}
+			else_if = {
+				limit = {
+					OR = {
+						#Check for courtiers
+						any_courtier = {
+							is_betrothed = yes
+							is_ai = yes
+							betrothed = scope:actor
+							liege = scope:recipient
+						}
+						#Check for vassal children
+						any_child = {
+							is_betrothed = yes
+							is_ai = yes
+							betrothed = scope:actor
+							target_is_liege_or_above = scope:recipient
+						}
+					}
+				}
+				scope:actor.betrothed = {
+					save_scope_as = rejected_betrothed
+				}
+				scope:actor = {
+					save_scope_as = rejecting_betrothed
+				}
+			}
+
+			else = {
+				save_scope_as = rejected_betrothed
+				betrothed = { save_scope_as = rejecting_betrothed }
+			}
+		}
+
+		scope:recipient = { trigger_event = marriage_interaction.0020 }
+
+		#Tooltip for betrothal breakage
+		show_as_tooltip = {
+			scope:rejected_betrothed = {
+				break_betrothal = scope:rejecting_betrothed
+			}
+		}
+
+		#Figures out if the liege of rejected_betrothed cares
+		scope:rejected_betrothed = {
+			if = {
+				limit = { #The liege matter when assigning prestige/opinion hits
+					matchmaker = {
+						NOT = { this = scope:rejected_betrothed }
+						is_close_or_extended_family_of = scope:rejected_betrothed
+					}
+				}
+
+				matchmaker = { save_scope_as = rejected_betrothal_owner }
+			}
+
+			else = { #The liege doesn't matter, only the betrothed
+				save_scope_as = rejected_betrothal_owner
+			}
+		}
+
+		if = {
+			limit = { #Only if you had no reason to break the betrothal
+				NOR = {
+					scope:rejected_betrothed = { has_trait = eunuch }
+					scope:rejecting_betrothed = { has_trait = eunuch }
+					scope:rejected_betrothed = {
+						allowed_to_marry_same_sex_trigger = no
+						sex_same_as = scope:rejecting_betrothed
+					}
+					scope:rejecting_betrothed = {
+						allowed_to_marry_same_sex_trigger = no
+						sex_same_as = scope:rejected_betrothed
+					}
+				}
+			}
+			#Prestige penalty
+			if = {
+				limit = {
+					OR = {
+						scope:rejected_betrothed = { highest_held_title_tier = tier_empire }
+						scope:rejected_betrothal_owner = { highest_held_title_tier = tier_empire }
+					}
+					#Only applied for relevant characters
+					OR = {
+						scope:rejected_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:rejecting_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:actor = {
+							yields_alliance = {
+								candidate = scope:rejecting_betrothed
+								target = scope:rejected_betrothal_owner
+								target_candidate = scope:rejected_betrothed
+							}
+						}
+					}
+				}
+				scope:actor = { add_prestige = massive_prestige_loss }
+			}
+
+			else_if = {
+				limit = {
+					OR = {
+						scope:rejected_betrothed = { highest_held_title_tier = tier_kingdom }
+						scope:rejected_betrothal_owner = { highest_held_title_tier = tier_kingdom }
+					}
+					#Only applied for relevant characters
+					OR = {
+						scope:rejected_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:rejecting_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:actor = {
+							yields_alliance = {
+								candidate = scope:rejecting_betrothed
+								target = scope:rejected_betrothal_owner
+								target_candidate = scope:rejected_betrothed
+							}
+						}
+					}
+				}
+				scope:actor = { add_prestige = major_prestige_loss }
+			}
+
+			else_if = {
+				limit = {
+					OR = {
+						scope:rejected_betrothed = { highest_held_title_tier = tier_duchy }
+						scope:rejected_betrothal_owner = { highest_held_title_tier = tier_duchy }
+					}
+					#Only applied for relevant characters
+					OR = {
+						scope:rejected_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:rejecting_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:actor = {
+							yields_alliance = {
+								candidate = scope:rejecting_betrothed
+								target = scope:rejected_betrothal_owner
+								target_candidate = scope:rejected_betrothed
+							}
+						}
+					}
+				}
+				scope:actor = { add_prestige = medium_prestige_loss }
+			}
+
+			else_if = {
+				limit = {
+					OR = {
+						scope:rejected_betrothed = { highest_held_title_tier = tier_county }
+						scope:rejected_betrothal_owner = { highest_held_title_tier = tier_county }
+					}
+					#Only applied for relevant characters
+					OR = {
+						scope:rejected_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:rejecting_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:actor = {
+							yields_alliance = {
+								candidate = scope:rejecting_betrothed
+								target = scope:rejected_betrothal_owner
+								target_candidate = scope:rejected_betrothed
+							}
+						}
+					}
+				}
+				scope:actor = { add_prestige = minor_prestige_loss }
+			}
+
+			else_if = {
+				limit = {
+					OR = {
+						scope:rejected_betrothed = { highest_held_title_tier = tier_barony }
+						scope:rejected_betrothal_owner = { highest_held_title_tier = tier_barony }
+					}
+					#Only applied for relevant characters
+					OR = {
+						scope:rejected_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:rejecting_betrothed = {
+							OR = {
+								is_close_family_of = scope:actor
+								AND = {
+									exists = dynasty
+									exists = scope:actor.dynasty
+									dynasty = scope:actor.dynasty
+								}
+							}
+						}
+						scope:actor = {
+							yields_alliance = {
+								candidate = scope:rejecting_betrothed
+								target = scope:rejected_betrothal_owner
+								target_candidate = scope:rejected_betrothed
+							}
+						}
+					}
+				}
+				scope:actor = { add_prestige = miniscule_prestige_loss }
+			}
+		}
+
+		######################################
+		# Opinion hits & notification events #
+		######################################
+		#Personal opinion hit for the rejected_betrothed
+		if = {
+			limit = { NOT = { scope:rejected_betrothed = scope:actor } }
+			scope:rejected_betrothed = {
+				if = {
+					limit = {
+						NOR = {
+							has_trait = eunuch
+							scope:rejecting_betrothed = { has_trait = eunuch }
+							scope:rejecting_betrothed = {
+								allowed_to_marry_same_sex_trigger = no
+								sex_same_as = scope:rejected_betrothed
+							}
+							AND = {
+								allowed_to_marry_same_sex_trigger = no
+								sex_same_as = scope:rejecting_betrothed
+							}
+						}
+					}
+					show_as_tooltip = {
+						add_opinion = {
+							target = scope:actor
+							modifier = broke_betrothal_opinion
+						}
+					}
+				}
+
+				hidden_effect = { trigger_event = marriage_interaction.0001 }
+			}
+		}
+		else = {
+			hidden_effect = {
+				scope:rejecting_betrothed = {
+					break_betrothal = scope:rejected_betrothed
+				}
+			}
+		}
+
+		#Personal opinion hit for the rejected_betrothal_owner
+		if = {
+			limit = {
+				NOR = {
+					scope:rejected_betrothed = {
+						this = scope:rejected_betrothal_owner
+					}
+					scope:actor = {
+						this = scope:rejected_betrothal_owner
+					}
+					scope:actor = {
+						this = scope:rejected_betrothed
+					}
+				}
+			}
+			scope:rejected_betrothal_owner = {
+				if = {
+					limit = {
+						NOR = {
+							scope:rejected_betrothed = { has_trait = eunuch }
+							scope:rejecting_betrothed = { has_trait = eunuch }
+							scope:rejected_betrothed = {
+								allowed_to_marry_same_sex_trigger = no
+								sex_same_as = scope:rejecting_betrothed
+							}
+							scope:rejecting_betrothed = {
+								allowed_to_marry_same_sex_trigger = no
+								sex_same_as = scope:rejected_betrothed
+							}
+						}
+					}
+					show_as_tooltip = {
+						add_opinion = {
+							target = scope:actor
+							modifier = broke_betrothal_opinion
+						}
+					}
+				}
+
+				hidden_effect = { trigger_event = marriage_interaction.0001 }
+			}
+		}
+
+		if = {
+			limit = {
+				NOR = {
+					scope:rejected_betrothed = { has_trait = eunuch }
+					scope:rejecting_betrothed = { has_trait = eunuch }
+					scope:rejected_betrothed = {
+						allowed_to_marry_same_sex_trigger = no
+						sex_same_as = scope:rejecting_betrothed
+					}
+					scope:rejecting_betrothed = {
+						allowed_to_marry_same_sex_trigger = no
+						sex_same_as = scope:rejected_betrothed
+					}
+				}
+			}
+			#Opinion hit for close relatives of the rejected_betrothed (that are not rejected_betrothed_owner)
+			if = {
+				limit = {
+					NOT = { scope:rejected_betrothed = scope:actor }
+					scope:rejected_betrothed = {
+						any_close_or_extended_family_member = {
+							NOT = { this = scope:rejected_betrothal_owner }
+							count >= 1
+						}
+					}
+				}
+				scope:rejected_betrothed = {
+					every_close_or_extended_family_member = {
+						limit = {
+							NOT = { this = scope:rejected_betrothal_owner }
+						}
+						custom = all_family_members
+						add_opinion = {
+							target = scope:actor
+							modifier = broke_betrothal_opinion
+						}
+					}
+				}
+			}
+
+			#Opinion hit for close relatives of the rejecting_betrothed (that are not also close relatives to rejected_betrothed)
+			if = {
+				limit = {
+					NOR = {
+						scope:rejecting_betrothed = scope:actor
+						scope:rejected_betrothed = scope:actor
+					}
+					scope:rejecting_betrothed = {
+						any_close_or_extended_family_member = {
+							NOR = {
+								is_close_or_extended_family_of = scope:rejected_betrothed
+								this = scope:rejected_betrothal_owner
+								this = scope:rejected_betrothed
+							}
+							count >= 1
+						}
+					}
+				}
+				scope:rejecting_betrothed = {
+					every_close_or_extended_family_member = {
+						limit = {
+							NOR = {
+								is_close_or_extended_family_of = scope:rejected_betrothed
+								this = scope:rejected_betrothal_owner
+								this = scope:rejected_betrothed
+							}
+						}
+						custom = all_family_members
+						add_opinion = {
+							target = scope:actor
+							modifier = broke_betrothal_opinion
+						}
+					}
+				}
+			}
+		}
+
+		scope:actor = {
+		# Was the marriage of relevence to the player?
+			if = {
+				limit = { 
+					scope:rejecting_betrothed = {
+						is_player_heir_of = scope:actor
+					}
+				}
+				hidden_effect = {
+					send_interface_toast = {
+						title = msg_break_betrothal
+						left_icon = scope:rejecting_betrothed
+						right_icon = scope:rejected_betrothed
+						custom_tooltip = break_betrothal_hook_toast_desc
+					}
+				}
+			}
+			else = { 
+				hidden_effect = {
+					send_interface_message = {
+						type = event_generic_neutral
+						title = msg_break_betrothal
+						left_icon = scope:rejecting_betrothed
+						right_icon = scope:rejected_betrothed
+						custom_tooltip = break_betrothal_hook_toast_desc
+					}
+				}
+			}
+
+			#Was the marriage promised to a vassal?
+			if = {
+				limit = {
+					exists = var:promised_to_marry_1
+					var:promised_to_marry_1 = {
+						this = scope:rejected_betrothed
+						any_parent = {
+							is_vassal_of = scope:actor
+						}
+					}
+					exists = var:promised_to_marry_2
+					var:promised_to_marry_2 = {
+						this = scope:rejecting_betrothed
+						is_close_family_of = scope:actor
+					}
+				}
+				remove_variable = promised_to_marry_1
+				remove_variable = promised_to_marry_2
+				trigger_event = clan.1002
+			}
+		}
+	}
+
+	auto_accept = yes
+}
