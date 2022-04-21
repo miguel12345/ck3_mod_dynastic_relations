@@ -91,28 +91,55 @@ dr_change_dynastic_relation_between_characters = {
         save_scope_as = reason
     }
 
-    # Calculate dynastic relation impact and save it as change_val
+    $SHOW_AS$ = {
+        save_scope_as = show_as
+    }
 
+    # Calculate dynastic relation impact and save it as change_val
     save_scope_value_as = {
         name = change_val
         value = dr_dynasty_relation_action_impact_value
     } 
- 
+
+    #Render proper description/tooltip.
     if = {
-        limit = { scope:change_val > 0.0 }
-        custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
+        limit = { scope:show_as = flag:tooltip}
+        if = {
+            limit = { scope:change_val > 0.0 }
+            custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
+        }
+        else = {
+            custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
+        }
     }
-    else = {
-        custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
+    else_if = {
+        limit = { scope:show_as = flag:description}
+        if = {
+            limit = { scope:change_val > 0.0 }
+            custom_description_no_bullet = {
+                subject = scope:target_character
+                object = scope:source_character
+                value = scope:change_val
+                text=dr_relation_impact_positive_effect_text
+            }
+        }
+        else = {
+            custom_description_no_bullet = {
+                subject = scope:target_character
+                object = scope:source_character
+                value = scope:change_val
+                text=dr_relation_impact_negative_effect_text
+        }
     }
 
+
+    
+    # Establish dynastic relation if it doesnt exist yet
     dr_find_dynastic_relation_between_characters_and_save_in_scope = {
         CHARACTER_A = $CHARACTER_A$
         CHARACTER_B = $CHARACTER_B$
         SCOPE_NAME = dynastic_relation
     }
-
-    # Establish dynastic relation if it doesnt exist yet
     if = {
 
         limit = { NOT = { exists = scope:dynastic_relation } }

@@ -31,6 +31,10 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:executed_prisoner}
         add = dr_dynasty_relation_execute_prisoner_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:marriage}
+        add = dr_dynasty_relation_marriage_impact_value
+    }
 }
 
 # Debug actions
@@ -44,4 +48,13 @@ dr_dynasty_relation_execute_prisoner_impact_value = {
         limit = {scope:target_character.dynasty.dynast = scope:target_character}
         add = -50.0
     }
+}
+
+# Marriage
+dr_dynasty_relation_marriage_impact_value = {
+    value = 10.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
 }

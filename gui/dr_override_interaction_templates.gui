@@ -1,0 +1,243 @@
+types CharacterInteraction
+{
+    type vbox_marriage_interaction_marriage_details = vbox {
+        margin = { 15 15 }
+
+        background = {
+            using = Background_Area
+        }
+
+        hbox = {
+            layoutpolicy_horizontal = expanding
+
+            icon = {
+                name = "marriage_type"
+                block "icon_frame"
+                {
+                    visible = "[MatchmakerInteractionWindow.HasPickedCharacters]"
+                }
+
+                texture = "gfx/interface/icons/marriage_types.dds"
+                framesize = { 60 60 }
+                size = { 60 60 }
+                frame = "[MarriageInfo.GetMarriageIconFrame]"
+            }
+
+            vbox = {
+                layoutpolicy_horizontal = expanding
+
+                text_multi = {
+                    name = "children_house_info"
+                    visible = "[And( StringIsEmpty( MarriageInfo.GetMatrilinealDesc ), Not( MatchOffer.IsSameSex ) )]"
+                    layoutpolicy_horizontal = expanding
+                    max_width = 510
+                    autoresize = yes
+                    text = "MARRIAGE_CHILDREN_HOUSE_INFO"
+                }
+
+                text_multi = {
+                    name = "matrilineal_desc"
+                    visible = "[Not( MatchOffer.IsSameSex )]"
+                    layoutpolicy_horizontal = expanding
+                    max_width = 510
+                    autoresize = yes
+                    text = "[MarriageInfo.GetMatrilinealDesc]"
+                }
+
+                text_multi = {
+                    name = "children_chance_info"
+                    layoutpolicy_horizontal = expanding
+                    max_width = 510
+                    autoresize = yes
+                    text = "MARRIAGE_CHILDREN_CHANCE_INFO"
+                    tooltip = "[MatchOffer.GetChanceOfChildrenTooltip]"
+                }
+            }
+        }
+
+        ### Traits
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            margin = { 5 10 }
+            spacing = 5
+            visible = "[Not( MatchOffer.IsSameSex )]"
+
+            hbox = {
+                layoutpolicy_horizontal = expanding
+
+                text_label_center = {
+                    name = "traits_header"
+                    visible = "[MatchOffer.HasInheritableTraits]"
+                    text = "INHERITABLE_TRAITS"
+                }
+
+                expand = {}
+            }
+
+            text_single = {
+                name = "no_traits"
+                visible = "[Not(MatchOffer.HasInheritableTraits)]"
+                text = "NO_INHERITABLE_TRAITS"
+                default_format = "#low;italic"
+                margin = { 5 15 }
+            }
+
+            hbox = {
+                layoutpolicy_horizontal = expanding
+
+                hbox = {
+                    name = "traits"
+                    datamodel = "[MatchOffer.GetInheritableTraitItems]"
+                    visible = "[Not(IsDataModelEmpty(MatchOffer.GetInheritableTraitItems))]"
+
+                    item = {
+                        icon_trait = {
+                            datacontext = "[MatchmakerTraitInfo.GetTrait]"
+                            datacontext = "[MatchmakerTraitInfo.GetCharacter]"
+
+                            blockoverride "actual_description_text"
+                            {
+                                text = "TRAIT_ENTRY_INHERITANCE_INFO"
+                            }
+
+                            highlight_icon = {
+                                name = "guaranteed"
+                                visible = "[And( MatchmakerTraitInfo.IsGuaranteed, Not(MatchmakerTraitInfo.CanUpgrade) )]"
+                                position = { 27 28 }
+                                texture = "gfx/interface/icons/symbols/icon_check.dds"
+                                size = { 25 25 }
+                            }
+
+                            highlight_icon = {
+                                name = "upgrade"
+                                visible = "[MatchmakerTraitInfo.CanUpgrade]"
+                                texture = "gfx/interface/icons/symbols/icon_arrow_green_down.dds"
+                                mirror = vertical
+                                position = { 29 24 }
+                                size = { 25 25 }
+                            }
+                        }
+                    }
+                }
+
+                expand = {}
+            }
+
+            text_single = {
+                name = "inbreeding_risk"
+                visible = "[MatchOffer.HasInbreedingRisk]"
+                max_width = 510
+                text = "MATCH_OFFER_INBREEDING_WARNING"
+                default_format = "#low"
+            }
+
+            
+        }
+
+        divider_light = {
+            layoutpolicy_horizontal = expanding
+        }
+
+        ### Prestige
+        vbox = {
+            layoutpolicy_horizontal = expanding
+            margin = { 10 10}
+
+            ### Dynastic Relations - Begin
+            hbox = {
+                layoutpolicy_horizontal = expanding
+                text_multi = {
+                    datacontext = "[MatchmakerInteractionWindow.GetCharacterInteractionConfirmationWindow]"
+                    datacontext = "[CharacterInteractionConfirmationWindow.GetEffectsDescription]"
+                    visible = "[InteractionEffectsDescription.IsShowingOnAcceptEffects]"
+                    name = "accept_effects_info"
+                    layoutpolicy_horizontal = expanding
+                    layoutpolicy_vertical = expanding
+                    autoresize = yes
+                    # max_width = 435
+                    # margin = { 5 0 }#
+                    text = "[InteractionEffectsDescription.GetAcceptEffectDescription]"
+                }
+
+            expand = {}
+            }
+            ### Dynastic Relations - End
+
+            hbox = {
+                layoutpolicy_horizontal = expanding
+
+                text_multi = {
+                    block "get_actor"
+                    {
+                        datacontext = "[MatchmakerInteractionWindow.GetActorToMatch]"
+                    }
+                    name = "prestige_desc_our"
+                    max_width = 510
+                    autoresize = yes
+                    text = "MARRIAGE_PRESTIGE_DESC_OUR"
+                    tooltip = "MARRIAGE_PRESTIGE_TOOLTIP_OUR"
+                }
+
+
+                expand = {}
+            }
+
+            hbox = {
+                layoutpolicy_horizontal = expanding
+
+                text_multi = {
+                    block "get_recipient"
+                    {
+                        datacontext = "[MatchmakerInteractionWindow.GetRecipientToMatch]"
+                    }
+                    name = prestige_desc_their
+                    max_width = 510
+                    autoresize = yes
+                    text = "MARRIAGE_PRESTIGE_DESC_THEIR"
+                    default_format = "#low"
+                    tooltip = "MARRIAGE_PRESTIGE_TOOLTIP_THEIR"
+                }
+
+                expand = {}
+            }
+        }
+
+        vbox = {
+            visible = "[MarriageInfo.HasAlliances]"
+            layoutpolicy_horizontal = expanding
+            margin = { 0 15 }
+
+            text_label_center = {
+                name = alliances_label
+                text = "[alliances|E]"
+            }
+
+            vbox = {
+                name = "alliance_grid"
+                datamodel = "[MarriageInfo.GetAllianceItems]"
+                layoutpolicy_horizontal = expanding
+
+                item = {
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        portrait_head = {
+                            datacontext = "[AllianceInfo.GetCharacter]"
+                            name = "ally_portrait"
+                            blockoverride "opinion_box" {}
+                            blockoverride "status_icons" {}
+                        }
+
+                        strength_balance = {
+                            datacontext = "[AllianceInfo.GetMilitaryInfo]"
+                            blockoverride "StrengthBalanceAllies" {}
+                        }
+
+                        expand = {}
+                    }
+                }
+            }
+        }
+
+        expand = {}
+    }
+}

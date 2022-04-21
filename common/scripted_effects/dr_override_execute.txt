@@ -20,7 +20,7 @@ execute_prisoner_effect = {
 		}
 	}
 
-    #dynastic relations - begin
+    #DR - dynastic relations - begin
     if = {
         limit = {
             dr_can_dynastic_relation_be_established_betwen_characters = {
@@ -32,9 +32,10 @@ execute_prisoner_effect = {
             CHARACTER_A = scope:executioner
             CHARACTER_B = scope:victim
             REASON = flag:executed_prisoner
+			SHOW_AS = flag:tooltip
         }
     }
-    #dynastic relations - end
+    #DR - dynastic relations - end
 
 	scope:executioner = {
 		# Dread gain

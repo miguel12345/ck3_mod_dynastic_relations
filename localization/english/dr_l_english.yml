@@ -8,6 +8,8 @@
  dr_debug_interaction_decrease_dynastic_relation:0 "DEBUG Decrease dynastic relation"
  dr_debug_interaction_decrease_dynastic_relation_desc:0 "DEBUG Decrease dynastic relation description"
  dr_dynasty_relation_opinion_modifier:0 "Relation between dynasties"
+ dr_relation_impact_positive_effect_text:0 "Relation between dynasties [CHARACTER.GetDynasty.GetName] and [TARGET_CHARACTER.GetDynasty.GetName] will improve by #P +$VALUE|0$#! "
+dr_relation_impact_negative_effect_text:0 "Relation between dynasties [CHARACTER.GetDynasty.GetName] and [TARGET_CHARACTER.GetDynasty.GetName] will degrade by #N -$VALUE|0$#! "
  DR_IMPROVE_DYNASTY_RELATION_TOOLTIP:0 "Relations between dynasties [source_dynasty.GetName] and [target_dynasty.GetName] will improve by #P +[SCOPE.GetValue('change_val')] #!" 
  DR_DEGRADE_DYNASTY_RELATION_TOOLTIP:0 "Relations between dynasties [source_dynasty.GetName] and [target_dynasty.GetName] will degrade by #N [SCOPE.GetValue('change_val')] #!"
  dr_dynasties_became_friends_interface_message_title:0 "Friendly Dynasty" 

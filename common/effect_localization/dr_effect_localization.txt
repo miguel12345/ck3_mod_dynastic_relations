@@ -1,0 +1,11 @@
+dr_relation_impact_negative_effect_text = {
+    first = dr_relation_impact_negative_effect_text
+    third = dr_relation_impact_negative_effect_text
+    global = dr_relation_impact_negative_effect_text
+}
+
+dr_relation_impact_positive_effect_text = {
+    first = dr_relation_impact_positive_effect_text
+    third = dr_relation_impact_positive_effect_text
+    global = dr_relation_impact_positive_effect_text
+}

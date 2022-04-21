@@ -1,0 +1,211 @@
+marriage_interaction_on_accept_effect = { 
+
+    #DR - dynastic relations - begin
+    if = {
+        limit = {
+            dr_can_dynastic_relation_be_established_betwen_characters = {
+                CHARACTER_A = scope:secondary_actor
+                CHARACTER_B = scope:secondary_recipient
+            }
+        }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:secondary_actor
+            CHARACTER_B = scope:secondary_recipient
+            REASON = flag:marriage
+			SHOW_AS = flag:description
+        }
+    }
+    #DR - dynastic relations - end
+
+	#Use hook
+	if = {
+		limit = { always = scope:marriage_hook }
+		scope:actor = {
+			use_hook = scope:recipient
+		}
+		#To make sure betrothals can't be broken if a hook was used
+		if = {
+			limit = {
+				OR = {
+					scope:secondary_actor = { is_adult = no }
+					scope:secondary_recipient = { is_adult = no }
+				}
+			}
+			scope:secondary_actor = {
+				set_variable = {
+					name = hook_used_for_betrothal
+					value = scope:secondary_recipient
+				}
+			}
+		}
+	}
+
+	#No longer concubine
+	if = {
+		limit = {
+			scope:secondary_recipient = { is_concubine = yes }
+		}
+		scope:secondary_recipient = {
+			random_consort = {
+				limit = {
+					any_concubine = { this = scope:secondary_recipient }
+				}
+				remove_concubine = scope:secondary_recipient
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:secondary_actor = { is_concubine = yes }
+		}
+		scope:secondary_actor = {
+			random_consort = {
+				limit = {
+					any_concubine = { this = scope:secondary_actor }
+				}
+				remove_concubine = scope:secondary_actor
+			}
+		}
+	}
+
+	#Marriage notification events
+	hidden_effect = {
+		scope:actor = {
+			if = {
+				limit = { NOT = { this = scope:recipient } }
+				trigger_event = marriage_interaction.0010
+			}
+			else = { #In my own court
+				if = {
+					limit = { #Betrothal?
+						OR = {
+							scope:secondary_actor = { is_adult = no }
+							scope:secondary_recipient = { is_adult = no }
+						}
+					}
+					send_interface_toast = {
+						title = arrange_marriage_interaction_accept_betrothal_toast
+						left_icon = scope:secondary_actor 
+						right_icon = scope:secondary_recipient
+						custom_tooltip  = arrange_marriage_interaction_accept_betrothal_toast_desc
+					}
+				}
+				else = {
+					send_interface_toast = {
+						title = arrange_marriage_interaction_accept_toast
+						left_icon = scope:secondary_actor 
+						right_icon = scope:secondary_recipient
+						custom_tooltip  = arrange_marriage_interaction_accept_toast_desc
+					}
+				}
+			}
+		}
+
+		# Apply any relevant opinion penalties for relatives of spouse.
+		scope:secondary_actor = {
+			if = { # Polygamy
+				limit = { 
+					any_consort = {
+						count >= 2
+					}
+				}
+				every_consort = {
+					# If the spouse themselves does not believe in polygamy...
+					limit = {
+						NOR = {
+							culture = { has_cultural_tradition = tradition_polygamous }
+							faith = { has_doctrine = doctrine_polygamy }
+							faith = { has_doctrine = doctrine_concubines }
+						}
+					}
+
+					#... then family members who also do not believe in polygamy aren't happy about having a relative forced into polygamous union with you.
+					every_close_family_member = {
+						if = {
+							limit = { 
+								NOR = {
+									culture = { has_cultural_tradition = tradition_polygamous }
+									faith = { has_doctrine = doctrine_polygamy }
+									faith = { has_doctrine = doctrine_concubines }
+								}
+							}
+							add_opinion = {
+								target = scope:secondary_actor
+								modifier = relative_in_blasphemous_union_opinion
+							}
+						}
+					}
+
+					# NOTE: Spouse's own opinions handled in the 'on_marriage' code on_action inside of marriage_concubinage.txt, and are not included here.
+				}
+			}
+		}
+		scope:secondary_recipient = {
+			if = { #Same-sex relations
+				limit = {
+					allowed_to_marry_same_sex_trigger = no
+					sex_same_as = scope:secondary_actor
+				}
+				every_close_family_member = {
+					if = {
+						limit = { 
+							allowed_to_marry_same_sex_trigger = no
+						}
+						add_opinion = {
+							target = scope:secondary_actor
+							modifier = relative_in_blasphemous_union_opinion
+						}
+					}
+				}
+			}
+		}
+	}
+
+	###MANAGEMENT SCRIPT FOR VARIOUS EVENTS/CONTENT###
+	
+	#If your spouse councillor had boosted the chance of marriage, remove modifier
+	if = {
+		limit = {
+			scope:secondary_actor = {
+				has_character_modifier = heir_easier_to_marry_off_modifier
+			}
+			scope:actor = { player_heir = scope:secondary_actor }
+		}
+		scope:secondary_actor = {
+			remove_character_modifier = heir_easier_to_marry_off_modifier
+		}
+	}
+	if = {
+		limit = {
+			scope:secondary_actor = {
+				is_child_of = scope:actor
+				has_character_modifier = child_easier_to_marry_off_modifier
+			}
+		}
+		scope:secondary_actor = {
+			remove_character_modifier = child_easier_to_marry_off_modifier
+		}
+	}
+
+	#AI Break up consideration after marriage
+	scope:secondary_recipient = { 
+		if = {
+			limit = {
+				is_adult = yes
+				is_ai = yes
+			}
+			scope:secondary_actor = { save_scope_as = new_spouse_secondary_actor }
+			trigger_event = lover.0205
+		}
+	}
+	scope:secondary_actor = {
+		if = {
+			limit = {
+				is_adult = yes
+				is_ai = yes
+			}
+			scope:secondary_recipient = { save_scope_as = new_spouse_secondary_recipient }
+			trigger_event = lover.0205
+		}
+	}
+}
