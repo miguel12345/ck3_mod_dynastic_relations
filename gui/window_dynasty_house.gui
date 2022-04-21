@@ -977,7 +977,7 @@ window = {
 					}
 					blockoverride "scrollbox_empty"
 					{
-						visible = "[IsDataModelEmpty(Dynasty.MakeScope.GetList('dr_dynasty_relations'))]"
+						visible = "[IsDataModelEmpty(GetGlobalList('dr_dynasty_relations_sorted'))]"
 						text = dr_dynasty_relation_list_empty
 					}
 				}

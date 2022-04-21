@@ -65,7 +65,16 @@ dr_dynastic_relation_list_scriped_gui = {
                 }
             }
 
-            add_to_global_variable_list = { name = dr_dynasty_relations_sorted target = this}
+            if = {
+                limit = { 
+                    OR = {
+                        var:value > 0
+                        var:value < 0
+                    }
+                }
+
+                add_to_global_variable_list = { name = dr_dynasty_relations_sorted target = this}
+            }
         }
     }
 
