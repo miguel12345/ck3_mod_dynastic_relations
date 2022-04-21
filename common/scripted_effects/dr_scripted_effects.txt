@@ -109,38 +109,40 @@ dr_change_dynastic_relation_between_characters = {
         } 
 
         #Render proper description/tooltip.
-        if = {
-            limit = { scope:show_as = flag:tooltip }
+        #Use a dynasty as scope to ensure the effect is shown under "others"
+        scope:target_character.dynasty = {
             if = {
-                limit = { scope:change_val > 0.0 }
-                custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
-            }
-            else = {
-                custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
-            }
-        }
-        else_if = {
-            limit = { scope:show_as = flag:description }
-            if = {
-                limit = { scope:change_val > 0.0 }
-                custom_description_no_bullet = {
-                    subject = scope:target_character
-                    object = scope:source_character
-                    value = scope:change_val
-                    text=dr_relation_impact_positive_effect_text
+                limit = { scope:show_as = flag:tooltip }
+                if = {
+                    limit = { scope:change_val > 0.0 }
+                    custom_tooltip = DR_IMPROVE_DYNASTY_RELATION_TOOLTIP
+                }
+                else = {
+                    custom_tooltip = DR_DEGRADE_DYNASTY_RELATION_TOOLTIP
                 }
             }
-            else = {
-                custom_description_no_bullet = {
-                    subject = scope:target_character
-                    object = scope:source_character
-                    value = scope:change_val
-                    text=dr_relation_impact_negative_effect_text
-            }
+            else_if = {
+                limit = { scope:show_as = flag:description }
+                if = {
+                    limit = { scope:change_val > 0.0 }
+                    custom_description_no_bullet = {
+                        subject = scope:target_character
+                        object = scope:source_character
+                        value = scope:change_val
+                        text=dr_relation_impact_positive_effect_text
+                    }
+                }
+                else = {
+                    custom_description_no_bullet = {
+                        subject = scope:target_character
+                        object = scope:source_character
+                        value = scope:change_val
+                        text=dr_relation_impact_negative_effect_text
+                }
+                }
             }
         }
-
-
+        
         
         # Establish dynastic relation if it doesnt exist yet
         dr_find_dynastic_relation_between_characters_and_save_in_scope = {
