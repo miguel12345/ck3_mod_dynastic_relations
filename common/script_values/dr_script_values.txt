@@ -91,6 +91,10 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:attempted_murder_reason}
         add = dr_dynasty_relation_attempted_murder_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:extramarital_sex_reason}
+        add = dr_dynasty_relation_extramarital_sex_impact_value
+    }
 }
 
 # Debug actions
@@ -236,6 +240,15 @@ dr_dynasty_relation_murder_impact_value = {
 
 # Attempted Murder (TODO REVIEW VALUES)
 dr_dynasty_relation_attempted_murder_impact_value = {
+    value = -10.0 
+    # if = { # Executing the dynasty head
+    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
+    #     add = -50.0
+    # }
+}
+
+# Sxtramarital Sex (TODO REVIEW VALUES)
+dr_dynasty_relation_extramarital_sex_impact_value = {
     value = -10.0 
     # if = { # Executing the dynasty head
     #     limit = {scope:target_character.dynasty.dynast = scope:target_character}

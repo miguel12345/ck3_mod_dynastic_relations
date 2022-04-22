@@ -108,7 +108,7 @@ dr_dynasti_relation_occurrences_list_gui = {
         clear_global_variable_list = dr_dynasty_occurrences
 
         ordered_in_list = { 
-            variable = occurrence
+            variable = occurrences
             max = 10
             check_range_bounds = no
             order_by = {

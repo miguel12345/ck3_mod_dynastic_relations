@@ -15,3 +15,33 @@ dr_can_dynastic_relation_be_established_betwen_characters = {
 
     }
 }
+
+dr_should_add_dynastic_relation_trigger = {
+
+    #If we are dealing with adultery, it will be fired twice, so we prevent triggering
+    trigger_if = {
+        limit = {$REASON$ = flag:extramarital_sex_reason}
+        NOT = {
+            $DYNASTIC_RELATION$ = {
+                any_in_list = {
+                    variable = occurrences
+                    var:reason = flag:extramarital_sex_reason
+                    OR = {
+                        AND = {
+                            var:source_character = $CHARACTER_A$
+                            var:target_character = $CHARACTER_B$
+                        }
+                        AND = {
+                            var:source_character = $CHARACTER_B$
+                            var:target_character = $CHARACTER_A$
+                        }
+                    }
+                }
+            }
+        }
+    }
+    trigger_else= {
+        always = yes
+    }
+
+}

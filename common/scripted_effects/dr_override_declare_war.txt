@@ -1,6 +1,7 @@
 on_declared_war = {
 
-    debug_log = "On war declared!"
+    # debug_log = "On war declared!"
+	# debug_log_scopes = yes
 
     #DR - dynastic relations - begin
     dr_change_dynastic_relation_between_characters = {

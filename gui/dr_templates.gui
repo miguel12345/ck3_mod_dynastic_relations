@@ -126,6 +126,10 @@ template dr_dynastic_relation_poup_ui_template {
                                     visible = "[EqualTo_string('attempted_murder_reason',Scope.Var('reason').GetFlagName)]"
                                     text = dr_dynastic_relation_occurrences_attempted_murder_entry
                                 }
+                                text_single = {
+                                    visible = "[EqualTo_string('extramarital_sex_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_extramarital_sex_entry
+                                }
                                 expand = {}
                             }
                             

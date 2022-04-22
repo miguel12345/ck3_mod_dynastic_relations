@@ -173,7 +173,15 @@ dr_change_dynastic_relation_between_characters = {
         # This is only executed when the action is performed
         if = {
 
-            limit = {  exists = scope:dynastic_relation }
+            limit = {  
+                exists = scope:dynastic_relation
+                dr_should_add_dynastic_relation_trigger = { #Extra check to prevent adding the same dynastic relation impact twice for adultery
+                    CHARACTER_A = $CHARACTER_A$
+                    CHARACTER_B = $CHARACTER_B$
+                    REASON = $REASON$
+                    DYNASTIC_RELATION = scope:dynastic_relation 
+                }
+            }
 
             #Record dynastic occurrence. Since it is a story, we need to put it somewhere
             $CHARACTER_A$ = {
@@ -191,7 +199,7 @@ dr_change_dynastic_relation_between_characters = {
 
             scope:dynastic_relation = {
                 add_to_variable_list = {
-                    name = occurrence
+                    name = occurrences
                     target = scope:new_dynastic_occurrence
                 }
             }
@@ -545,7 +553,6 @@ dr_debug_create_ally_and_war_situation_effect = {
 
     random_player = {
         save_scope_as = player
-        debug_log_scopes = yes
 
         random_independent_ruler = {
             limit = {

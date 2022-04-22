@@ -1,11 +1,20 @@
 marriage_interaction_on_accept_effect = { 
 
     #DR - dynastic relations - begin
-    dr_change_dynastic_relation_between_characters = {
-		CHARACTER_A = scope:secondary_actor
-		CHARACTER_B = scope:secondary_recipient
-		REASON = flag:marriage_reason
-		SHOW_AS = flag:description
+	#Only for marriages, not bethrotals
+	if = {
+		limit = {
+			AND = {
+				scope:secondary_actor = { is_adult = yes }
+				scope:secondary_recipient = { is_adult = yes }
+			}
+		}
+		dr_change_dynastic_relation_between_characters = {
+			CHARACTER_A = scope:secondary_actor
+			CHARACTER_B = scope:secondary_recipient
+			REASON = flag:marriage_reason
+			SHOW_AS = flag:description
+		}
 	}
     #DR - dynastic relations - end
 

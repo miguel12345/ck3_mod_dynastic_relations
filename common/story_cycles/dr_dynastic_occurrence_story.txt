@@ -2,7 +2,13 @@ dr_dynastic_occurrence_story = {
 
     on_setup = {
 
-        debug_log_scopes = yes
+        # debug_log = "DR - Occurrence happened"
+
+        if = {
+            limit = {story_owner.var:reason = flag:extramarital_sex_reason}
+            debug_log = "DR - Extramarital sex happened!"
+            debug_log_scopes = yes
+        }
 
         set_variable = {
             name = source_character
@@ -43,6 +49,7 @@ dr_dynastic_occurrence_story = {
         story_owner = {
             remove_variable = source_character
             remove_variable = target_character
+            remove_variable = reason
             remove_variable = value
         }
     }
