@@ -95,3 +95,39 @@ dr_dynastic_relation_list_scriped_change_sort_order_gui = {
     }
 }
 
+
+dr_dynasti_relation_occurrences_list_gui = {
+    scope = story
+
+    is_shown = {
+        always = yes
+    }
+
+    effect = {
+
+        debug_log_scopes = yes
+
+        clear_global_variable_list = dr_dynasty_occurrences
+
+        ordered_in_list = { 
+            variable = occurrence
+            max = 10
+            check_range_bounds = no
+            order_by = {
+                add = {
+                    value = var:year
+                    multiply = 365
+                }
+                add = {
+                    value = var:month
+                    multiply = 30
+                }
+                add = {
+                    value = var:day
+                }
+            }
+
+            add_to_global_variable_list = { name = dr_dynasty_occurrences target = this}
+        }
+    }
+}

@@ -31,7 +31,7 @@ execute_prisoner_effect = {
         dr_change_dynastic_relation_between_characters = {
             CHARACTER_A = scope:executioner
             CHARACTER_B = scope:victim
-            REASON = flag:executed_prisoner
+            REASON = flag:executed_prisoner_reason
 			SHOW_AS = flag:tooltip
         }
     }

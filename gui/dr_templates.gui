@@ -11,13 +11,120 @@ template dr_character_window_show {
 
 template dr_dynastic_relation_poup_ui_template {
     tooltipwidget = {
+
         object_tooltip_pop_out = {
+
+            state = {
+                name = _show
+                trigger_on_create = yes
+                on_start = "[GetScriptedGui('dr_dynasti_relation_occurrences_list_gui').Execute( GuiScope.SetRoot( Scope.Story.MakeScope ).End )]" 
+            }
     
             blockoverride "title_text" {
                 text = "Dynastic Relation"
             }
-            blockoverride "description_text" {
-                text = "This "
+            blockoverride "main_description" {
+                vbox = {
+
+                    hbox = {
+                        layoutpolicy_horizontal = expanding
+                        text_multi = {
+                            layoutpolicy_horizontal = expanding
+                            max_width = 400
+                            autoresize = yes
+                            margin_bottom = 5
+                            text = "The relation between dynasties [Scope.Var('source').Dynasty.GetName] and [Scope.Var('target').Dynasty.GetName] stands at [SelectLocalization(GreaterThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0'),'dr_dynastic_relation_positive_val','dr_dynastic_relation_negative_val')]  #weak #italic (-[EmptyScope.ScriptValue('dr_dynasty_relation_yearly_decay_value')]/year) #!#!"
+                        }
+                        expand = {}
+                    }
+
+                    
+
+                    divider_light = {
+                        layoutpolicy_horizontal = expanding
+                        minimumsize = { 0 3 }
+                    }
+
+                    vbox = {
+                        layoutpolicy_horizontal = expanding
+                        layoutpolicy_vertical = expanding
+                        margin_bottom = 10
+                        datamodel = "[GetGlobalList('dr_dynasty_occurrences')]" 
+
+
+                        item = {
+                            hbox = {
+                                layoutpolicy_horizontal = expanding
+                                text_single = { 
+                                    visible = "[EqualTo_string('debug_increase_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_debug_increase_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('debug_decrease_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_debug_decrease_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('grant_titles_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_grant_titles_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('executed_prisoner_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_executed_prisoner_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('marriage_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_marriage_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('declare_war_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_declared_war_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('join_ally_war_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_join_ally_war_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('revoke_title_tyrannical_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_revoke_title_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('revoke_title_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_revoke_title_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('imprison_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_imprison_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('imprison_tyrannical_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_imprison_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('divorce_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_divorce_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('revoke_vassal_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_revoke_vassal_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('break_betrothal_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_break_betrothal_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('befriend_reason_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_befriend_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('grant_independence_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_grant_independence_entry
+                                }
+                                expand = {}
+                            }
+                            
+                        }
+                    }
+                }
             }
         }
     }

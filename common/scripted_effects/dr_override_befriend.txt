@@ -4,7 +4,7 @@ successful_befriend_critical_change_effect = {
     dr_change_dynastic_relation_between_characters = {
         CHARACTER_A = $CHARACTER$
         CHARACTER_B = root
-        REASON = flag:befriend
+        REASON = flag:befriend_reason
         SHOW_AS = flag:tooltip
     }
     #DR - dynastic relations - end

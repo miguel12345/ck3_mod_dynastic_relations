@@ -14,77 +14,73 @@ dr_dynasty_relation_opinion_value = {
     
 }
 
-dr_dynasty_relation_yearly_decay_value = 1.0
+dr_dynasty_relation_yearly_decay_value = 0.5
 
 
 dr_dynasty_relation_action_impact_value = {
     value = 0.0
     if = {
-        limit = {scope:reason = flag:debug_increase}
+        limit = {scope:reason = flag:debug_increase_reason}
         add = dr_dynasty_relation_debug_increase_value
     }
     else_if = {
-        limit = {scope:reason = flag:debug_decrease}
+        limit = {scope:reason = flag:debug_decrease_reason}
         add = dr_dynasty_relation_debug_decrease_value
     }
     else_if = {
-        limit = {scope:reason = flag:executed_prisoner}
+        limit = {scope:reason = flag:executed_prisoner_reason}
         add = dr_dynasty_relation_execute_prisoner_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:marriage}
+        limit = {scope:reason = flag:marriage_reason}
         add = dr_dynasty_relation_marriage_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:grant_titles}
+        limit = {scope:reason = flag:grant_titles_reason}
         add = dr_dynasty_relation_grant_titles_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:join_ally_war}
+        limit = {scope:reason = flag:join_ally_war_reason}
         add = dr_dynasty_relation_join_ally_war_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:revoke_title_tyrannical}
+        limit = {scope:reason = flag:revoke_title_tyrannical_reason}
         add = dr_dynasty_relation_revoke_title_tyranny_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:revoke_title}
+        limit = {scope:reason = flag:revoke_title_reason}
         add = dr_dynasty_relation_revoke_title_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:imprison}
+        limit = {scope:reason = flag:imprison_reason}
         add = dr_dynasty_relation_imprison_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:imprison_tyrannical}
+        limit = {scope:reason = flag:imprison_tyrannical_reason}
         add = dr_dynasty_relation_imprison_tyranny_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:divorce}
+        limit = {scope:reason = flag:divorce_reason}
         add = dr_dynasty_relation_divorce_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:revoke_vassal}
+        limit = {scope:reason = flag:revoke_vassal_reason}
         add = dr_dynasty_relation_revoke_vassal_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:revoke_vassal}
-        add = dr_dynasty_relation_revoke_vassal_impact_value
-    }
-    else_if = {
-        limit = {scope:reason = flag:break_betrothal}
+        limit = {scope:reason = flag:break_betrothal_reason}
         add = dr_dynasty_relation_break_betrothal_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:befriend}
+        limit = {scope:reason = flag:befriend_reason}
         add = dr_dynasty_relation_befriend_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:declare_war}
+        limit = {scope:reason = flag:declare_war_reason}
         add = dr_dynasty_relation_declare_war_impact_value
     }
     else_if = {
-        limit = {scope:reason = flag:grant_independence}
+        limit = {scope:reason = flag:grant_independence_reason}
         add = dr_dynasty_relation_grant_independence_impact_value
     }
 }

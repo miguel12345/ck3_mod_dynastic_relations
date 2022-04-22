@@ -41,14 +41,11 @@ imprison_tyranny_effect = {
 		custom_tooltip = IS_ALLOWED_TO_IMPRISON_DESC
 
         #DR - dynastic relations - begin
-
-        dynasty = {
-            dr_change_dynastic_relation_between_characters = {
-                CHARACTER_A = scope:actor
-                CHARACTER_B = scope:recipient
-                REASON = flag:imprison
-                SHOW_AS = flag:tooltip
-            }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:imprison_reason
+            SHOW_AS = flag:tooltip
         }
         #DR - dynastic relations - end
 	}
@@ -64,13 +61,11 @@ imprison_tyranny_effect = {
 		custom_tooltip = IS_ALLOWED_TO_IMPRISON_NO_RECIPIENT_DESC
 
         #DR - dynastic relations - begin
-        dynasty = {
-            dr_change_dynastic_relation_between_characters = {
-                CHARACTER_A = scope:actor
-                CHARACTER_B = scope:recipient
-                REASON = flag:imprison
-                SHOW_AS = flag:tooltip
-            }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:imprison_reason
+            SHOW_AS = flag:tooltip
         }
         #DR - dynastic relations - end
 	}
@@ -79,13 +74,11 @@ imprison_tyranny_effect = {
 		add_tyranny = imprisonment_tyranny_gain
 
         #DR - dynastic relations - begin
-        dynasty = {
-            dr_change_dynastic_relation_between_characters = {
-                CHARACTER_A = scope:actor
-                CHARACTER_B = scope:recipient
-                REASON = flag:imprison_tyrannical
-                SHOW_AS = flag:tooltip
-            }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:imprison_tyrannical_reason
+            SHOW_AS = flag:tooltip
         }
         #DR - dynastic relations - end
 	}

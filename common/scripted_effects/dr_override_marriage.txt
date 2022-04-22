@@ -4,7 +4,7 @@ marriage_interaction_on_accept_effect = {
     dr_change_dynastic_relation_between_characters = {
 		CHARACTER_A = scope:secondary_actor
 		CHARACTER_B = scope:secondary_recipient
-		REASON = flag:marriage
+		REASON = flag:marriage_reason
 		SHOW_AS = flag:description
 	}
     #DR - dynastic relations - end

@@ -1,0 +1,57 @@
+dr_dynastic_occurrence_story = {
+
+    on_setup = {
+
+        debug_log_scopes = yes
+
+        set_variable = {
+            name = source_character
+            value = story_owner.var:source_character
+        }
+
+        set_variable = {
+            name = target_character
+            value = story_owner.var:target_character
+        }
+
+        
+        set_variable = {
+            name = reason
+            value = story_owner.var:reason
+        }
+
+        
+        set_variable = {
+            name = value
+            value = story_owner.var:value
+        }
+
+        #There is no Date datatype available for modders. So I need to store day/month/year separately
+        set_variable = {
+            name = month
+            value = current_month
+        }
+        set_variable = {
+            name = year
+            value = current_year
+        }
+        set_variable = {
+            name = day
+            value = current_day
+        }
+
+        story_owner = {
+            remove_variable = source_character
+            remove_variable = target_character
+            remove_variable = value
+        }
+    }
+
+    on_end = {
+
+    }
+
+    on_owner_death = {
+
+    }
+}

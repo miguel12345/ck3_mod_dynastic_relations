@@ -58,7 +58,7 @@ grant_independence_interaction = {
         dr_change_dynastic_relation_between_characters = {
             CHARACTER_A = scope:actor
             CHARACTER_B = scope:recipient
-            REASON = flag:grant_independence
+            REASON = flag:grant_independence_reason
             SHOW_AS = flag:tooltip
         }
         #DR - dynastic relations - end

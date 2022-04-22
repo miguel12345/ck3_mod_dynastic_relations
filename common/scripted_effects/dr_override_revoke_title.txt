@@ -15,7 +15,7 @@ revocation_tyranny_effect = {
             dr_change_dynastic_relation_between_characters = {
                 CHARACTER_A = scope:actor
                 CHARACTER_B = scope:recipient
-                REASON = flag:revoke_title_tyrannical
+                REASON = flag:revoke_title_tyrannical_reason
                 SHOW_AS = flag:tooltip
             }
         }
@@ -43,7 +43,7 @@ revocation_tyranny_effect = {
         dr_change_dynastic_relation_between_characters = {
             CHARACTER_A = scope:actor
             CHARACTER_B = scope:recipient
-            REASON = flag:revoke_title
+            REASON = flag:revoke_title_reason
             SHOW_AS = flag:tooltip
         }
         #DR - dynastic relations - end

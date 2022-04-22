@@ -167,10 +167,34 @@ dr_change_dynastic_relation_between_characters = {
             }
         }
 
+        
+        
+
         # This is only executed when the action is performed
         if = {
 
             limit = {  exists = scope:dynastic_relation }
+
+            #Record dynastic occurrence. Since it is a story, we need to put it somewhere
+            $CHARACTER_A$ = {
+                set_variable = { name = source_character value = scope:source_character}
+                set_variable = { name = target_character value = scope:target_character}
+                set_variable = { name = reason value = scope:reason}
+                set_variable = { name = value value = scope:change_val}
+
+                create_story = {
+                    type = dr_dynastic_occurrence_story
+                    save_scope_as = new_dynastic_occurrence
+                }
+                
+            }
+
+            scope:dynastic_relation = {
+                add_to_variable_list = {
+                    name = occurrence
+                    target = scope:new_dynastic_occurrence
+                }
+            }
 
             scope:dynastic_relation = {
 
@@ -422,22 +446,77 @@ dr_internal_prevent_flag_warnings_effect = {
 
     set_variable = {
         name = test
-        value = flag:debug_increase
+        value = flag:debug_increase_reason
     }
 
     set_variable = {
         name = test
-        value = flag:debug_decrease
+        value = flag:debug_decrease_reason
     }
 
     set_variable = {
         name = test
-        value = flag:marriage
+        value = flag:marriage_reason
     }
 
     set_variable = {
         name = test
-        value = flag:executed_prisoner
+        value = flag:executed_prisoner_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:imprison_tyrannical_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:imprison_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:divorce_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:befriend_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:break_betrothal_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:grant_titles_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:join_ally_war_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:revoke_title_tyrannical_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:revoke_title_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:revoke_vassal_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:declare_war_reason
     }
 
     set_variable = {
@@ -448,6 +527,11 @@ dr_internal_prevent_flag_warnings_effect = {
     set_variable = {
         name = test
         value = flag:description
+    }
+
+    set_variable = {
+        name = test
+        value = flag:grant_independence_reason
     }
 
     this.var:test = {
@@ -492,3 +576,5 @@ dr_debug_create_ally_and_war_situation_effect = {
         }
     }
 }
+
+#

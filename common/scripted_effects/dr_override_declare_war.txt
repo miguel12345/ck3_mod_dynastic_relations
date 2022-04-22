@@ -6,7 +6,7 @@ on_declared_war = {
     dr_change_dynastic_relation_between_characters = {
         CHARACTER_A = scope:attacker
         CHARACTER_B = scope:defender
-        REASON = flag:declare_war
+        REASON = flag:declare_war_reason
         SHOW_AS = flag:tooltip
     }
     #DR - dynastic relations - end

@@ -253,7 +253,7 @@
 		dr_change_dynastic_relation_between_characters = {
 			CHARACTER_A = scope:actor
 			CHARACTER_B = scope:recipient
-			REASON = flag:join_ally_war
+			REASON = flag:join_ally_war_reason
 			SHOW_AS = flag:tooltip
 		}
 		#DR - dynastic relations - end
