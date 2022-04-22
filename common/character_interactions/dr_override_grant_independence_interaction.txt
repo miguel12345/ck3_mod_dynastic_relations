@@ -1,0 +1,162 @@
+grant_independence_interaction = { 
+	category = interaction_category_vassal
+	force_notification = yes
+	greeting = positive
+	notification_text = GRANT_INDEPENDENCE_INTERACTION_NOTIFICATION
+
+	desc = grant_independence_interaction_desc
+	
+	is_shown = {
+		scope:recipient = {
+			is_vassal_of = scope:actor
+		}
+		NOT = { scope:recipient = scope:actor }
+	}
+
+	is_valid_showing_failures_only = {
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } }
+		scope:actor = {
+			is_independent_ruler = yes
+			NOT = {
+				is_at_war = yes
+			}
+		}
+		custom_description = {
+			text = is_at_war_with_another_vassal
+			object = scope:recipient
+			NOT = {
+				scope:actor = {
+					any_vassal_or_below = {
+						is_at_war_with = scope:recipient
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = is_de_jure_vassal_check
+			object = scope:recipient
+			NOT = { #Can not be used against de jure vassals
+				scope:recipient.primary_title = {
+					any_this_title_or_de_jure_above = {
+						holder = scope:actor
+					}
+				}
+			}
+		}
+	}
+
+	auto_accept = yes
+
+	on_accept = { 
+
+        #DR - dynastic relations - begin
+
+        scope:recipient = {
+            add_gold = 40
+        }
+
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:actor
+            CHARACTER_B = scope:recipient
+            REASON = flag:grant_independence
+            SHOW_AS = flag:tooltip
+        }
+        #DR - dynastic relations - end
+
+		scope:actor = {
+			stress_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = minor_stress_impact_gain
+				greedy = minor_stress_impact_gain
+			}
+			hidden_effect = {
+				send_interface_toast = {
+					title = grant_vassal_independence_interaction_toast
+					left_icon = scope:actor
+					right_icon = scope:recipient
+
+					custom_tooltip = grant_vassal_independence_interaction_toast_desc
+				}
+			}
+		}
+
+		scope:recipient = {
+			#Send notifications
+			if = {
+				limit = {
+					any_liege_or_above = {
+						is_ai = no
+						NOT = { this = scope:actor }
+					}
+				}
+				every_liege_or_above = {
+					limit = {
+						is_ai = no
+						NOT = { this = scope:actor }
+					}
+					trigger_event = vassal_interaction.0023
+				}
+			}
+			if = {
+				limit = {
+					any_liege_or_above = {
+						any_vassal = {
+							is_ai = no
+							NOR = {
+								this = scope:recipient
+								this = scope:actor
+							}
+						}
+					}
+				}
+				every_liege_or_above = {
+					limit = {
+						any_vassal = {
+							is_ai = no
+							NOR = {
+								this = scope:recipient
+								this = scope:actor
+							}
+						}
+					}
+					every_vassal = {
+						limit = {
+							is_ai = no
+							NOT = { this = scope:recipient }
+						}
+						trigger_event = {
+							id = vassal_interaction.0022
+							days = 3
+						}
+					}
+				}
+			}
+
+			add_opinion = {
+				target = scope:actor
+				modifier = granted_independence_opinion
+			}
+
+			add_truce_both_ways = {
+				character = scope:actor
+				days = 3650
+				name = TRUCE_GRANT_INDEPENDENCE
+			}
+
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = yes
+			}
+			becomes_independent = {
+				change = scope:change
+			}
+
+			resolve_title_and_vassal_change = scope:change
+		}
+	}
+
+	ai_will_do = {
+		base = 0 #The AI should never do this!
+	}
+}
