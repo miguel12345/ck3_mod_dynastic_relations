@@ -1,0 +1,104 @@
+@overlay_alpha = 0.4
+
+types CoATypes
+{
+    type coa_house_big = widget
+	{
+		size = { 119 120 }
+		hbox = {
+			margin = { 3 5 }
+
+			coa_house_lowborn_widget = {
+				size = { 113 110 }
+				blockoverride "icon_size"
+				{
+					size = { 86 86 }
+				}
+			}
+
+			coa_house_widget = {
+				size = { 113 110 }
+				using = CoA_House_Defaults
+
+				coat_of_arms_icon = {
+					parentanchor = center
+					size = { 86 86 }
+					coat_of_arms = "[DynastyHouse.GetHouseCoA.GetTexture('(int32)172','(int32)172')]"
+					coat_of_arms_slot = "[DynastyHouse.GetHouseCoA.GetSlot('(int32)172','(int32)172')]"
+					coat_of_arms_mask = "gfx/interface/coat_of_arms/house_mask.dds"
+
+					modify_texture = {
+						texture = "gfx/interface/coat_of_arms/coa_overlay.dds"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+				}
+
+				coa_house_frame = {
+					framesize = { 113 110 }
+					size = { 113 110 }
+					texture = "gfx/interface/coat_of_arms/house_86.dds"
+				}
+
+			}
+		}
+
+        container = {
+        
+            datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
+            datacontext = "[CharacterWindow.GetCharacter]"
+    
+            visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
+     
+            state = {
+                name = character_window_refresh
+                on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
+            }
+        
+            name = "dr_dynastic_relation"
+            parentanchor = bottom|left
+            position = { 20 -10 }
+    
+            background = {
+                name = "portrait_opinion_bg"
+                texture = "gfx/interface/component_tiles/solid_black_label.dds"
+                spritetype = Corneredtiled
+                spriteborder = { 20 20 }
+                margin = { 8 1 }
+                texture_density = 2
+            }
+    
+            text_single = {
+    
+                autoresize = yes
+                text = "#N [GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue] #!"
+                #visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                default_format = "#low"
+                align = top|hcenter 
+            }
+    
+            text_single = {
+    
+                autoresize = yes
+                text = "#P +[GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue] #!"
+                visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                default_format = "#low"
+                align = top|hcenter 
+            }
+    
+            text_single = {
+    
+                autoresize = yes
+                text = "[GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue]"
+                visible = "[EqualTo_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                default_format = "#low"
+                align = top|hcenter 
+            }
+    
+            using = dr_dynastic_relation_poup_ui_template
+        }
+        
+	}
+
+}
