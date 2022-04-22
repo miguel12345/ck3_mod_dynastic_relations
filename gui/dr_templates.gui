@@ -30,7 +30,6 @@ template dr_dynastic_relation_poup_ui_template {
                         layoutpolicy_horizontal = expanding
                         text_multi = {
                             layoutpolicy_horizontal = expanding
-                            max_width = 400
                             autoresize = yes
                             margin_bottom = 5
                             text = "The relation between dynasties [Scope.Var('source').Dynasty.GetName] and [Scope.Var('target').Dynasty.GetName] stands at [SelectLocalization(GreaterThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0'),'dr_dynastic_relation_positive_val','dr_dynastic_relation_negative_val')]  #weak #italic (-[EmptyScope.ScriptValue('dr_dynasty_relation_yearly_decay_value')]/year) #!#!"
@@ -118,6 +117,14 @@ template dr_dynastic_relation_poup_ui_template {
                                 text_single = {
                                     visible = "[EqualTo_string('grant_independence_reason',Scope.Var('reason').GetFlagName)]"
                                     text = dr_dynastic_relation_occurrences_grant_independence_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('murder_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_murder_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('attempted_murder_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_attempted_murder_entry
                                 }
                                 expand = {}
                             }

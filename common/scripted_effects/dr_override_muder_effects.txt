@@ -1,0 +1,130 @@
+murder_consequences_known_or_exposed_effect = {
+
+    #DR - dynastic relations - begin
+    dr_change_dynastic_relation_between_characters = {
+        CHARACTER_A = $MURDERER$
+        CHARACTER_B = $VICTIM$
+        REASON = flag:murder_reason
+        SHOW_AS = flag:tooltip
+    }
+    #DR - dynastic relations - end
+
+	$MURDERER$ = {
+		###ADD TRAITS###
+		#Force tooltip is used for everyone but POV to make sure expose secret events looks right for everyone, even though the trait can only be added once. Kinslayer works the same way.
+		add_trait_only_force_tooltip_if_not_pov_effect = { TRAIT = murderer POV = $POV$ }
+		add_kinslayer_trait_or_nothing_effect = { VICTIM = $VICTIM$ }
+		
+		if = { #Add piety penalty if the murder was unjust
+			limit = {
+				NOR = {
+					any_close_family_member = {
+						even_if_dead = yes
+						exists = killer
+						killer = $VICTIM$
+					}
+					any_spouse = {
+						even_if_dead = yes
+						exists = killer
+						killer = $VICTIM$
+					}
+				}
+			}
+			add_piety = medium_piety_loss
+		}
+
+		###OPINION AND DREAD###
+		#Hide this from POV if they're not the murderer
+		if = {
+			limit = { this = $POV$ }
+			add_dread = 15
+			murder_opinion_effect = { VICTIM = $VICTIM$ MURDERER = $MURDERER$ }
+		}
+		else = {
+			hidden_effect = {
+				add_dread = 15
+				murder_opinion_effect = { VICTIM = $VICTIM$ MURDERER = $MURDERER$ }
+			}
+		}
+		# There are some things you just shouldn't do
+		show_as_tooltip = {
+			if = {
+				limit = { $VICTIM$ = { has_character_flag = is_party_baron } }
+				add_character_modifier = {
+					modifier = party_baron_murdered_the_joy_of_life_modifier
+				}
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					OR = {
+						exists = local_var:murdered_party_baron
+						exists = scope:secret.var:murdered_party_baron
+					}
+				}
+				add_character_modifier = {
+					modifier = party_baron_murdered_the_joy_of_life_modifier
+				}
+			}
+		}
+	}	
+}
+
+attempted_murder_opinion_effect = {
+
+    #DR - dynastic relations - begin
+    dr_change_dynastic_relation_between_characters = {
+        CHARACTER_A = $MURDERER$
+        CHARACTER_B = $VICTIM$
+        REASON = flag:attempted_murder_reason
+        SHOW_AS = flag:tooltip
+    }
+    #DR - dynastic relations - end
+
+	$VICTIM$ = {
+		if = {
+			limit = { is_alive = yes }
+			add_opinion = {
+				target = $MURDERER$
+				modifier = attempted_murder_me_crime
+			}
+			hidden_effect = {
+				add_opinion = {
+					target = $MURDERER$
+					modifier = murder_personal_grudge_opinion
+					years = 2
+				}
+			}
+		}
+
+		every_spouse = {
+			limit = { NOT = { this = $MURDERER$ } }
+			add_to_temporary_list = close_family_murder_opinion_list
+		}
+		every_close_family_member = {
+			limit = { NOT = { this = $MURDERER$ } }
+			add_to_temporary_list = close_family_murder_opinion_list
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = close_family_murder_opinion_list
+					always = yes
+				}
+			}
+			every_in_list = {
+				list = close_family_murder_opinion_list
+				custom = all_close_family_and_spouses
+
+				add_opinion = {
+					target = $MURDERER$
+					modifier = attempted_murder_close_family_crime
+					years = 20
+				}
+			}
+		}
+
+	}
+}

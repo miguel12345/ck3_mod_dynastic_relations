@@ -105,8 +105,6 @@ dr_dynasti_relation_occurrences_list_gui = {
 
     effect = {
 
-        debug_log_scopes = yes
-
         clear_global_variable_list = dr_dynasty_occurrences
 
         ordered_in_list = { 
