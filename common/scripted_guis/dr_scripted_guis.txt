@@ -16,15 +16,38 @@ dr_dynastic_relation_character_scriped_gui = {
             save_scope_as = source
         }
 
-        dr_save_dynastic_relation_between_dynasties_in_scope = {
-            DYNASTY_A = scope:source.dynasty
-            DYNASTY_B = scope:target.dynasty
-            SCOPE_NAME = dynastic_relation_val
+        remove_global_variable = dr_character_window_current_character
+        remove_global_variable = dr_character_window_current_dynastic_relation
+        remove_global_variable = dr_character_window_current_dynastic_relation_dynasty_a
+        remove_global_variable = dr_character_window_current_dynastic_relation_dynasty_b
+
+        dr_find_dynastic_relation_between_characters_and_save_in_scope = {
+            CHARACTER_A = scope:source
+            CHARACTER_B = scope:target
+            SCOPE_NAME = dynastic_relation
         }
 
-        set_variable = {
-            name = dynastic_relation_val
-            value = scope:dynastic_relation_val
+        set_global_variable = {
+            name = dr_character_window_current_character
+            value = scope:target
+        }
+
+        if = {
+            limit = { exists = scope:dynastic_relation }
+            set_global_variable = {
+                name = dr_character_window_current_dynastic_relation
+                value = scope:dynastic_relation
+            }
+        }
+        else = {
+            set_global_variable = {
+                name = dr_character_window_current_dynastic_relation_dynasty_a
+                value = scope:source.dynasty
+            }
+            set_global_variable = {
+                name = dr_character_window_current_dynastic_relation_dynasty_b
+                value = scope:target.dynasty
+            }
         }
 
 	}

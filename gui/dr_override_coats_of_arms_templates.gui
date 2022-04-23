@@ -43,6 +43,7 @@ types CoATypes
 			}
 		}
 
+        #DR - Dyanstic relation - Begin
         container = {
         
             datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
@@ -51,7 +52,8 @@ types CoATypes
             visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
      
             state = {
-                name = character_window_refresh
+                name = dr_character_window_refresh 
+                trigger_when = "[Not(ObjectsEqual(CharacterWindow.GetCharacter.Self,GetGlobalVariable('dr_character_window_current_character').GetCharacter.Self))]"
                 on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
             }
         
@@ -67,37 +69,55 @@ types CoATypes
                 margin = { 8 1 }
                 texture_density = 2
             }
+
+            container = {
+                visible = "[GetGlobalVariable('dr_character_window_current_dynastic_relation').IsSet]"
+                datacontext = "[GetGlobalVariable('dr_character_window_current_dynastic_relation')]"
+                text_single = {
     
-            text_single = {
-    
-                autoresize = yes
-                text = "#N [GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue] #!"
-                #visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                default_format = "#low"
-                align = top|hcenter 
+                    autoresize = yes
+                    text = "#N [Scope.Var('value').GetValue] #!"
+                    visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                    default_format = "#low"
+                    align = top|hcenter 
+                }
+        
+                text_single = {
+        
+                    autoresize = yes
+                    text = "#P +[Scope.Var('value').GetValue] #!"
+                    visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                    default_format = "#low"
+                    align = top|hcenter 
+                }
+        
+                text_single = {
+        
+                    autoresize = yes
+                    text = "[Scope.Var('value').GetValue]"
+                    visible = "[EqualTo_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                    default_format = "#low"
+                    align = top|hcenter 
+                }
+        
+                using = dr_dynastic_relation_poup_ui_template
+            }
+            container = {
+                visible = "[Not(GetGlobalVariable('dr_character_window_current_dynastic_relation').IsSet)]"
+                text_single = {
+        
+                    autoresize = yes
+                    text = "0"
+                    default_format = "#low"
+                    align = top|hcenter 
+                }
+        
+                using = dr_empty_dynastic_relation_poup_ui_template
             }
     
-            text_single = {
-    
-                autoresize = yes
-                text = "#P +[GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue] #!"
-                visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                default_format = "#low"
-                align = top|hcenter 
-            }
-    
-            text_single = {
-    
-                autoresize = yes
-                text = "[GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue]"
-                visible = "[EqualTo_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                default_format = "#low"
-                align = top|hcenter 
-            }
-    
-            using = dr_dynastic_relation_poup_ui_template
+            
         }
+        #DR - Dyanstic relation - End
         
 	}
 
