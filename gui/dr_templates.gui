@@ -21,27 +21,38 @@ template dr_dynastic_relation_poup_ui_template {
             }
     
             blockoverride "title_text" {
-                text = "Dynastic Relation"
+                text = dr_dynastic_relation_tooltip_title
+            }
+            blockoverride "concept_link" {
+                visible = no
             }
             blockoverride "main_description" {
                 vbox = {
 
-                    hbox = {
-                        layoutpolicy_horizontal = expanding
-                        text_multi = {
-                            layoutpolicy_horizontal = expanding
-                            autoresize = yes
-                            margin_bottom = 5
-                            text = "The relation between dynasties [Scope.Var('source').Dynasty.GetName] and [Scope.Var('target').Dynasty.GetName] stands at [SelectLocalization(GreaterThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0'),'dr_dynastic_relation_positive_val','dr_dynastic_relation_negative_val')]  #weak #italic (-[EmptyScope.ScriptValue('dr_dynasty_relation_yearly_decay_value')]/year) #!#!"
-                        }
-                        expand = {}
-                    }
+                    # hbox = {
+                    #     layoutpolicy_horizontal = expanding
+                    #     text_multi = {
+                    #         layoutpolicy_horizontal = expanding
+                    #         autoresize = yes
+                    #         margin_bottom = 5
+                    #         text = dr_dynastic_relation_tooltip_desc
+                    #     }
+                    #     expand = {}
+                    # }
 
                     
 
-                    divider_light = {
+                    # divider_light = {
+                    #     layoutpolicy_horizontal = expanding
+                    #     minimumsize = { 0 3 }
+                    # }
+
+                    hbox = {
                         layoutpolicy_horizontal = expanding
-                        minimumsize = { 0 3 }
+                        text_single = {
+                            text = dr_dynastic_relation_tooltip_list_occurrences_title
+                        }
+                        expand = {}
                     }
 
                     vbox = {
@@ -147,24 +158,13 @@ template dr_empty_dynastic_relation_poup_ui_template {
         object_tooltip_pop_out = {
 
     
+            blockoverride "concept_link" {
+                visible = no
+            }
             blockoverride "title_text" {
-                text = "Dynastic Relation"
+                text = dr_empty_dynastic_relation_tooltip_title
             }
             blockoverride "main_description" {
-                vbox = {
-
-                    hbox = {
-                        layoutpolicy_horizontal = expanding
-                        text_multi = {
-                            layoutpolicy_horizontal = expanding
-                            autoresize = yes
-                            margin_bottom = 5
-                            text = "The relation between dynasties [GetGlobalVariable('dr_character_window_current_dynastic_relation_dynasty_a').Dynasty.GetName] and [GetGlobalVariable('dr_character_window_current_dynastic_relation_dynasty_b').Dynasty.GetName] stands at 0"
-                        }
-                        expand = {}
-                    }
-
-                }
             }
         }
     }

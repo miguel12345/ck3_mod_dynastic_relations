@@ -76,26 +76,7 @@ types CoATypes
                 text_single = {
     
                     autoresize = yes
-                    text = "#N [Scope.Var('value').GetValue] #!"
-                    visible = "[LessThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                    default_format = "#low"
-                    align = top|hcenter 
-                }
-        
-                text_single = {
-        
-                    autoresize = yes
-                    text = "#P +[Scope.Var('value').GetValue] #!"
-                    visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
-                    default_format = "#low"
-                    align = top|hcenter 
-                }
-        
-                text_single = {
-        
-                    autoresize = yes
-                    text = "[Scope.Var('value').GetValue]"
-                    visible = "[EqualTo_CFixedPoint(GetPlayer.MakeScope.Var('dynastic_relation_val').GetValue, '(CFixedPoint)0')]"
+                    text = dr_character_window_relation_value
                     default_format = "#low"
                     align = top|hcenter 
                 }
@@ -107,7 +88,7 @@ types CoATypes
                 text_single = {
         
                     autoresize = yes
-                    text = "0"
+                    text = dr_character_window_relation_neutral_value
                     default_format = "#low"
                     align = top|hcenter 
                 }

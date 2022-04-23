@@ -187,6 +187,16 @@ dr_change_dynastic_relation_between_characters = {
                     name = value
                     add = scope:change_val
                 }
+
+                #Apply min/max restrictions
+                if = {
+                    limit = {var:value < dr_dynasty_relation_min_value}
+                    set_variable = {name = value value = dr_dynasty_relation_min_value}
+                }
+                else_if = {
+                    limit = {var:value > dr_dynasty_relation_max_value}
+                    set_variable = {name = value value = dr_dynasty_relation_max_value}
+                }
             
                 # Updates friends/rival relation status
                 dr_update_dynastic_relation_friends_rivals_status_effect = yes
@@ -322,22 +332,22 @@ dr_update_character_opinions_effect = {
 dr_update_dynastic_relation_friends_rivals_status_effect = {
 
     if = { # Set dynasties as friends if threshold is passed and they are not friends yet
-        limit = { AND = { NOT = {exists = var:friends} var:value >= 50 } }
+        limit = { AND = { NOT = {exists = var:friends} var:value >= dr_dynasty_relation_friends_threshold_value } }
         set_variable = {name = friends value = 1}
         trigger_event = {  on_action = dr_on_action_dynasties_became_friends } 
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
-        limit = { AND = { exists = var:friends var:value <= 40 } }
+        limit = { AND = { exists = var:friends var:value <= dr_dynasty_relation_friends_to_neutral_threshold_value } }
         trigger_event = {  on_action = dr_on_action_dynasties_stopped_being_friends } 
         remove_variable = friends
     }
     else_if = { # Set dynasties as rivals if threshold is passed and they are not rivals yet
-        limit = { AND = { NOT = {exists = var:rivals} var:value <= -50 } }
+        limit = { AND = { NOT = {exists = var:rivals} var:value <= dr_dynasty_relation_rivals_threshold_value } }
         set_variable = {name = rivals value = 1}
         trigger_event = {  on_action = dr_on_action_dynasties_became_rivals } 
     }
     else_if = { # Set dynasties as neutral (not friends) if value drops below the neutrality threshold and they are friends
-        limit = { AND = { exists = var:rivals var:value >= -40 } }
+        limit = { AND = { exists = var:rivals var:value >= dr_dynasty_relation_rivals_to_neutral_threshold_value } }
         trigger_event = {  on_action = dr_on_action_dynasties_stopped_being_rivals } 
         remove_variable = rivals
     }

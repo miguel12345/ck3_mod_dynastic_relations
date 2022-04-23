@@ -1,0 +1,3 @@
+dynastic_relation = {
+	texture = "gfx/interface/icons/dr_icon_dynastic_relation.dds"
+}

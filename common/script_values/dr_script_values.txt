@@ -15,6 +15,12 @@ dr_dynasty_relation_opinion_value = {
 }
 
 dr_dynasty_relation_yearly_decay_value = 0.5
+dr_dynasty_relation_min_value = -70
+dr_dynasty_relation_max_value = 70
+dr_dynasty_relation_friends_threshold_value = 50
+dr_dynasty_relation_friends_to_neutral_threshold_value = 40
+dr_dynasty_relation_rivals_threshold_value = -50
+dr_dynasty_relation_rivals_to_neutral_threshold_value = -40
 
 
 dr_dynasty_relation_action_impact_value = {
