@@ -1,4 +1,4 @@
-marriage_interaction_on_accept_effect = { 
+﻿marriage_interaction_on_accept_effect = { 
 
     #DR - dynastic relations - begin
 	#Only for marriages, not bethrotals

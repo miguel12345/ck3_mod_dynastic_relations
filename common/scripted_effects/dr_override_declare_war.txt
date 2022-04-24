@@ -1,4 +1,4 @@
-on_declared_war = {
+﻿on_declared_war = {
 
     # debug_log = "On war declared!"
 	# debug_log_scopes = yes

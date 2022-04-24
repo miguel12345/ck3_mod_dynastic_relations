@@ -1,4 +1,4 @@
-
+﻿
 
 dr_can_dynastic_relation_be_established_betwen_characters = {
     AND = {

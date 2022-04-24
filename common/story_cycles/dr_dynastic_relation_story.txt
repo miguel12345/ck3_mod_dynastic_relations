@@ -1,4 +1,4 @@
-dr_dynastic_relation_story = {
+﻿dr_dynastic_relation_story = {
     
     on_setup = {
 

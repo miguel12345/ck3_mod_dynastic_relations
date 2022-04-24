@@ -1,4 +1,4 @@
-grant_independence_interaction = { 
+﻿grant_independence_interaction = { 
 	category = interaction_category_vassal
 	force_notification = yes
 	greeting = positive

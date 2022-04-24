@@ -1,4 +1,4 @@
-
+﻿
 # Should be called when scoped to a character. Assumes that dynastic relation can be established
 dr_establish_dynastic_relation_with_dynasty_of = {
 

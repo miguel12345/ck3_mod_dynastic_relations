@@ -1,4 +1,4 @@
-#DR - Dynastic relations: This is the vanilla execute_prisoner_effect with DR effects added
+﻿#DR - Dynastic relations: This is the vanilla execute_prisoner_effect with DR effects added
 #Used for all executions
 execute_prisoner_effect = {
 

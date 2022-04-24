@@ -1,4 +1,4 @@
-call_ally_interaction_event_effect = {
+﻿call_ally_interaction_event_effect = {
 
 	#DR - dynastic relations - begin
     dr_change_dynastic_relation_between_characters = {

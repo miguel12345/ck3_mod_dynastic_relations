@@ -1,4 +1,4 @@
-
+﻿
 #Add on_action to yearly_global_pulse
 yearly_global_pulse = {
     on_actions = { # "On_actions" inside on_action are appended, thus can safely use the existing on_action from the table below.

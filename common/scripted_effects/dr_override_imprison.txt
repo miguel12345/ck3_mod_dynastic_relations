@@ -1,4 +1,4 @@
-imprison_tyranny_effect = {
+﻿imprison_tyranny_effect = {
 
 
 

@@ -1,4 +1,4 @@
-dr_debug_interaction_increase_dynastic_relation = {
+﻿dr_debug_interaction_increase_dynastic_relation = {
 	category = interaction_category_friendly
 	common_interaction = yes
 

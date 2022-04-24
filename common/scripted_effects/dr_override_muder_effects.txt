@@ -1,4 +1,4 @@
-murder_consequences_known_or_exposed_effect = {
+﻿murder_consequences_known_or_exposed_effect = {
 
     #DR - dynastic relations - begin
     dr_change_dynastic_relation_between_characters = {

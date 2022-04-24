@@ -1,4 +1,4 @@
-extramarital_sex_exposure_consequences_effect = {
+﻿extramarital_sex_exposure_consequences_effect = {
 
 	save_temporary_scope_as = sex_character
 	save_temporary_scope_value_as = {

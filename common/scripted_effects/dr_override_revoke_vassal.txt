@@ -1,4 +1,4 @@
-vassal_revocation_tyranny_effect = {
+﻿vassal_revocation_tyranny_effect = {
 
     #DR - dynastic relations - begin
     dr_change_dynastic_relation_between_characters = {

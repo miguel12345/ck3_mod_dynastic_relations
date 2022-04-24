@@ -1,4 +1,4 @@
-namespace = dr_events
+﻿namespace = dr_events
 
 
 # This event is fired when a dynasty head dies. 
@@ -9,6 +9,7 @@ dr_events.001 = {
     immediate = { 
 
         dynasty = {
+            
             every_in_list = {
                 variable = dr_dynasty_relations
                 dr_update_dynastic_relation_heads_friends_rivals_status_effects = yes

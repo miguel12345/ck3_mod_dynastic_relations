@@ -1,4 +1,4 @@
-types CharacterInteraction
+﻿types CharacterInteraction
 {
     type vbox_marriage_interaction_marriage_details = vbox {
         margin = { 15 15 }

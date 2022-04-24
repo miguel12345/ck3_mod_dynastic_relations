@@ -1,4 +1,4 @@
-revocation_tyranny_effect = {
+﻿revocation_tyranny_effect = {
 	if = {
 		limit = {
 			title_revocation_is_tyrannical_trigger = yes

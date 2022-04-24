@@ -1,4 +1,4 @@
-@overlay_alpha = 0.4
+﻿@overlay_alpha = 0.4
 
 types CoATypes
 {

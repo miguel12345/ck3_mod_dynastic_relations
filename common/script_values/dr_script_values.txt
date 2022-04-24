@@ -1,4 +1,4 @@
-
+﻿
 
 dr_dynasty_relation_opinion_value = {
     add = scope:current_dynasty_relation.var:value

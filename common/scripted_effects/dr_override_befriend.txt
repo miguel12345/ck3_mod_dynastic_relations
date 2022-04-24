@@ -1,4 +1,4 @@
-successful_befriend_critical_change_effect = {
+﻿successful_befriend_critical_change_effect = {
     
     #DR - dynastic relations - begin
     dr_change_dynastic_relation_between_characters = {

@@ -1,4 +1,4 @@
-dynastic_relation = {
+﻿dynastic_relation = {
 	alias = { dynastic_relations }
 	texture = "gfx/interface/icons/dr_icon_dynastic_relation.dds"
 }

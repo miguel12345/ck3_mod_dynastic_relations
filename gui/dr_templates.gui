@@ -1,4 +1,4 @@
-
+﻿
 template dr_character_window_show {
     datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
     datacontext = "[CharacterWindow.GetCharacter]"
