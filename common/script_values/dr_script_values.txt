@@ -467,26 +467,36 @@ dr_dynasty_relation_grant_independence_impact_value = {
 # Murder
 dr_dynasty_relation_murder_impact_value = {
     value = -3.0 #Non-important member of a dynasty Murdering another non-important member of another dynasty
-    if = { # Murdering the dynasty head
-        limit = {scope:target_character.dynasty.dynast = scope:target_character}
-        add = -65.0
+
+    #If the victim was the last member of the dynasty, there will be no dynasty head
+    if = {
+        limit = {exists = scope:target_character.dynasty.dynast}
+
+        if = { # Murdering the dynasty head (the special flag is added in dr_on_character_death_schedule_action)
+            limit = {
+                exists = scope:target_character.dynasty.var:previous_head
+                scope:target_character.dynasty.var:previous_head = scope:target_character
+            }
+            add = -65.0
+        }
+        else_if = { # Murdering a close family member of the dynasty head
+            limit = { scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }}
+            add = -45.0
+        }
+        else_if = { # Murdering performed by the dynasty head
+            limit = { scope:source_character.dynasty.dynast = scope:source_character }
+            add = -15.0
+        }
+        else_if = { # Murdering performed by a close family member of dynasty head
+            limit = { scope:source_character = {
+                is_close_family_of = scope:source_character.dynasty.dynast
+            } }
+            add = -5.0
+        }
     }
-    else_if = { # Murdering a close family member of the dynasty head
-        limit = { scope:target_character = {
-            is_close_family_of = scope:target_character.dynasty.dynast
-        }}
-        add = -45.0
-    }
-    else_if = { # Murdering performed by the dynasty head
-        limit = { scope:source_character.dynasty.dynast = scope:source_character }
-        add = -15.0
-    }
-    else_if = { # Murdering performed by a close family member of dynasty head
-        limit = { scope:source_character = {
-            is_close_family_of = scope:source_character.dynasty.dynast
-        } }
-        add = -5.0
-    }
+    
 }
 
 # Attempted Murder

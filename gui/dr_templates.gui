@@ -1,13 +1,4 @@
 ﻿
-template dr_character_window_show {
-    datacontext = "[GetScriptedGui('dr_dynastic_relation_character_scriped_gui')]"
-    datacontext = "[CharacterWindow.GetCharacter]"
-
-    state = {
-        name = _show
-        on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
-    }
-}
 
 template dr_dynastic_relation_poup_ui_template {
     tooltipwidget = {

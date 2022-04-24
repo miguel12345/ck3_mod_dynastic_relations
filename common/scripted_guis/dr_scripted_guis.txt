@@ -58,22 +58,24 @@ dr_dynastic_relation_list_scriped_gui = {
     scope = dynasty
 
     is_shown = {
-        always = yes
+        always = yes 
     }
 
     effect = {
 
-        clear_global_variable_list = dr_dynasty_relations_sorted
+        debug_log = "Running dr_dynastic_relation_list_scriped_gui"
 
+        clear_global_variable_list = dr_dynasty_relations_sorted
+        remove_global_variable = dr_dynasty_relations_current_dynasty
+
+        debug_log_scopes = yes
         this = {
             save_scope_as = current_dynasty
         }
 
-        scope:player = {
-            set_variable = {
-                name = current_dynasty
-                value = scope:current_dynasty
-            }
+        set_global_variable = {
+            name = dr_dynasty_relations_current_dynasty
+            value = scope:current_dynasty
         }
 
         ordered_in_list = { 
@@ -95,7 +97,6 @@ dr_dynastic_relation_list_scriped_gui = {
                         var:value < 0
                     }
                 }
-
                 add_to_global_variable_list = { name = dr_dynasty_relations_sorted target = this}
             }
         }

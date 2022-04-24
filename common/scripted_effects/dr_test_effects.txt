@@ -1,0 +1,94 @@
+﻿
+
+dr_simulate_murder_dynasty_head_effect = {
+
+    #1 - Pick random dynasty head
+
+    save_scope_as = player
+
+    random_living_character = {
+        limit = {
+            is_lowborn = no
+            dynasty.dynast = this
+            in_diplomatic_range = scope:player
+        }
+
+        save_scope_as = random_dynasty_head
+    }
+
+    start_scheme = {
+        type = murder
+        target = scope:random_dynasty_head
+    }
+    random_scheme = {
+        limit = {
+            scheme_type = murder
+            scheme_target = scope:random_dynasty_head
+        }
+        save_scope_as = scheme
+    }
+
+    scope:scheme = {
+        debug_log_scopes = yes
+    }
+
+    scope:scheme = {
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_modifier = {
+            type = lifestyle_close_to_courtier_modifier
+        }
+        add_scheme_progress = 99
+    }
+
+
+    #2 - Start scheme
+    #start_scheme
+
+    #3 - Add modifiers to ensure success
+    #lifestyle_close_to_courtier_modifier
+    # add_scheme_modifier = {
+    #     type = lifestyle_close_to_courtier_modifier
+    # }
+
+    #4 - Add scheme progress
+    #add_scheme_progress = 99
+
+}

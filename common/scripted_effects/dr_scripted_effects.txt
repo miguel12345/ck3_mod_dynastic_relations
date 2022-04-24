@@ -567,6 +567,22 @@ dr_internal_prevent_flag_warnings_effect = {
         name = test
         value = flag:grant_independence_reason
     }
+    
+
+    set_variable = {
+        name = test
+        value = flag:extramarital_sex_reason
+    }
+
+    set_variable = {
+        name = test
+        value = flag:murder_reason
+    }
+
+    set_variable = {
+        name = test
+        value = flag:attempted_murder_reason
+    }
 
     this.var:test = {
         debug_log = "yes"

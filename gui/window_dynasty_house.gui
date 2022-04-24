@@ -842,11 +842,11 @@ window = {
 				}
 
 				#DR - BEGIN
-
+				
 				state = {
 					name = dr_state_name 
-					trigger_when="[Not(ObjectsEqual(GetPlayer.MakeScope.Var('current_dynasty').Dynasty,DynastyHouse.GetDynasty.Self))]"  
-					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( Dynasty.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End )]"
+					trigger_when="[Not(ObjectsEqual(GetGlobalVariable('dr_dynasty_relations_current_dynasty').Dynasty,DynastyHouse.GetDynasty.Self))]"  
+					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouse.GetDynasty.MakeScope ).End )]"
 				}
 
 				### TABS
@@ -876,7 +876,7 @@ window = {
 					}
 
 					button_tab = {
-						name = "relations_button"
+						name = "relations_button" 
 						layoutpolicy_horizontal = expanding
 
 						onclick = "[GetVariableSystem.Set( 'dr_dynasty_gui_tab', 'relation' )]"
@@ -900,8 +900,8 @@ window = {
 					layoutpolicy_vertical = expanding
 					visible = "[GetVariableSystem.HasValue( 'dr_dynasty_gui_tab', 'relation' )]"
 
-				hbox = {
-					visible = "[Not(IsDataModelEmpty(Dynasty.MakeScope.GetList('dr_dynasty_relations')))]"
+				hbox = { 
+					visible = "[Not(IsDataModelEmpty(GetGlobalList('dr_dynasty_relations_sorted')))]"
 
 
 					margin_right = 5
@@ -927,7 +927,7 @@ window = {
 							size = { 25 25 }
 							align = right
 							onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_change_sort_order_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-							onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( Dynasty.MakeScope ).AddScope('player', GetPlayer.MakeScope ).End )]"
+							onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouse.GetDynasty.MakeScope ).End )]"
 				
 							tooltip = dr_dynasty_relation_list_sort_order
 							using = tooltip_above

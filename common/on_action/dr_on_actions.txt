@@ -19,6 +19,19 @@ dr_on_character_death_schedule_action = {
             limit = { is_lowborn = no}
 
             save_scope_as = dead_person
+
+            #If dead character was dynasty head, record it in the dynasty as a flag
+            if = {
+                limit = {scope:dead_person = scope:dead_person.dynasty.dynast}
+
+                scope:dead_person.dynasty = {
+                    set_variable = {
+                        name = previous_head
+                        value = scope:dead_person
+                    }
+                }
+            }
+
             dynasty = {
                 random_dynasty_member = {
                     limit = { NOT = { this = scope:dead_person } }
