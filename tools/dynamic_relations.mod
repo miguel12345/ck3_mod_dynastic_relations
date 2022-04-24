@@ -4,4 +4,4 @@ tags={
 }
 name="mf_testbed"
 supported_version="1.5.1.1"
-path="D:/Projects/Pessoal/CK3_mods/dynastic_relations"
+path="C:\projects\pessoal\ck3_mod_dynastic_relations"
