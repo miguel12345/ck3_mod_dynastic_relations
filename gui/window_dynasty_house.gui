@@ -869,7 +869,7 @@ window = {
 							text_single = {
 								layoutpolicy_horizontal = expanding
 								align = center
-								text = "Legacies"
+								text = dr_window_dynasty_house_legacies_tab_button
 								default_format = "#low"
 							}
 						}
@@ -888,7 +888,7 @@ window = {
 							text_single = {
 								layoutpolicy_horizontal = expanding
 								align = center
-								text = "Relations"
+								text = dr_window_dynasty_house_relations_tab_button
 								default_format = "#low"
 							}
 						}
@@ -918,7 +918,7 @@ window = {
 						spacing = 10
 						text_single = {
 							default_format = "#low;italic"
-							text ="Relations with other dynasties, sorted by opinion"
+							text = dr_dynasty_relation_list_title
 						}
 						
 	

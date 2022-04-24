@@ -195,7 +195,7 @@ template dr_dynasty_relations_entry_internal_ui_template {
                     text_single = {
                         layoutpolicy_horizontal = expanding
                         visible = "[GreaterThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0')]"
-                        text = "#P +[Scope.Var('value').GetValue] #!"
+                        text = dr_dynastic_relation_positive_val
                         using = Font_Size_Medium
                         align = right
                         margin_right = 10
@@ -213,7 +213,7 @@ template dr_dynasty_relations_entry_internal_ui_template {
 							}
     
                             text_single = {
-                                text = "Friend"
+                                text = dr_dynastic_relation_friend
                                 using = Font_Size_Small
                             }
                         }
@@ -222,7 +222,7 @@ template dr_dynasty_relations_entry_internal_ui_template {
                     text_single = {
                         layoutpolicy_horizontal = expanding
                         visible = "[LessThan_CFixedPoint(Scope.Var('value').GetValue, '(CFixedPoint)0')]"
-                        text = "#N [Scope.Var('value').GetValue] #!"
+                        text = dr_dynastic_relation_negative_val
                         using = Font_Size_Medium
                         align = right
                         margin_right = 10
@@ -240,7 +240,7 @@ template dr_dynasty_relations_entry_internal_ui_template {
 							}
     
                             text_single = {
-                                text = "Rival"
+                                text = dr_dynastic_relation_rival
                                 using = Font_Size_Small
                             }
                         }
