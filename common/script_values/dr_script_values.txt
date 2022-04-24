@@ -4,12 +4,14 @@ dr_dynasty_relation_opinion_value = {
     add = scope:current_dynasty_relation.var:value
     if = {
         limit = { exists = scope:current_dynasty_relation.var:friends}
+        multiply = 0.6
     }
     else_if = {
         limit = { exists = scope:current_dynasty_relation.var:rivals}
+        multiply = 0.7
     }
     else = {
-        divide = 2
+        multiply = 0.5
     }
     
 }
@@ -107,157 +109,422 @@ dr_dynasty_relation_action_impact_value = {
 dr_dynasty_relation_debug_increase_value = 10.0
 dr_dynasty_relation_debug_decrease_value = -10.0
 
-# Execution (TODO REVIEW VALUES)
+# Execution
 dr_dynasty_relation_execute_prisoner_impact_value = {
-    value = -1.0 
+    value = -4.0 #Non-important member of a dynasty executing another non-important member of another dynasty
     if = { # Executing the dynasty head
         limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -70.0
+    }
+    else_if = { # Executing a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
         add = -50.0
+    }
+    else_if = { # Execution performed by the dynasty head
+        limit = { scope:source_character.dynasty.dynast = scope:source_character }
+        add = -20.0
+    }
+    else_if = { # Execution performed by a close family member of dynasty head
+        limit = { scope:source_character = {
+            is_close_family_of = scope:source_character.dynasty.dynast
+        } }
+        add = -10.0
     }
 }
 
-# Marriage (TODO REVIEW VALUES)
+# Marriage
 dr_dynasty_relation_marriage_impact_value = {
-    value = 10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = 1.0 #Marriage between unimportant dynasty members
+    if = { # Marriage between dynasty heads
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = 15.0
+    }
+    else_if = { # Marriage between dynasty head and close family member of dynasty head
+        limit = {
+            OR = {
+                AND={
+                    scope:target_character.dynasty.dynast = scope:target_character
+                    scope:source_character = {
+                        is_close_family_of = scope:source_character.dynasty.dynast
+                    }
+                }
+                AND={
+                    scope:source_character.dynasty.dynast = scope:source_character
+                    scope:target_character = {
+                        is_close_family_of = scope:target_character.dynasty.dynast
+                    }
+                }
+            }
+        }
+        add = 8.0
+    }
+    else_if = { # Marriage between dynasty head and unimportant family member
+        limit = {
+            OR = 
+            {
+                scope:target_character.dynasty.dynast = scope:target_character
+                scope:source_character.dynasty.dynast = scope:source_character
+            }
+            
+        }
+        add = 6.0
+    }
+    else_if = { # Marriage between close family member of dynasty heads
+        limit = {
+            scope:source_character = {
+                is_close_family_of = scope:source_character.dynasty.dynast
+            }
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = 2.0
+    }
 }
 
-# Grant titles (TODO REVIEW VALUES)
+# Grant titles
 dr_dynasty_relation_grant_titles_impact_value = {
-    value = 10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = 3.0  #Unimportant dynasty member granting a title to another unimportant dynasty member
+    if = { # Dynasty head granting titles to dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = 10.0
+    }
+    else_if = { # Non-dynasty head giving titles to dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = 5.0
+    }
+
 }
 
-# Join Ally war (TODO REVIEW VALUES)
+# Join Ally war
 dr_dynasty_relation_join_ally_war_impact_value = {
-    value = 10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = 10.0 #Unimportant dynasty member joining the way of another unimportant dynasty member
+    if = { # Dynasty head helping another dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = 20.0
+    }
+    else_if = { # non-dynasty head helping another dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = 10.0
+    }
+    else_if = { # non-dynasty head helping a close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = 5.0
+    }
+
+    
 }
 
-# Revoke title tyranically (without reason) (TODO REVIEW VALUES)
+# Revoke title tyranically (without reason)
 dr_dynasty_relation_revoke_title_tyranny_impact_value = {
-    value = -10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -5.0 
+    if = { # Revoking titles of dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = -40.0
+    }
+    else_if = { # Revoking titles of close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -15.0
+    }
 }
 
-# Revoke title with reason (TODO REVIEW VALUES)
+# Revoke title with reason
 dr_dynasty_relation_revoke_title_impact_value = {
-    value = -10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -5.0 
+    if = { # Revoking titles of dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = -20.0
+    }
+    else_if = { # Revoking titles of close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -7.0
+    }
 }
 
-# Imprison with reason (TODO REVIEW VALUES)
+# Imprison with reason
 dr_dynasty_relation_imprison_impact_value = {
-    value = -10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -1.0 #Non-important member of a dynasty imprisoning another non-important member of another dynasty
+    if = { # imprisoning the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -20.0
+    }
+    else_if = { # imprisoning a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
+        add = -10.0
+    }
+    else_if = { # imprisoning performed by the dynasty head
+        limit = { scope:source_character.dynasty.dynast = scope:source_character }
+        add = -5.0
+    }
+    else_if = { # imprisoning performed by a close family member of dynasty head
+        limit = { scope:source_character = {
+            is_close_family_of = scope:source_character.dynasty.dynast
+        } }
+        add = -2.0
+    }
 }
 
 
-# Imprison tyranically (TODO REVIEW VALUES)
+# Imprison tyranically
 dr_dynasty_relation_imprison_tyranny_impact_value = {
-    value = -15.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -3.0 #Non-important member of a dynasty imprisoning another non-important member of another dynasty
+    if = { # imprisoning the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -50.0
+    }
+    else_if = { # imprisoning a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
+        add = -30.0
+    }
+    else_if = { # imprisoning performed by the dynasty head
+        limit = { scope:source_character.dynasty.dynast = scope:source_character }
+        add = -10.0
+    }
+    else_if = { # imprisoning performed by a close family member of dynasty head
+        limit = { scope:source_character = {
+            is_close_family_of = scope:source_character.dynasty.dynast
+        } }
+        add = -5.0
+    }
 }
 
-# Imprison tyranically (TODO REVIEW VALUES)
+# Divorce
 dr_dynasty_relation_divorce_impact_value = {
-    value = -5.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -8.0 #Divorce between unimportant dynasty members
+    if = { # Divorce between dynasty heads
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = -30.0
+    }
+    else_if = { # Divorce between dynasty head and close family member of dynasty head
+        limit = {
+            OR = {
+                AND={
+                    scope:target_character.dynasty.dynast = scope:target_character
+                    scope:source_character = {
+                        is_close_family_of = scope:source_character.dynasty.dynast
+                    }
+                }
+                AND={
+                    scope:source_character.dynasty.dynast = scope:source_character
+                    scope:target_character = {
+                        is_close_family_of = scope:target_character.dynasty.dynast
+                    }
+                }
+            }
+        }
+        add = -16.0
+    }
+    else_if = { # Divorce between close family member of dynasty heads
+        limit = {
+            scope:source_character = {
+                is_close_family_of = scope:source_character.dynasty.dynast
+            }
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -4.0
+    }
 }
 
-# Revoke vassal with reason (TODO REVIEW VALUES)
+# Revoke vassal with reason
 dr_dynasty_relation_revoke_vassal_impact_value = {
-    value = -5.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -1.0 #Revoking title of unimportant dynasty member
+    if = { # Revoking the title of the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -10.0
+    }
+    else_if = { # Revoking the title of close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -5.0
+    }
 }
 
 
-# Break Betrothal (TODO REVIEW VALUES)
+# Break Betrothal
 dr_dynasty_relation_break_betrothal_impact_value = {
-    value = -5.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -5.0 #Betrothal broken between unimportant dynasty members
+    if = { # Betrothal broken between dynasty heads
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = -30.0
+    }
+    else_if = { # Divorce between dynasty head and close family member of dynasty head
+        limit = {
+            OR = {
+                scope:source_character = {
+                    is_close_family_of = scope:source_character.dynasty.dynast
+                }
+                scope:target_character = {
+                    is_close_family_of = scope:target_character.dynasty.dynast
+                }
+            }
+        }
+        add = -15.0
+    }
 }
 
-# Break Betrothal (TODO REVIEW VALUES)
+# Befriend
 dr_dynasty_relation_befriend_impact_value = {
-    value = 1.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = 5.0 #Unimportant dynasty member joining the way of another unimportant dynasty member
+    if = { # Dynasty head befriending another dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+            scope:source_character.dynasty.dynast = scope:source_character
+        }
+        add = 15.0
+    }
+    else_if = { # non-dynasty head befriending another dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = 8.0
+    }
+    else_if = { # non-dynasty head helping a close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = 3.0
+    }
 }
 
-# Break Betrothal (TODO REVIEW VALUES)
+# Declare war (TODO REVIEW VALUES)
 dr_dynasty_relation_declare_war_impact_value = {
-    value = -15.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
-}
-
-# Grant independece (TODO REVIEW VALUES)
-dr_dynasty_relation_grant_independence_impact_value = {
-    value = 5.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
-}
-
-# Murder (TODO REVIEW VALUES)
-dr_dynasty_relation_murder_impact_value = {
     value = -20.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    if = { # Declaring war on dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = -20.0
+    }
+    else_if = { # Declaring war on close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -10.0
+    }
 }
 
-# Attempted Murder (TODO REVIEW VALUES)
+# Grant independece
+dr_dynasty_relation_grant_independence_impact_value = {
+    value = 10.0 
+    if = { # Granting independence to dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = 20.0
+    }
+}
+
+# Murder
+dr_dynasty_relation_murder_impact_value = {
+    value = -3.0 #Non-important member of a dynasty Murdering another non-important member of another dynasty
+    if = { # Murdering the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -65.0
+    }
+    else_if = { # Murdering a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
+        add = -45.0
+    }
+    else_if = { # Murdering performed by the dynasty head
+        limit = { scope:source_character.dynasty.dynast = scope:source_character }
+        add = -15.0
+    }
+    else_if = { # Murdering performed by a close family member of dynasty head
+        limit = { scope:source_character = {
+            is_close_family_of = scope:source_character.dynasty.dynast
+        } }
+        add = -5.0
+    }
+}
+
+# Attempted Murder
 dr_dynasty_relation_attempted_murder_impact_value = {
-    value = -10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -2.0 #Non-important member of a dynasty Murdering another non-important member of another dynasty
+    if = { # Murdering the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -32.0
+    }
+    else_if = { # Murdering a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
+        add = -24.0
+    }
+    else_if = { # Murdering performed by the dynasty head
+        limit = { scope:source_character.dynasty.dynast = scope:source_character }
+        add = -7.0
+    }
+    else_if = { # Murdering performed by a close family member of dynasty head
+        limit = { scope:source_character = {
+            is_close_family_of = scope:source_character.dynasty.dynast
+        } }
+        add = -2.0
+    }
 }
 
-# Sxtramarital Sex (TODO REVIEW VALUES)
+# Extramarital Sex (Here, source_character is the adulterer, and target_character is his/her spouse)
 dr_dynasty_relation_extramarital_sex_impact_value = {
-    value = -10.0 
-    # if = { # Executing the dynasty head
-    #     limit = {scope:target_character.dynasty.dynast = scope:target_character}
-    #     add = -50.0
-    # }
+    value = -4.0 #Non-important member of a dynasty betraying another non-important member of another dynasty
+    if = { # Murdering the dynasty head
+        limit = {scope:target_character.dynasty.dynast = scope:target_character}
+        add = -26.0
+    }
+    else_if = { # Murdering a close family member of the dynasty head
+        limit = { scope:target_character = {
+            is_close_family_of = scope:target_character.dynasty.dynast
+        }}
+        add = -16.0
+    }
 }

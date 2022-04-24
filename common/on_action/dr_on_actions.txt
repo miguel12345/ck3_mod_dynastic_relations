@@ -22,10 +22,18 @@ dr_on_character_death_schedule_action = {
             dynasty = {
                 random_dynasty_member = {
                     limit = { NOT = { this = scope:dead_person } }
+                    save_temporary_scope_as = new_random_dynasty_member
                     trigger_event = {
                         id = dr_events.001
                         delayed = yes
                     }
+                }
+
+                #If there is no one else alive, then we have a dead dynasty.
+                #In that case, remove all dynastic relations 
+                if = {
+                    limit = {NOT = {exists = scope:new_random_dynasty_member}}
+                    dr_remove_dynastic_relations_from_dynasty = yes
                 }
             }
         }

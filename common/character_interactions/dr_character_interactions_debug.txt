@@ -1,41 +1,3 @@
-# dr_debug_interaction_print_dynastic_relation = {
-# 	category = interaction_category_friendly
-# 	common_interaction = yes
-
-# 	auto_accept = yes
-	
-# 	is_shown = {
-#         NOT = { scope:recipient = scope:actor }
-#     }
-	
-# 	is_valid = {
-#         dr_can_dynastic_relation_be_established_betwen_characters = {
-#             CHARACTER_A = scope:actor
-#             CHARACTER_B = scope:recipient
-#         }
-# 	}
-
-	
-# 	on_accept = {
-
-#         dr_save_dynastic_relation_between_dynasties_in_scope = {
-#             DYNASTY_A = scope:actor.dynasty
-#             DYNASTY_B = scope:recipient.dynasty
-#             SCOPE_NAME = dynastic_relation_val
-#         } 
-
-
-#         scope:actor = {
-            
-#             save_scope_value_as = {
-#                 name = hello
-#                 value = 10.0
-#             }
-#         }
-        
-# 	}
-# }
-
 dr_debug_interaction_increase_dynastic_relation = {
 	category = interaction_category_friendly
 	common_interaction = yes
@@ -43,6 +5,7 @@ dr_debug_interaction_increase_dynastic_relation = {
 	auto_accept = yes
 	
 	is_shown = {
+        debug_only = yes
         NOT = { scope:recipient = scope:actor }
     }
 	
@@ -72,6 +35,7 @@ dr_debug_interaction_decrease_dynastic_relation = {
 	auto_accept = yes
 	
 	is_shown = {
+        debug_only = yes
         NOT = { scope:recipient = scope:actor }
     }
 	

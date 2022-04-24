@@ -28,24 +28,7 @@ template dr_dynastic_relation_poup_ui_template {
             }
             blockoverride "main_description" {
                 vbox = {
-
-                    # hbox = {
-                    #     layoutpolicy_horizontal = expanding
-                    #     text_multi = {
-                    #         layoutpolicy_horizontal = expanding
-                    #         autoresize = yes
-                    #         margin_bottom = 5
-                    #         text = dr_dynastic_relation_tooltip_desc
-                    #     }
-                    #     expand = {}
-                    # }
-
-                    
-
-                    # divider_light = {
-                    #     layoutpolicy_horizontal = expanding
-                    #     minimumsize = { 0 3 }
-                    # }
+                    layoutpolicy_horizontal = expanding
 
                     hbox = {
                         layoutpolicy_horizontal = expanding
@@ -65,6 +48,9 @@ template dr_dynastic_relation_poup_ui_template {
                         item = {
                             hbox = {
                                 layoutpolicy_horizontal = expanding
+                                # text_single = { 
+                                #     text = "[Scope.Var('reason').GetFlagName]"
+                                # }
                                 text_single = { 
                                     visible = "[EqualTo_string('debug_increase_reason',Scope.Var('reason').GetFlagName)]"
                                     text = dr_dynastic_relation_occurrences_debug_increase_entry
@@ -122,7 +108,7 @@ template dr_dynastic_relation_poup_ui_template {
                                     text = dr_dynastic_relation_occurrences_break_betrothal_entry
                                 }
                                 text_single = {
-                                    visible = "[EqualTo_string('befriend_reason_reason',Scope.Var('reason').GetFlagName)]"
+                                    visible = "[EqualTo_string('befriend_reason',Scope.Var('reason').GetFlagName)]"
                                     text = dr_dynastic_relation_occurrences_befriend_entry
                                 }
                                 text_single = {
@@ -146,6 +132,8 @@ template dr_dynastic_relation_poup_ui_template {
                             
                         }
                     }
+
+                    expand = {}
                 }
             }
         }

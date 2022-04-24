@@ -18,6 +18,18 @@ extramarital_sex_exposure_consequences_effect = {
             SHOW_AS = flag:tooltip
         }
     }
+	if = {
+        limit = {
+            exists = scope:sex_partner
+			exists = scope:sex_partner.primary_spouse
+        }
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:sex_partner
+            CHARACTER_B = scope:sex_partner.primary_spouse
+            REASON = flag:extramarital_sex_reason
+            SHOW_AS = flag:tooltip
+        }
+    }
     #DR - dynastic relations - end
     
 

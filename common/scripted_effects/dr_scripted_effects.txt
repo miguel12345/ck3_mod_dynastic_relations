@@ -436,6 +436,45 @@ dr_update_dynastic_relation_heads_friends_rivals_status_effects = {
     }
 }
 
+#Should only be used for dead dynasties
+dr_remove_dynastic_relations_from_dynasty = {
+
+    save_scope_as = dynasty_to_be_removed
+
+    every_in_global_list = {
+        variable = dr_dynastic_relations
+        limit = {
+            OR = {
+                var:target = scope:dynasty_to_be_removed
+                var:source = scope:dynasty_to_be_removed
+            }
+        }
+
+        save_scope_as = dynastic_relation_to_be_removed
+
+        # Since each dynasty also has a dr_dynasty_relations list, remove all relations containing the dead dynasty
+        var:target = {
+            
+            remove_list_variable = {
+                name = dr_dynasty_relations
+                target = scope:dynastic_relation_to_be_removed
+            }
+        }
+
+        var:source = {
+            remove_list_variable = {
+                name = dr_dynasty_relations
+                target = scope:dynastic_relation_to_be_removed
+            }
+        }
+
+        remove_list_global_variable = {
+            name = dr_dynastic_relations
+            target = this
+        }
+    }
+}
+
 #Dummy effect just to prevent compiler errors about unset flags (which happens since I'm using them as enums)
 dr_internal_prevent_flag_warnings_effect = {
 
