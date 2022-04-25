@@ -1,6 +1,7 @@
-version="0.1"
+version="1.0"
 tags={
-	"Utilities"
+	"Balance"
+	"Gameplay"
 }
-name="mf_testbed"
-supported_version="1.5.1.1"
+name="Dynastic relations"
+supported_version="1.5.*"
