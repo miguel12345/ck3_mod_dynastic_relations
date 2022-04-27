@@ -79,11 +79,16 @@ dr_change_dynastic_relation_between_characters = {
             save_scope_as = show_as
         }
 
+        
         # Calculate dynastic relation impact and save it as change_val
         save_scope_value_as = {
             name = change_val
             value = dr_dynasty_relation_action_impact_value
-        } 
+        }
+        
+        #Only called in --debug_mode
+        dr_debug_log_dynastic_change = yes
+
 
         #Render proper description/tooltip.
         #Use a dynasty as scope to ensure the effect is shown under "others"
@@ -159,6 +164,10 @@ dr_change_dynastic_relation_between_characters = {
                     DYNASTIC_RELATION = scope:dynastic_relation 
                 }
             }
+
+            #remove global variables related to GUI to force the refresh (trigger_when) of all relevant windows
+            remove_global_variable = dr_dynasty_relations_current_dynasty
+            remove_global_variable = dr_character_window_current_character
 
             #Record dynastic occurrence. Since it is a story, we need to put it somewhere
             $CHARACTER_A$ = {
@@ -584,6 +593,16 @@ dr_internal_prevent_flag_warnings_effect = {
         value = flag:attempted_murder_reason
     }
 
+    set_variable = {
+        name = test
+        value = flag:join_war_against_reason
+    }
+    
+    set_variable = {
+        name = test
+        value = flag:tried_revoke_title_reason
+    }
+
     this.var:test = {
         debug_log = "yes"
     }
@@ -626,4 +645,19 @@ dr_debug_create_ally_and_war_situation_effect = {
     }
 }
 
-#
+
+dr_debug_log_dynastic_change = {
+    if = {
+        limit = {debug_only = yes}
+        debug_log = "CHANGING DYNASTIC RELATION"
+        set_global_variable = {name = reason value = scope:reason}
+        set_global_variable = {name = source_character value = scope:source_character}
+        set_global_variable = {name = target_character value = scope:target_character}
+        set_global_variable = {name = change_val value = scope:change_val}
+        debug_log = "Relation between [GetGlobalVariable('source_character').GetCharacter.GetName] and [GetGlobalVariable('target_character').GetCharacter.GetName] will change by [GetGlobalVariable('change_val').GetValue] because [GetGlobalVariable('reason').GetFlagName]"
+        remove_global_variable = reason
+        remove_global_variable = source_character
+        remove_global_variable = target_character
+        remove_global_variable = change_val
+    }
+}

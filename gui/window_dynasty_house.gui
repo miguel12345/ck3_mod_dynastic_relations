@@ -845,8 +845,8 @@ window = {
 				
 				state = {
 					name = dr_state_name 
-					trigger_when="[Not(ObjectsEqual(GetGlobalVariable('dr_dynasty_relations_current_dynasty').Dynasty,DynastyHouse.GetDynasty.Self))]"  
-					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouse.GetDynasty.MakeScope ).End )]"
+					trigger_when="[Not(ObjectsEqual(GetGlobalVariable('dr_dynasty_relations_current_dynasty').Dynasty,DynastyHouseView.GetDynastyHouse.GetDynasty.Self))]"  
+					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouseView.GetDynastyHouse.GetDynasty.MakeScope ).End )]"
 				}
 
 				### TABS

@@ -13,6 +13,21 @@ on_death = {
     }
 }
 
+#Add on_action when a war is started
+on_war_started = {
+    on_actions = {
+        dr_on_war_started
+    }
+}
+
+#Add on_action when someone joins a war
+on_join_war_as_secondary = {
+    on_actions = {
+        dr_on_join_war_as_secondary
+    }
+}
+
+
 dr_on_character_death_schedule_action = {
     effect = {
         if = {
@@ -85,3 +100,56 @@ dr_on_action_dynasties_became_rivals = {
 dr_on_action_dynasties_stopped_being_friends = {}
 
 dr_on_action_dynasties_stopped_being_rivals = {}
+ 
+dr_on_war_started = {
+    effect = {
+        
+        #DR - dynastic relations - begin
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:attacker
+            CHARACTER_B = scope:defender
+            REASON = flag:declare_war_reason
+            SHOW_AS = flag:tooltip
+        }
+        #DR - dynastic relations - end
+    }
+}
+
+dr_on_join_war_as_secondary = {
+    effect = {
+
+        #Current is joiner
+        save_scope_as = joiner
+
+        #DR - dynastic relations - begin
+        #Is joiner an attacker or defender?
+        #if joiner is an attacker, degrade relations with war's primary defender
+        #If joiner is a defender, degrade relations with war's primary attacker
+
+        if = {
+            limit = { 
+                scope:war = {
+                    is_defender = scope:joiner
+                }
+            }
+
+            scope:war.primary_attacker = {
+                save_scope_as = war_primary_opposite_side
+            }
+        }
+        else = { #Else we assume it is an attacker
+            scope:war.primary_defender = {
+                save_scope_as = war_primary_opposite_side
+            }
+        }
+        
+
+        dr_change_dynastic_relation_between_characters = {
+            CHARACTER_A = scope:joiner
+            CHARACTER_B = scope:war_primary_opposite_side
+            REASON = flag:join_war_against_reason
+            SHOW_AS = flag:tooltip
+        }
+        #DR - dynastic relations - end
+    }
+}

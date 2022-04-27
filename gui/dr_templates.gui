@@ -8,7 +8,7 @@ template dr_dynastic_relation_poup_ui_template {
             state = {
                 name = _show
                 trigger_on_create = yes
-                on_start = "[GetScriptedGui('dr_dynasti_relation_occurrences_list_gui').Execute( GuiScope.SetRoot( Scope.Story.MakeScope ).End )]" 
+                on_start = "[GetScriptedGui('dr_dynastic_relation_occurrences_list_gui').Execute( GuiScope.SetRoot( Scope.Story.MakeScope ).End )]" 
             }
     
             blockoverride "title_text" {
@@ -117,6 +117,14 @@ template dr_dynastic_relation_poup_ui_template {
                                 text_single = {
                                     visible = "[EqualTo_string('extramarital_sex_reason',Scope.Var('reason').GetFlagName)]"
                                     text = dr_dynastic_relation_occurrences_extramarital_sex_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('join_war_against_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_join_war_against_reason_entry
+                                }
+                                text_single = {
+                                    visible = "[EqualTo_string('tried_revoke_title_reason',Scope.Var('reason').GetFlagName)]"
+                                    text = dr_dynastic_relation_occurrences_tried_revoke_title_reason_reason_entry
                                 }
                                 expand = {}
                             }

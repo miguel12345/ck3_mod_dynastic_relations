@@ -103,6 +103,14 @@ dr_dynasty_relation_action_impact_value = {
         limit = {scope:reason = flag:extramarital_sex_reason}
         add = dr_dynasty_relation_extramarital_sex_impact_value
     }
+    else_if = {
+        limit = {scope:reason = flag:join_war_against_reason}
+        add = dr_dynasty_relation_join_war_against_impact_value
+    }
+    else_if = {
+        limit = {scope:reason = flag:tried_revoke_title_reason}
+        add = dr_dynasty_relation_tried_revoke_title_impact_value
+    }
 }
 
 # Debug actions
@@ -189,21 +197,47 @@ dr_dynasty_relation_marriage_impact_value = {
 
 # Grant titles
 dr_dynasty_relation_grant_titles_impact_value = {
-    value = 3.0  #Unimportant dynasty member granting a title to another unimportant dynasty member
-    if = { # Dynasty head granting titles to dynasty head
+    value = 0.0  
+
+    every_in_list = {
+        list = target_titles
         limit = {
-            scope:target_character.dynasty.dynast = scope:target_character
-            scope:source_character.dynasty.dynast = scope:source_character
+            tier = tier_county
         }
-        add = 10.0
-    }
-    else_if = { # Non-dynasty head giving titles to dynasty head
-        limit = {
-            scope:target_character.dynasty.dynast = scope:target_character
-        }
-        add = 5.0
+        add = 1 # Every county grants 1 point
     }
 
+    every_in_list = {
+        list = target_titles
+        limit = {
+            tier = tier_duchy
+        }
+        add = 4 # Every duchy grants 4 points
+    }
+
+    every_in_list = {
+        list = target_titles
+        limit = {
+            tier = tier_duchy
+        }
+        add = 10 # Every kingdom grants 10 points
+    }
+
+    #If granting to a dynasty head, multiply by 3
+    if = {
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        multiply = 3
+    }
+    else_if = { # If granting to a close family member of a dynasty head, multiply by 1.5
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        multiply = 1.5
+    }
 }
 
 # Join Ally war
@@ -236,39 +270,69 @@ dr_dynasty_relation_join_ally_war_impact_value = {
 
 # Revoke title tyranically (without reason)
 dr_dynasty_relation_revoke_title_tyranny_impact_value = {
-    value = -5.0 
-    if = { # Revoking titles of dynasty head
+    value = 0.0  
+
+    if = {
+        limit = { scope:landed_title.tier = tier_county}
+        add = -4
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_duchy}
+        add = -20
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_kingdom}
+        add = -40
+    }
+
+    #If revoking from a dynasty head, multiply by 3
+    if = {
         limit = {
             scope:target_character.dynasty.dynast = scope:target_character
         }
-        add = -40.0
+        multiply = 3
     }
-    else_if = { # Revoking titles of close family member of dynasty head
+    else_if = { # If revoking from a close family member of a dynasty head, multiply by 1.5
         limit = {
             scope:target_character = {
                 is_close_family_of = scope:target_character.dynasty.dynast
             }
         }
-        add = -15.0
+        multiply = 1.5
     }
 }
 
 # Revoke title with reason
 dr_dynasty_relation_revoke_title_impact_value = {
-    value = -5.0 
-    if = { # Revoking titles of dynasty head
+    value = 0.0
+
+    if = {
+        limit = { scope:landed_title.tier = tier_county}
+        add = -2
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_duchy}
+        add = -8
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_kingdom}
+        add = -16
+    }
+
+    #If revoking from a dynasty head, multiply by 3
+    if = {
         limit = {
             scope:target_character.dynasty.dynast = scope:target_character
         }
-        add = -20.0
+        multiply = 3
     }
-    else_if = { # Revoking titles of close family member of dynasty head
+    else_if = { # If revoking from a close family member of a dynasty head, multiply by 1.5
         limit = {
             scope:target_character = {
                 is_close_family_of = scope:target_character.dynasty.dynast
             }
         }
-        add = -7.0
+        multiply = 1.5
     }
 }
 
@@ -434,7 +498,7 @@ dr_dynasty_relation_befriend_impact_value = {
     }
 }
 
-# Declare war (TODO REVIEW VALUES)
+# Declare war
 dr_dynasty_relation_declare_war_impact_value = {
     value = -20.0 
     if = { # Declaring war on dynasty head
@@ -536,5 +600,58 @@ dr_dynasty_relation_extramarital_sex_impact_value = {
             is_close_family_of = scope:target_character.dynasty.dynast
         }}
         add = -16.0
+    }
+}
+
+# Declare war
+dr_dynasty_relation_join_war_against_impact_value = {
+    value = -10.0 
+    if = { # Joining war against a dynasty head
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        add = -20.0
+    }
+    else_if = { #Joining war against close family member of dynasty head
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        add = -10.0
+    }
+}
+
+# Tried (but failed) to revoke title (with or without reason, doesnt matter)
+dr_dynasty_relation_tried_revoke_title_impact_value = {
+    value = 0.0
+
+    if = {
+        limit = { scope:landed_title.tier = tier_county}
+        add = -1
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_duchy}
+        add = -4
+    }
+    else_if = {
+        limit = { scope:landed_title.tier = tier_kingdom}
+        add = -8
+    }
+
+    #If revoking from a dynasty head, multiply by 3
+    if = {
+        limit = {
+            scope:target_character.dynasty.dynast = scope:target_character
+        }
+        multiply = 2
+    }
+    else_if = { # If revoking from a close family member of a dynasty head, multiply by 1.5
+        limit = {
+            scope:target_character = {
+                is_close_family_of = scope:target_character.dynasty.dynast
+            }
+        }
+        multiply = 1.2
     }
 }

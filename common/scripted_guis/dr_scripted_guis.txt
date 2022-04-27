@@ -1,5 +1,8 @@
 ﻿dr_dynastic_relation_character_scriped_gui = {
 	scope = character
+    saved_scopes = {
+        target
+    }
 
 	is_shown = {
 
@@ -11,6 +14,8 @@
 	}
 
 	effect = {
+
+        debug_log = "Updating character window"
 
         this = {
             save_scope_as = source
@@ -120,7 +125,7 @@ dr_dynastic_relation_list_scriped_change_sort_order_gui = {
 }
 
 
-dr_dynasti_relation_occurrences_list_gui = {
+dr_dynastic_relation_occurrences_list_gui = {
     scope = story
 
     is_shown = {

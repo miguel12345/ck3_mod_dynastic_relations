@@ -4,11 +4,11 @@
 
         # debug_log = "DR - Occurrence happened"
 
-        if = {
-            limit = {story_owner.var:reason = flag:extramarital_sex_reason}
-            debug_log = "DR - Extramarital sex happened!"
-            debug_log_scopes = yes
-        }
+        # if = {
+        #     limit = {story_owner.var:reason = flag:extramarital_sex_reason}
+        #     debug_log = "DR - Extramarital sex happened!"
+        #     debug_log_scopes = yes
+        # }
 
         set_variable = {
             name = source_character
