@@ -92,3 +92,87 @@ dr_simulate_murder_dynasty_head_effect = {
     #add_scheme_progress = 99
 
 }
+
+#For performance stress-testing
+dr_simulate_lots_of_dynastic_occurences = {
+
+    debug_log = "Started"
+
+    save_scope_value_as = {
+        name = num_occurences
+        value = 1000
+    }
+
+    while = {
+        limit = { scope:num_occurences > 0}
+        
+        random_living_character = {
+                limit = {
+                    is_lowborn = no
+                }
+
+                save_scope_as = character_a
+
+                random_living_character = {
+                    limit = {
+                        is_lowborn = no
+                        NOT = {dynasty = scope:character_a.dynasty}
+                    }
+
+                    save_scope_as = character_b
+                }
+
+                dr_change_dynastic_relation_between_characters = {
+                    CHARACTER_A = scope:character_a
+                    CHARACTER_B = scope:character_b
+                    REASON = flag:debug_increase_reason
+                    SHOW_AS = flag:tooltip
+                }
+            }
+
+        save_scope_value_as = {
+            name = num_occurences
+            value = {value= scope:num_occurences subtract=1}
+        }
+    }
+
+    debug_log = "Finished"
+
+}
+
+
+#Can be executed directy in the debug console. Useful to test the join ally war interaction/effect
+dr_debug_create_ally_and_war_situation_effect = {
+
+random_player = {
+    save_scope_as = player
+
+    random_independent_ruler = {
+        limit = {
+            in_diplomatic_range = scope:player
+            is_lowborn = no
+        }
+
+        save_scope_as = ally
+        create_alliance = {
+            target = scope:player
+            allied_through_owner = this
+            allied_through_target = scope:player
+        }
+
+        random_independent_ruler = {
+            limit = {
+                in_diplomatic_range = scope:player
+            }
+            start_war = {
+                casus_belli = "religious_war"
+                # target = scope:player
+                # target_title = scope:player.primary_title^
+                target = scope:ally
+                target_title = scope:ally.primary_title
+            }
+        }
+
+    }
+}
+}

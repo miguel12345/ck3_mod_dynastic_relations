@@ -47,6 +47,8 @@ dr_on_character_death_schedule_action = {
                 }
             }
 
+            clear_saved_scope = new_random_dynasty_member
+
             dynasty = {
                 random_dynasty_member = {
                     limit = { NOT = { this = scope:dead_person } }
@@ -61,6 +63,8 @@ dr_on_character_death_schedule_action = {
                 #In that case, remove all dynastic relations 
                 if = {
                     limit = {NOT = {exists = scope:new_random_dynasty_member}}
+                    debug_log = "Removing relations from dead dynasty"
+                    debug_log_scopes = yes
                     dr_remove_dynastic_relations_from_dynasty = yes
                 }
             }

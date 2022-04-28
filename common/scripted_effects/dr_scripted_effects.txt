@@ -87,7 +87,7 @@ dr_change_dynastic_relation_between_characters = {
         }
         
         #Only called in --debug_mode
-        dr_debug_log_dynastic_change = yes
+        #dr_debug_log_dynastic_change = yes
 
 
         #Render proper description/tooltip.
@@ -125,6 +125,8 @@ dr_change_dynastic_relation_between_characters = {
             }
         }
         
+        #Clear scope before finding the relation
+        clear_saved_scope = dynastic_relation
         
         # Establish dynastic relation if it doesnt exist yet
         dr_find_dynastic_relation_between_characters_and_save_in_scope = {
@@ -157,12 +159,6 @@ dr_change_dynastic_relation_between_characters = {
 
             limit = {  
                 exists = scope:dynastic_relation
-                dr_should_add_dynastic_relation_trigger = { #Extra check to prevent adding the same dynastic relation impact twice for adultery
-                    CHARACTER_A = $CHARACTER_A$
-                    CHARACTER_B = $CHARACTER_B$
-                    REASON = $REASON$
-                    DYNASTIC_RELATION = scope:dynastic_relation 
-                }
             }
 
             #remove global variables related to GUI to force the refresh (trigger_when) of all relevant windows
@@ -191,6 +187,11 @@ dr_change_dynastic_relation_between_characters = {
             }
 
             scope:dynastic_relation = {
+
+                set_variable = {
+                    name = last_update_year
+                    value = current_year
+                }
 
                 change_variable = {
                     name = value
@@ -231,11 +232,19 @@ dr_decal_all_dynastic_relations_effect = {
 }
 
 # Decay dynastic relation towards the baseline, expects dynastic relation to be the current scope
+# If a dynastic relation is at value 0.0 and hasn't been updated in 5 years, remove it completely. This will save memory and improve performance
 dr_decay_dynastic_relation_value = {
 
     if = {
         #Dont do anything if already at 0
         limit = { NOT = {var:value = 0.0} }
+
+        #If variable is about to be changed, dont forget to update the "last_update_year" variable
+        set_variable = {
+            name = last_update_year
+            value = current_year
+        }
+
         if = {
             limit = {
                 var:value < 0
@@ -278,12 +287,20 @@ dr_decay_dynastic_relation_value = {
         }
         dr_update_character_opinions_effect = yes
     }
+    else_if = { # If a dynastic relation is at value 0.0 and hasn't been updated in 5 years, remove it completely. This will save memory and improve performance
+        limit = {
+            exists = this.var:last_update_year
+            current_year > dr_dynastic_relation_last_update_year_plus_5
+        }
+        debug_log = "Removing dynastic relation since it has been netural for five years"
+        dr_remove_dynastic_relation = yes
+    }
 
     
 
 }
 
- 
+
 # Updates the character opinions between all members of both dynasties, expects dynastic relation to be the current scope
 dr_update_character_opinions_effect = {
 
@@ -450,38 +467,41 @@ dr_remove_dynastic_relations_from_dynasty = {
 
     save_scope_as = dynasty_to_be_removed
 
-    every_in_global_list = {
-        variable = dr_dynastic_relations
-        limit = {
-            OR = {
-                var:target = scope:dynasty_to_be_removed
-                var:source = scope:dynasty_to_be_removed
-            }
-        }
+    every_in_list = {
+
+        variable = dr_dynasty_relations
 
         save_scope_as = dynastic_relation_to_be_removed
 
-        # Since each dynasty also has a dr_dynasty_relations list, remove all relations containing the dead dynasty
-        var:target = {
+        dr_remove_dynastic_relation = yes
+    }
+}
+
+dr_remove_dynastic_relation = {
+
+    save_scope_as = dynastic_relation_to_be_removed
+
+    remove_list_global_variable = {
+        name = dr_dynastic_relations
+        target = scope:dynastic_relation_to_be_removed
+    }
+
+    var:target = {
             
-            remove_list_variable = {
-                name = dr_dynasty_relations
-                target = scope:dynastic_relation_to_be_removed
-            }
-        }
-
-        var:source = {
-            remove_list_variable = {
-                name = dr_dynasty_relations
-                target = scope:dynastic_relation_to_be_removed
-            }
-        }
-
-        remove_list_global_variable = {
-            name = dr_dynastic_relations
-            target = this
+        remove_list_variable = {
+            name = dr_dynasty_relations
+            target = scope:dynastic_relation_to_be_removed
         }
     }
+
+    var:source = {
+        remove_list_variable = {
+            name = dr_dynasty_relations
+            target = scope:dynastic_relation_to_be_removed
+        }
+    }
+
+    end_story = yes #Delete story completely
 }
 
 #Dummy effect just to prevent compiler errors about unset flags (which happens since I'm using them as enums)
@@ -607,42 +627,6 @@ dr_internal_prevent_flag_warnings_effect = {
         debug_log = "yes"
     }
 
-}
-
-#Can be executed directy in the debug console. Useful to test the join ally war interaction/effect
-dr_debug_create_ally_and_war_situation_effect = {
-
-    random_player = {
-        save_scope_as = player
-
-        random_independent_ruler = {
-            limit = {
-                in_diplomatic_range = scope:player
-                is_lowborn = no
-            }
-
-            save_scope_as = ally
-            create_alliance = {
-                target = scope:player
-                allied_through_owner = this
-	            allied_through_target = scope:player
-            }
-
-            random_independent_ruler = {
-                limit = {
-                    in_diplomatic_range = scope:player
-                }
-                start_war = {
-                    casus_belli = "religious_war"
-                    # target = scope:player
-                    # target_title = scope:player.primary_title^
-                    target = scope:ally
-                    target_title = scope:ally.primary_title
-                }
-            }
-
-        }
-    }
 }
 
 
