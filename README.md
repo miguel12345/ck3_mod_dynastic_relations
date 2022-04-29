@@ -15,6 +15,7 @@ Forum thread:  [https://forum.paradoxplaza.com/forum/threads/mod-dynastic-relati
 * Actions will only have a dynastic relation impact if both participants are inside the diplomatic range of the player (this, by itself, reduces drastically the total number of dynastic relations)
 * Fixed issues with dynastic relation GUI not being properly updated in the character window
 * Fixed issues with dynastic relation GUI not being properly updated in the dynasty view
+* Added russian localization (credits to [https://github.com/bimo1d](https://github.com/bimo1d))
 
 ## v1.1
 
