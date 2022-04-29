@@ -24,8 +24,9 @@ dr_dynasty_relation_friends_to_neutral_threshold_value = 40
 dr_dynasty_relation_rivals_threshold_value = -50
 dr_dynasty_relation_rivals_to_neutral_threshold_value = -40
 
-dr_dynastic_relation_last_change_year_plus_5 = {
-    value = this.var:last_change_year
+dr_dynastic_relation_last_update_year_plus_5 = {
+    value = 0.0
+    add = scope:last_update_year
     add = 5
 }
 

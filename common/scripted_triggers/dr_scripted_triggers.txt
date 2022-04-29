@@ -13,6 +13,13 @@ dr_can_dynastic_relation_be_established_betwen_characters = {
             $CHARACTER_A$.dynasty = $CHARACTER_B$.dynasty
         }
 
+        #To save on performance/memory, we dont record dynastic relations (and occurrences) for characters that are
+        #outside the diplomatic range of any player
+        any_player = {
+            in_diplomatic_range = $CHARACTER_A$
+            in_diplomatic_range = $CHARACTER_B$
+        }
+
     }
 }
 

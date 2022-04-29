@@ -844,8 +844,8 @@ window = {
 				#DR - BEGIN
 				
 				state = {
-					name = dr_state_name 
-					trigger_when="[Not(ObjectsEqual(GetGlobalVariable('dr_dynasty_relations_current_dynasty').Dynasty,DynastyHouseView.GetDynastyHouse.GetDynasty.Self))]"  
+					trigger_when = "[Not(GetVariableSystem.HasValue('active_house_name',DynastyHouseView.GetDynastyHouse.GetName))]"
+					on_start = "[GetVariableSystem.Set('active_house_name',DynastyHouseView.GetDynastyHouse.GetName)]"
 					on_start = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouseView.GetDynastyHouse.GetDynasty.MakeScope ).End )]"
 				}
 
@@ -880,6 +880,7 @@ window = {
 						layoutpolicy_horizontal = expanding
 
 						onclick = "[GetVariableSystem.Set( 'dr_dynasty_gui_tab', 'relation' )]"
+						onclick = "[GetScriptedGui('dr_dynastic_relation_list_scriped_gui').Execute( GuiScope.SetRoot( DynastyHouseView.GetDynastyHouse.GetDynasty.MakeScope ).End )]"
 						down = "[GetVariableSystem.HasValue( 'dr_dynasty_gui_tab', 'relation' )]"
 
 						using = tooltip_above

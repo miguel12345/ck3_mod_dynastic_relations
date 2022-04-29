@@ -9,6 +9,13 @@ Forum thread:  [https://forum.paradoxplaza.com/forum/threads/mod-dynastic-relati
 
 # Changelog
 
+## v1.2
+
+* Improved performance and reduced memory usage.
+* Actions will only have a dynastic relation impact if both participants are inside the diplomatic range of the player (this, by itself, reduces drastically the total number of dynastic relations)
+* Fixed issues with dynastic relation GUI not being properly updated in the character window
+* Fixed issues with dynastic relation GUI not being properly updated in the dynasty view
+
 ## v1.1
 
 * Dynastic relation impact of granting titles is now taking into account the number and tier of granted titles. 

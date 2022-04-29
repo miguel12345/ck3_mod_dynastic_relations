@@ -87,7 +87,7 @@ dr_change_dynastic_relation_between_characters = {
         }
         
         #Only called in --debug_mode
-        #dr_debug_log_dynastic_change = yes
+        dr_debug_log_dynastic_change = yes
 
 
         #Render proper description/tooltip.
@@ -184,9 +184,29 @@ dr_change_dynastic_relation_between_characters = {
                     name = occurrences
                     target = scope:new_dynastic_occurrence
                 }
-            }
 
-            scope:dynastic_relation = {
+                #If there are more than 8 occurrences in this dynastic relation, remove the first (oldest) one
+                if = {
+                    limit = {
+                        any_in_list = { 
+                            variable = occurrences 
+                            count > 5
+                        }
+                    }
+                    debug_log = "More than 5 occurrences for a dynastic relation, removing the first"
+                    ordered_in_list = {
+                        variable = occurrences
+                        save_scope_as = occurrence_to_be_removed
+                    }
+                    remove_list_variable = {
+                        name = occurrences
+                        target = scope:occurrence_to_be_removed
+                    }
+
+                    scope:occurrence_to_be_removed = {
+                        end_story = yes
+                    }
+                }
 
                 set_variable = {
                     name = last_update_year
@@ -235,15 +255,16 @@ dr_decal_all_dynastic_relations_effect = {
 # If a dynastic relation is at value 0.0 and hasn't been updated in 5 years, remove it completely. This will save memory and improve performance
 dr_decay_dynastic_relation_value = {
 
+    debug_log ="Decaying dynastic relation"
+
+    save_scope_value_as = {
+        name = last_update_year
+        value = this.var:last_update_year
+    }
+
     if = {
         #Dont do anything if already at 0
         limit = { NOT = {var:value = 0.0} }
-
-        #If variable is about to be changed, dont forget to update the "last_update_year" variable
-        set_variable = {
-            name = last_update_year
-            value = current_year
-        }
 
         if = {
             limit = {
@@ -292,7 +313,14 @@ dr_decay_dynastic_relation_value = {
             exists = this.var:last_update_year
             current_year > dr_dynastic_relation_last_update_year_plus_5
         }
-        debug_log = "Removing dynastic relation since it has been netural for five years"
+        debug_log = "Removing dynastic relation since it has been netural for five years. Last update [THIS.Var('last_update_year').GetValue]"
+        dr_remove_dynastic_relation = yes
+    }
+    else_if = { # If a dynastic relation is at 0.0 and it doesnt have the last_update_year variable, it means we are dealing with an old save. remove it
+        limit = {
+            NOT = {exists = this.var:last_update_year}
+        }
+        debug_log = "Removing dynastic relation since it doesnt have the last_update_year var"
         dr_remove_dynastic_relation = yes
     }
 
@@ -499,6 +527,12 @@ dr_remove_dynastic_relation = {
             name = dr_dynasty_relations
             target = scope:dynastic_relation_to_be_removed
         }
+    }
+
+    #Remove all occurences
+    every_in_list = {
+        variable = occurrences
+        end_story = yes #Delete occurrence completelty
     }
 
     end_story = yes #Delete story completely

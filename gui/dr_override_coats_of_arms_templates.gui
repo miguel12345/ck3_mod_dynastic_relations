@@ -56,6 +56,11 @@ types CoATypes
                 trigger_when = "[Not(ObjectsEqual(CharacterWindow.GetCharacter.Self,GetGlobalVariable('dr_character_window_current_character').GetCharacter.Self))]"
                 on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
             }
+
+            state = {
+                name = character_window_refresh 
+                on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('target', CharacterWindow.GetCharacter.MakeScope ).End)]"
+            }
         
             name = "dr_dynastic_relation"
             parentanchor = bottom|left
