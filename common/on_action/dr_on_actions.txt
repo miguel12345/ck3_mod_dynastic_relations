@@ -157,3 +157,18 @@ dr_on_join_war_as_secondary = {
         #DR - dynastic relations - end
     }
 }
+
+on_game_start = {
+    on_actions = {
+        dr_on_game_start
+    }
+}
+
+dr_on_game_start = {
+    effect = {
+        set_global_variable = {
+            name = dr_is_loaded
+            value = yes
+        }
+    }
+}
